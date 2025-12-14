@@ -125,6 +125,10 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       }
       assignments.put(event, event.getAttributeAssignments());
     }
+
+    if (this.finalTraceState == null) {
+      this.finalTraceState = new State("t0");;
+    }
     return assignments;
   }
 
@@ -241,6 +245,13 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
   private StringBuilder buildTraceDeclaration(List<Event> events, Map<Event, Map<Attribute, String>> assignments) {
     StringBuilder b = new StringBuilder();
     b.append("    ;; TRACE DECLARATION\n");
+
+    if (events.isEmpty()) {
+       b.append("    (recovery_finished)\n");
+       b.append("    (cur_t_state " + this.finalTraceState.name + ")\n");
+       b.append("    (final_t_state " +  this.finalTraceState.name + ")\n");
+      return b;
+    }
 
     b.append("    (cur_t_state " + events.get(0).getName() + ")\n");
     b.append("    (final_t_state " +  this.finalTraceState.name + ")\n");
@@ -397,7 +408,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         boolean setClock = false;
 
         for (Transition transition : aut.getTransitions()) {
-          if ((transition.getMinTimeCondition() > 0.0) && (transition.getMaxTimeCondition() > 0.0)) {
+          if ((transition.getMinTimeCondition() > -1.0) && (transition.getMaxTimeCondition() > 0.0)) {
             setClock = true;
             b.append("    (= (min_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMinTimeCondition() + ")\n");
             b.append("    (= (max_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMaxTimeCondition() + ")\n");

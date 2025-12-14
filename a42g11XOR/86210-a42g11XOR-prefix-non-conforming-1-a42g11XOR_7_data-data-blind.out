@@ -1,0 +1,880 @@
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem1.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 63300
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.024) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 259
+Heuristic Time (msec): 6
+Search Time (msec): 241
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem2.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64837
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.022) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 171
+Heuristic Time (msec): 9
+Search Time (msec): 159
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem3.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64654
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.016) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 158
+Heuristic Time (msec): 5
+Search Time (msec): 150
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem4.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64819
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.018) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 168
+Heuristic Time (msec): 6
+Search Time (msec): 157
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem5.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 63779
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.026) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 189
+Heuristic Time (msec): 6
+Search Time (msec): 184
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem6.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64911
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.025) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 178
+Heuristic Time (msec): 8
+Search Time (msec): 168
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem7.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64061
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.023) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 228
+Heuristic Time (msec): 5
+Search Time (msec): 224
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem8.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 65041
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.018) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 262
+Heuristic Time (msec): 2
+Search Time (msec): 246
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem9.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64765
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.021) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 158
+Heuristic Time (msec): 2
+Search Time (msec): 154
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-non-conforming-1-a42g11XOR_7_data/problem10.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 65539
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 100.0 (Expanded Nodes: 4, Evaluated States: 4, Time: 0.012) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a18 t1)
+0: (sync-actions t0 t1 a18)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (stop_wait)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:55
+Elapsed Time: 0
+Metric (Search):100.0
+Planning Time (msec): 154
+Heuristic Time (msec): 2
+Search Time (msec): 149
+Expanded Nodes:244
+States Evaluated:293
+Number of Dead-Ends detected:0
+Number of Duplicates detected:128

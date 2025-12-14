@@ -1,0 +1,33 @@
+activity ActivityJ
+bind ActivityJ: categorical 
+activity ActivityH
+bind ActivityH: integer 
+activity ActivityO
+bind ActivityO: integer 
+activity ActivityG
+bind ActivityG: integer 
+activity ActivityQ
+bind ActivityQ: integer 
+activity ActivityP
+bind ActivityP: integer 
+activity ActivityF
+bind ActivityF: categorical 
+activity ActivityC
+bind ActivityC: categorical 
+activity ActivityA
+bind ActivityA: integer 
+activity ActivityN
+bind ActivityN: integer 
+activity ActivityM
+bind ActivityM: integer 
+activity ActivityD
+bind ActivityD: categorical 
+integer: integer between 0 and 100 
+categorical: c1, c2, c3
+Response[ActivityG, ActivityP] | | | ActivityP,0,100,h/ActivityG,2,5,h
+Precedence[ActivityF, ActivityD] | | | ActivityP,0,100,h/ActivityG,2,5,h
+Not Response[ActivityM, ActivityO] | | | ActivityP,0,100,h/ActivityG,2,5,h
+Absence[ActivityN] | | ActivityB,0,100,h
+Chain Response[ActivityA, ActivityC] | | | ActivityP,0,100,h/ActivityG,2,5,h
+Existence[ActivityJ] | | ActivityB,0,100,h
+Response[ActivityH, ActivityQ] | | | ActivityP,0,100,h/ActivityG,2,5,h

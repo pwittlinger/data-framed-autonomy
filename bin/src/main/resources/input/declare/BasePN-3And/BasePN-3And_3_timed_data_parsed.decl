@@ -1,0 +1,17 @@
+activity ActivityO
+bind ActivityO: integer 
+activity ActivityG
+bind ActivityG: integer 
+activity ActivityP
+bind ActivityP: integer 
+activity ActivityF
+bind ActivityF: categorical 
+activity ActivityM
+bind ActivityM: integer 
+activity ActivityD
+bind ActivityD: categorical 
+integer: integer between 0 and 100 
+categorical: c1, c2, c3
+Response[ActivityG, ActivityP] |A.integer > 10 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h
+Precedence[ActivityF, ActivityD] |A.categorical is c1 |T.categorical is c2 | ActivityP,0,100,h/ActivityG,2,5,h
+Not Response[ActivityM, ActivityO] |A.integer > 20 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h

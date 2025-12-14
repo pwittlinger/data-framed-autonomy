@@ -1,0 +1,810 @@
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem1.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 6526
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 101
+Heuristic Time (msec): 3
+Search Time (msec): 94
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem2.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 5735
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 88
+Heuristic Time (msec): 6
+Search Time (msec): 80
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem3.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 6011
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 104
+Heuristic Time (msec): 6
+Search Time (msec): 95
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem4.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 5841
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 99
+Heuristic Time (msec): 7
+Search Time (msec): 93
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem5.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 7064
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 101
+Heuristic Time (msec): 6
+Search Time (msec): 88
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem6.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 5665
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 94
+Heuristic Time (msec): 6
+Search Time (msec): 85
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem7.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 5921
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 94
+Heuristic Time (msec): 7
+Search Time (msec): 81
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem8.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 6428
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 96
+Heuristic Time (msec): 7
+Search Time (msec): 81
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem9.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 6469
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 99
+Heuristic Time (msec): 7
+Search Time (msec): 90
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a20g6-prefix-1-a20g6_3_timed/problem10.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 6275
+UFX:true
+|F|:16860
+|X|:5
+Heuristic Problem Creation
+|A|:534
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a10 t1)
+0: (sync-actions t0 t1 a10)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a3)
+0: (check_added_parameter_model a3)
+0: (add_move_automata a3)
+0: (stop_wait)
+0: (add_action a4)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (stop_wait)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+
+Plan-Length:49
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 97
+Heuristic Time (msec): 9
+Search Time (msec): 91
+Expanded Nodes:154
+States Evaluated:187
+Number of Dead-Ends detected:0
+Number of Duplicates detected:93

@@ -8,10 +8,11 @@ import pm4py
 
 
 
-input_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\input"
-output_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
+input_path = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\src\main\resources\input"
+output_path = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
 cost_model = "cost_model.txt"
 variable_values = "variable_values.txt"
+jar_path = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar"
 
 
 #cmd = r'java -jar '
@@ -32,6 +33,12 @@ if __name__ == "__main__":
     pns = dict()
     logs = []
 
+    # Create all the cost models for each transition:
+    # change: 1
+    # addition: 2 
+    # add_param: 1
+    # delete: 2
+    # 
     if "cost_models" not in os.listdir(input_path):
         os.mkdir(os.path.join(input_path, "cost_models"))    
         for pn in pn_f:
@@ -43,6 +50,7 @@ if __name__ == "__main__":
     for p_ in pn_f:
         pname = p_[:-5]
 
+        # Checking that a folder for the declare model exists with the same name as the petri net
         if not (os.path.exists(os.path.join(decl_path, pname))):
             continue
         
@@ -54,12 +62,15 @@ if __name__ == "__main__":
 
         for f in declmods:
             
+            # Checking for the extension of the files (only .decl)
+            # And ensuring that only "parsed" (instantiated) models are taken
             if f[-4:] != "decl" or ("parsed" not in f):
                 continue
 
             #print(pname, f[-4:])
 
             var_sub_file = f.split("_parsed")[0]+".decl.txt"
+            var_sub_file = var_sub_file.replace("_timed", "").replace("_data", "")
             var_sub_file = f"variable_substitutions_{var_sub_file}"
 
 
@@ -69,39 +80,39 @@ if __name__ == "__main__":
             var_sub_loc = f"variable_subs/{var_sub_file}"
 
 
-            noise_ = [0.1, 0.2, 0.3]
             all_logs = [
-                log_loc,
-                #f"logs/{pname}-0.1.xesstripped.xes",
-                #f"logs/{pname}-0.2.xesstripped.xes",
-                #f"logs/{pname}-0.3.xesstripped.xes",
-                f"logs/{pname}-add-1.xes",
-                f"logs/{pname}-add-2.xes",
-                f"logs/{pname}-add-3.xes",
-                f"logs/{pname}-add-5.xes",
-                f"logs/{pname}-del-1.xes",
-                f"logs/{pname}-del-2.xes",
-                f"logs/{pname}-del-3.xes",
-                f"logs/{pname}-del-5.xes",
-                f"logs/{pname}-change-1.xes",
-                f"logs/{pname}-change-2.xes",
-                f"logs/{pname}-change-3.xes",
-                f"logs/{pname}-change-5.xes",
+                #log_loc,
+
+                f"logs/{pname}-prefix-conforming-0.xes",
+                f"logs/{pname}-prefix-conforming-1.xes",
+                f"logs/{pname}-prefix-conforming-3.xes",
+                f"logs/{pname}-prefix-conforming-4.xes",
+                
+                f"logs/{pname}-prefix-non-conforming-1.xes",
+                f"logs/{pname}-prefix-non-conforming-3.xes",
+                f"logs/{pname}-prefix-non-conforming-4.xes",
+   
 
             ]
 
 
             for l in all_logs:
                 #new_folder_name = f.replace("_parsed.decl", "").replace("_", "-d")
+                f2 = f
+                #if "BasePN" in f:
+                #    f2 = f[f.find("_"):]
                 
                 if (len(l.split("/"))>1):
                     new_folder_name = l.split("/")[1]
-                    new_folder_name = (new_folder_name+"-d"+(f.replace("_parsed.decl", "").replace("_", "-d").split("-d")[1])).replace(".xes", "")
+                    #new_folder_name = (new_folder_name+"-d"+(f.replace("_parsed.decl", "").replace("_", "-d").split("-d")[1])).replace(".xes", "")
+                    new_folder_name = (new_folder_name.replace(".xes", "")+"-"+(f2.replace("_parsed.decl", "").replace(".xes", "")))
                 else:
                     new_folder_name = f.replace("_parsed.decl", "").replace("_", "-d")
 
                 new_folder_path = os.path.join(output_path, new_folder_name)
                 print(pname, f[-4:], new_folder_path)
+
+                
                 
                 if not (os.path.exists(new_folder_path)):
                     os.mkdir(new_folder_path)
@@ -111,10 +122,10 @@ if __name__ == "__main__":
 
                 cost_model = f"cost_models/cost_model-{pname}.txt"
                 
-                subprocess.call(['java', '-jar', r'C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar', decl_loc, pn_loc, l, variable_values, var_sub_loc, cost_model])
+                subprocess.call(['java', '-jar', jar_path, decl_loc, pn_loc, l, variable_values, var_sub_loc, cost_model])
 
 
-                output_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
+                #output_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
 
                 pddl_files = os.listdir(output_path)
 
@@ -122,49 +133,7 @@ if __name__ == "__main__":
 
                 [os.rename(os.path.join(output_path, pf), os.path.join(new_folder_path, pf)) for pf in pddl_files]
                 
-            
-            #print(decl_loc, pn_loc, log_loc, var_sub_loc)
-            
-            #new_folder_name = f.replace("_parsed.decl", "").replace("_", "-d")
-            #new_folder_path = os.path.join(output_path, new_folder_name)
-            #if not (os.path.exists(new_folder_path)):
-            #    os.mkdir(new_folder_path)
-            #    time.sleep(5)
-            #else:
-            #    continue
-
-            #subprocess.call(['java', '-jar', r'C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar', decl_loc, pn_loc, log_loc, variable_values, var_sub_loc, cost_model])
-
-
-            #output_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
-
-            #pddl_files = os.listdir(output_path)
-
-            #pddl_files = [pf for pf in pddl_files if pf[-4:] == "pddl" and "problem" in pf]
-
-            #[os.rename(os.path.join(output_path, pf), os.path.join(new_folder_path, pf)) for pf in pddl_files]
-
-            #time.sleep(5)
-
-            for noise_level in noise_:
-                continue
-                if not (os.path.join(input_path, f"logs/{pname}-{noise_level}.xesstripped.xes")):
-                    continue
-                if not (os.path.exists(os.path.join(new_folder_path, f"{noise_level}"))):
-                    os.mkdir(os.path.join(output_path, f"{new_folder_name}-{noise_level}"))
-                    print(f"logs/{pname}-{noise_level}.xesstripped.xes")
-                    subprocess.call(['java', '-jar', r'C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar', decl_loc, pn_loc, f"logs/{pname}-{noise_level}.xesstripped.xes", variable_values, var_sub_loc, cost_model])
-#
-#
-                    output_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
-#
-                    pddl_files = os.listdir(output_path)
-
-                    pddl_files = [pf for pf in pddl_files if pf[-4:] == "pddl" and "problem" in pf]
-
-                    [os.rename(os.path.join(output_path, pf), os.path.join(os.path.join(output_path, f"{new_folder_name}-{noise_level}"), pf)) for pf in pddl_files]
-
-                    time.sleep(5)
+           
 
 
             

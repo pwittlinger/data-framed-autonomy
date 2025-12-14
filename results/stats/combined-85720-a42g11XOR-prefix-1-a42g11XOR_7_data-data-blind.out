@@ -1,0 +1,1111 @@
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem1.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 63646
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 176
+Heuristic Time (msec): 8
+Search Time (msec): 171
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem2.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64264
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a4)
+0: (add_parameter a4 sDEC6_2 categorical c1)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a20)
+0: (check_added_parameter_model a20)
+0: (add_move_automata a20)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a39)
+0: (check_added_parameter_model a39)
+0: (add_move_automata a39)
+0: (stop_wait)
+0: (add_action a31)
+0: (check_added_parameter_model a31)
+0: (add_move_automata a31)
+0: (stop_wait)
+0: (add_action a30)
+0: (check_added_parameter_model a30)
+0: (add_move_automata a30)
+0: (stop_wait)
+0: (add_action a33)
+0: (check_added_parameter_model a33)
+0: (add_move_automata a33)
+0: (stop_wait)
+0: (add_action a32)
+0: (check_added_parameter_model a32)
+0: (add_move_automata a32)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a6)
+0: (check_added_parameter_model a6)
+0: (add_move_automata a6)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a38)
+0: (check_added_parameter_model a38)
+0: (add_move_automata a38)
+0: (stop_wait)
+0: (add_action a40)
+0: (check_added_parameter_model a40)
+0: (add_move_automata a40)
+0: (stop_wait)
+0: (add_action a41)
+0: (check_added_parameter_model a41)
+0: (add_move_automata a41)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:79
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 288
+Heuristic Time (msec): 8
+Search Time (msec): 280
+Expanded Nodes:655
+States Evaluated:789
+Number of Dead-Ends detected:0
+Number of Duplicates detected:440
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem3.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 63854
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 294
+Heuristic Time (msec): 10
+Search Time (msec): 285
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem4.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 63362
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 205
+Heuristic Time (msec): 6
+Search Time (msec): 196
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem5.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64061
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 257
+Heuristic Time (msec): 9
+Search Time (msec): 254
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem6.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64739
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 309
+Heuristic Time (msec): 7
+Search Time (msec): 298
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem7.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 64436
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 267
+Heuristic Time (msec): 8
+Search Time (msec): 264
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem8.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 66103
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a4)
+0: (add_parameter a4 sDEC6_2 categorical c1)
+0: (check_added_parameter_model a4)
+0: (add_move_automata a4)
+0: (stop_wait)
+0: (add_action a20)
+0: (check_added_parameter_model a20)
+0: (add_move_automata a20)
+0: (stop_wait)
+0: (add_action a19)
+0: (check_added_parameter_model a19)
+0: (add_move_automata a19)
+0: (stop_wait)
+0: (add_action a39)
+0: (check_added_parameter_model a39)
+0: (add_move_automata a39)
+0: (stop_wait)
+0: (add_action a31)
+0: (check_added_parameter_model a31)
+0: (add_move_automata a31)
+0: (stop_wait)
+0: (add_action a30)
+0: (check_added_parameter_model a30)
+0: (add_move_automata a30)
+0: (stop_wait)
+0: (add_action a33)
+0: (check_added_parameter_model a33)
+0: (add_move_automata a33)
+0: (stop_wait)
+0: (add_action a32)
+0: (check_added_parameter_model a32)
+0: (add_move_automata a32)
+0: (stop_wait)
+0: (add_action a5)
+0: (check_added_parameter_model a5)
+0: (add_move_automata a5)
+0: (stop_wait)
+0: (add_action a6)
+0: (check_added_parameter_model a6)
+0: (add_move_automata a6)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a38)
+0: (check_added_parameter_model a38)
+0: (add_move_automata a38)
+0: (stop_wait)
+0: (add_action a40)
+0: (check_added_parameter_model a40)
+0: (add_move_automata a40)
+0: (stop_wait)
+0: (add_action a41)
+0: (check_added_parameter_model a41)
+0: (add_move_automata a41)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:79
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 297
+Heuristic Time (msec): 8
+Search Time (msec): 289
+Expanded Nodes:655
+States Evaluated:789
+Number of Dead-Ends detected:0
+Number of Duplicates detected:440
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem9.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 65671
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 197
+Heuristic Time (msec): 7
+Search Time (msec): 187
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem10.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 66673
+UFX:true
+|F|:122541
+|X|:22
+Heuristic Problem Creation
+|A|:1826
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: (add_action a13)
+0: (check_added_parameter_model a13)
+0: (add_move_automata a13)
+0: (stop_wait)
+0: (add_action a15)
+0: (check_added_parameter_model a15)
+0: (add_move_automata a15)
+0: (stop_wait)
+0: (add_action a16)
+0: (check_added_parameter_model a16)
+0: (add_move_automata a16)
+0: (stop_wait)
+0: (add_action a14)
+0: (check_added_parameter_model a14)
+0: (add_move_automata a14)
+0: (stop_wait)
+0: (add_action a8)
+0: (add_parameter a8 sDEC2_1 categorical c2)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (stop_wait)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (stop_wait)
+0: (add_action a21)
+0: (check_added_parameter_model a21)
+0: (add_move_automata a21)
+0: (stop_wait)
+0: (add_action a22)
+0: (check_added_parameter_model a22)
+0: (add_move_automata a22)
+0: (stop_wait)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (stop_wait)
+0: (add_action a23)
+0: (check_added_parameter_model a23)
+0: (add_move_automata a23)
+0: (stop_wait)
+0: (add_action a17)
+0: (check_added_parameter_model a17)
+0: (add_move_automata a17)
+0: (stop_wait)
+0: (add_action a18)
+0: (check_added_parameter_model a18)
+0: (add_move_automata a18)
+
+Plan-Length:50
+Elapsed Time: 0
+Metric (Search):0.0
+Planning Time (msec): 253
+Heuristic Time (msec): 7
+Search Time (msec): 249
+Expanded Nodes:342
+States Evaluated:395
+Number of Dead-Ends detected:0
+Number of Duplicates detected:173
+Loading openjdk/17.0.8.1_1
+  Loading requirement: glibc/2.35-aocc-3.2.0-wetwhfr
+    gcc-runtime/12.1.0-gcc-12.1.0-uotjsm3 glibc/2.35-aocc-3.2.0-dkzxmta
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem1.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 117.22
+	System time (seconds): 5.21
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:02.58
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9511200
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 231
+	Minor (reclaiming a frame) page faults: 5850433
+	Voluntary context switches: 7224
+	Involuntary context switches: 9329
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 624
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem2.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 117.22
+	System time (seconds): 5.19
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:02.53
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9527088
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5910391
+	Voluntary context switches: 6743
+	Involuntary context switches: 9212
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 656
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem3.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 118.08
+	System time (seconds): 5.21
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:03.40
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9575460
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5905826
+	Voluntary context switches: 6637
+	Involuntary context switches: 9242
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 648
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem4.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 117.05
+	System time (seconds): 4.96
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:02.11
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9433828
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5715643
+	Voluntary context switches: 6796
+	Involuntary context switches: 9213
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 664
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem5.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 117.95
+	System time (seconds): 5.17
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:03.23
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9515512
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5909084
+	Voluntary context switches: 6660
+	Involuntary context switches: 8970
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 656
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem6.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 118.10
+	System time (seconds): 5.11
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:03.32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9515656
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5894072
+	Voluntary context switches: 6629
+	Involuntary context switches: 8903
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 664
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem7.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 119.30
+	System time (seconds): 5.23
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:04.77
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9570436
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5912999
+	Voluntary context switches: 6533
+	Involuntary context switches: 10083
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 672
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem8.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 120.34
+	System time (seconds): 5.26
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:05.71
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9533992
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6107433
+	Voluntary context switches: 6541
+	Involuntary context switches: 8749
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 664
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem9.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 120.25
+	System time (seconds): 5.28
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:05.62
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9502664
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 5911158
+	Voluntary context switches: 6701
+	Involuntary context switches: 8729
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 672
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-1-a42g11XOR_7_data/problem10.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 122.12
+	System time (seconds): 5.64
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:07.87
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9515480
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6102494
+	Voluntary context switches: 7354
+	Involuntary context switches: 9629
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 680
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -33,6 +33,13 @@ public class DeclareConstraint {
     }
 
     String[] strings = conditionsString.split("and");
+    System.out.println(conditionsString);
+    
+    if (!conditionsString.contains("A.") && !conditionsString.contains("T.") ){
+      return conditions;
+    }
+    
+
     for (String str : strings) {
       str = str.strip();
       String[] stuff = str.split(" ");
@@ -173,14 +180,16 @@ public class DeclareConstraint {
 
   public double[] getActivationTimeConditions() {
     if (this.activation_min_t_condidition == 0 && this.activation_max_t_condition == 0) {
-      return null;
+      //return null;
+      return new double[] {0, 100};
     }
     return new double[] {this.activation_min_t_condidition, this.activation_max_t_condition};
   }
 
   public double[] getTargetTimeConditions() {
     if (this.target_min_t_condidition == 0 && this.target_max_t_condition == 0) {
-      return null;
+      //return null;
+      return new double[] {0, 100};
     }
     return new double[] {this.target_min_t_condidition, this.target_max_t_condition};
   }

@@ -239,9 +239,20 @@ public class Automaton {
         t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions());
         t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
 
+        State s5 = new State(this.STATE_PREFIX + 4);
+
         if (at != null) {
-          t2.setMinTimeCondition(at[0]);
-          t2.setMaxTimeCondition(at[1]);
+          // I need to add in another state that keeps track of the 
+
+          t2.setMinTimeCondition(tt[0]);
+          t2.setMaxTimeCondition(tt[1]);
+
+          t3 = new Transition(s3, s5, constraint.getActivation(), constraint.getActivationConditions());
+          t3.setMinTimeCondition(at[0]);
+          t3.setMaxTimeCondition(at[1]);
+          
+          this.transitions.add(t3);
+
         }
         if (tt != null) {
           t1.setMinTimeCondition(tt[0]);
@@ -252,26 +263,43 @@ public class Automaton {
         this.transitions.add(t1);
         this.transitions.add(t2);
         //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions()) );
-        s1.goal();
-        s3.goal();
-        s2.failure();
+
+        if (at != null) {
+          s1.goal();
+          s3.goal();
+          s2.failure();
+          s5.goal();
+          this.states.addAll(List.of(s1, s2, s3, s5));
+        }
+        else {
+          s1.goal();
+          s3.goal();
+          s2.failure();
+          this.states.addAll(List.of(s1, s2, s3));
+        }
+
 
 
         
 
-        this.states.addAll(List.of(s1, s2, s3));
+        
         break;
       case Not_Precedence:
         //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
         //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
         //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions()) );
 
+        State s6 = new State(this.STATE_PREFIX + 4);
         t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions());
         t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
+        t3 = new Transition(s3, s6, constraint.getActivation(), constraint.getActivationConditions());
+        
 
         if (at != null) {
           t2.setMinTimeCondition(at[0]);
           t2.setMaxTimeCondition(at[1]);
+          t3.setMinTimeCondition(at[0]);
+          t3.setMaxTimeCondition(at[1]);
         }
         if (tt != null) {
           t1.setMinTimeCondition(tt[0]);
@@ -281,13 +309,15 @@ public class Automaton {
 
         this.transitions.add(t1);
         this.transitions.add(t2);
+        this.transitions.add(t3);
 
 
         s1.goal();
         s2.goal();
-        s3.failure();
+        //s3.failure();
+        s6.failure();
 
-        this.states.addAll(List.of(s1, s2, s3));
+        this.states.addAll(List.of(s1, s2, s3, s6));
         break;
         
       default:
@@ -296,6 +326,10 @@ public class Automaton {
   }
   private List<Condition> getOppositeConditions(List<Condition> conditionsToNegate) {
     List<Condition> negatedConditions = new ArrayList<>();
+
+    if (conditionsToNegate == null) {
+      return negatedConditions;
+    }
 
     for (Condition c : conditionsToNegate) {
       negatedConditions.add(new Condition(c.activity, c.parameterName, c.getNegatedCondition(), c.value));

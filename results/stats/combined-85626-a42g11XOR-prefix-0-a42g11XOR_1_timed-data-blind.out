@@ -1,0 +1,1513 @@
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem1.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12633
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.027) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.054) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.059) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.061) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.061) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.062) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.067) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.068) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.069) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.069) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.074) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.075) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.076) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.077) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.083) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.083) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.084) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.085) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.091) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.092) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 302
+Heuristic Time (msec): 2
+Search Time (msec): 287
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem2.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12349
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.025) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.052) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.059) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.06) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.06) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.061) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.062) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.063) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.065) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.065) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.066) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.067) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.067) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.068) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.068) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.07) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.07) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.071) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.072) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.072) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 199
+Heuristic Time (msec): 2
+Search Time (msec): 188
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem3.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12371
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.028) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.047) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.056) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.057) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.058) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.059) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.063) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.064) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.065) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.066) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.067) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.071) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.072) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.073) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.074) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.079) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.08) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.082) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.083) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.083) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 281
+Heuristic Time (msec): 10
+Search Time (msec): 271
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem4.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12343
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.022) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.043) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.049) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.05) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.051) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.052) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.059) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.06) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.061) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.062) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.063) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.064) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.067) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.069) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.071) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.073) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.073) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.077) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.077) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.078) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 270
+Heuristic Time (msec): 6
+Search Time (msec): 262
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem5.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12475
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.026) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.05) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.051) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.052) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.056) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.057) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.058) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.058) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.059) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.064) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.065) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.065) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.066) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.067) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.072) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.072) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.073) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.074) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.074) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.077) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 279
+Heuristic Time (msec): 7
+Search Time (msec): 269
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem6.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12571
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.028) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.055) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.055) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.056) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.057) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.058) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.063) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.065) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.065) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.066) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.071) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.073) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.074) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.075) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.077) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.08) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.081) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.081) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.082) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.083) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 301
+Heuristic Time (msec): 7
+Search Time (msec): 293
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem7.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12137
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.025) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.049) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.05) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.056) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.057) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.058) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.059) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.063) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.064) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.064) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.065) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.066) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.071) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.072) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.073) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.075) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.075) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.08) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.08) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.081) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 238
+Heuristic Time (msec): 7
+Search Time (msec): 233
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem8.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12430
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.024) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.049) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.05) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.051) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.055) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.056) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.057) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.058) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.062) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.063) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.064) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.065) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.066) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.067) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.071) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.072) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.072) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.074) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.078) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.079) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 284
+Heuristic Time (msec): 7
+Search Time (msec): 270
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem9.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12439
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.022) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.05) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.051) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.052) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.052) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.053) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.056) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.059) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.06) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.06) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.065) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.066) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.066) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.067) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.072) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.073) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.073) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.074) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.074) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.075) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 247
+Heuristic Time (msec): 2
+Search Time (msec): 232
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem10.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 12142
+UFX:true
+|F|:60691
+|X|:3
+Heuristic Problem Creation
+|A|:1531
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 6, Evaluated States: 7, Time: 0.019) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 8, Evaluated States: 10, Time: 0.042) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 10, Evaluated States: 13, Time: 0.043) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 12, Evaluated States: 16, Time: 0.048) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 14, Evaluated States: 19, Time: 0.049) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 16, Evaluated States: 22, Time: 0.049) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 18, Evaluated States: 25, Time: 0.054) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 20, Evaluated States: 28, Time: 0.055) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 22, Evaluated States: 31, Time: 0.056) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 24, Evaluated States: 34, Time: 0.056) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 26, Evaluated States: 37, Time: 0.057) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 28, Evaluated States: 40, Time: 0.058) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 30, Evaluated States: 43, Time: 0.063) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 32, Evaluated States: 46, Time: 0.064) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 34, Evaluated States: 49, Time: 0.065) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 36, Evaluated States: 52, Time: 0.065) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.067) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.072) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.072) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.073) Frontier Size: 20
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: -----waiting---- [20.0]
+20.0: (stop_wait)
+20.0: (add_action a4)
+20.0: (check_added_parameter_model a4)
+20.0: (add_move_automata a4)
+20.0: (stop_wait)
+20.0: (add_action a20)
+20.0: (check_added_parameter_model a20)
+20.0: (add_move_automata a20)
+20.0: (stop_wait)
+20.0: (add_action a19)
+20.0: (check_added_parameter_model a19)
+20.0: (add_move_automata a19)
+20.0: (stop_wait)
+20.0: (add_action a39)
+20.0: (check_added_parameter_model a39)
+20.0: (add_move_automata a39)
+20.0: (stop_wait)
+20.0: (add_action a31)
+20.0: (check_added_parameter_model a31)
+20.0: (add_move_automata a31)
+20.0: (stop_wait)
+20.0: (add_action a30)
+20.0: (check_added_parameter_model a30)
+20.0: (add_move_automata a30)
+20.0: (stop_wait)
+20.0: (add_action a33)
+20.0: (check_added_parameter_model a33)
+20.0: (add_move_automata a33)
+20.0: (stop_wait)
+20.0: (add_action a32)
+20.0: (check_added_parameter_model a32)
+20.0: (add_move_automata a32)
+20.0: (stop_wait)
+20.0: (add_action a5)
+20.0: (check_added_parameter_model a5)
+20.0: (add_move_automata a5)
+20.0: (stop_wait)
+20.0: (add_action a6)
+20.0: (check_added_parameter_model a6)
+20.0: (add_move_automata a6)
+20.0: (stop_wait)
+20.0: (add_action a8)
+20.0: (check_added_parameter_model a8)
+20.0: (add_move_automata a8)
+20.0: (stop_wait)
+20.0: (add_action a11)
+20.0: (check_added_parameter_model a11)
+20.0: (add_move_automata a11)
+20.0: (stop_wait)
+20.0: (add_action a21)
+20.0: (check_added_parameter_model a21)
+20.0: (add_move_automata a21)
+20.0: (stop_wait)
+20.0: (add_action a22)
+20.0: (check_added_parameter_model a22)
+20.0: (add_move_automata a22)
+20.0: (stop_wait)
+20.0: (add_action a12)
+20.0: (check_added_parameter_model a12)
+20.0: (add_move_automata a12)
+20.0: (stop_wait)
+20.0: (add_action a23)
+20.0: (check_added_parameter_model a23)
+20.0: (add_move_automata a23)
+20.0: (stop_wait)
+20.0: (add_action a17)
+20.0: (check_added_parameter_model a17)
+20.0: (add_move_automata a17)
+20.0: (stop_wait)
+20.0: (add_action a18)
+20.0: (check_added_parameter_model a18)
+20.0: (add_move_automata a18)
+
+Plan-Length:95
+Elapsed Time: 20.0
+Metric (Search):20.0
+Planning Time (msec): 258
+Heuristic Time (msec): 2
+Search Time (msec): 249
+Expanded Nodes:423
+States Evaluated:557
+Number of Dead-Ends detected:0
+Number of Duplicates detected:365
+Loading openjdk/17.0.8.1_1
+  Loading requirement: glibc/2.35-aocc-3.2.0-wetwhfr
+    gcc-runtime/12.1.0-gcc-12.1.0-uotjsm3 glibc/2.35-aocc-3.2.0-dkzxmta
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem1.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 28.65
+	System time (seconds): 1.32
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:30.15
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2364436
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 343
+	Minor (reclaiming a frame) page faults: 1317037
+	Voluntary context switches: 4281
+	Involuntary context switches: 5378
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 208
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem2.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 27.80
+	System time (seconds): 1.29
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2360956
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1316004
+	Voluntary context switches: 4106
+	Involuntary context switches: 5063
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 240
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem3.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 27.84
+	System time (seconds): 1.36
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.24
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2390968
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1421298
+	Voluntary context switches: 3835
+	Involuntary context switches: 5076
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 240
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem4.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 28.27
+	System time (seconds): 1.35
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.67
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2391532
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1371900
+	Voluntary context switches: 3802
+	Involuntary context switches: 5167
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 232
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem5.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 28.59
+	System time (seconds): 1.37
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:30.02
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2391076
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1369106
+	Voluntary context switches: 4069
+	Involuntary context switches: 5413
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 208
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem6.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 27.93
+	System time (seconds): 1.42
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2403848
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1427359
+	Voluntary context switches: 3966
+	Involuntary context switches: 5044
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 232
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem7.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 27.85
+	System time (seconds): 1.31
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.21
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2357512
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1304490
+	Voluntary context switches: 3716
+	Involuntary context switches: 5031
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 232
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem8.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 28.07
+	System time (seconds): 1.41
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.54
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2399616
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1428027
+	Voluntary context switches: 4032
+	Involuntary context switches: 5288
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 240
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem9.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 27.49
+	System time (seconds): 1.41
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:28.94
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2365084
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1417564
+	Voluntary context switches: 3888
+	Involuntary context switches: 4987
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 216
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-0-a42g11XOR_1_timed/problem10.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 26.94
+	System time (seconds): 1.32
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:28.32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2372632
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1363725
+	Voluntary context switches: 3973
+	Involuntary context switches: 4961
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 232
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -39,13 +39,27 @@ public class Runner {
 
     //findAlignments(args[0], args[1], args[2], args[3], args[4], args[5]);
 
+    
+    
     findAlignments(
-      "declare/a20g6/a20g6_7_parsed.decl",
+      //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
+      "declare/a20g6/a20g6_7_timed_parsed.decl",
        "petrinet/a20g6.pnml",
-       "logs/a20g6.xes",
+       "logs/a20g6-prefix-non-conforming-4.xes",
        "variable_values_multi_model.txt", 
        "variable_subs/variable_substitutions_a20g6_7.decl.txt", 
        "cost_models/cost_model-a20g6.txt");
+    
+    /*
+    findAlignments(
+      //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
+      "declare/a40g17AND/a40g17AND_7_timed_data_parsed.decl",
+       "petrinet/a40g17AND.pnml",
+       "logs/a40g17AND-prefix-non-conforming-4.xes",
+       "variable_values_multi_model.txt", 
+       "variable_subs/variable_substitutions_a40g17AND_7.decl.txt", 
+       "cost_models/cost_model-a40g17AND.txt");
+    */
 
       
   }

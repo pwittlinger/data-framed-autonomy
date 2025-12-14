@@ -1,0 +1,1763 @@
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem1.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 42310
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.033) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.051) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.057) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.063) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.064) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.065) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.066) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.072) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.072) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.074) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.076) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.081) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.081) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.083) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.083) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.084) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.085) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.086) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 41, Evaluated States: 60, Time: 0.091) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 43, Evaluated States: 63, Time: 0.093) Frontier Size: 20
+f(n) = 21.0 (Expanded Nodes: 48, Evaluated States: 70, Time: 0.094) Frontier Size: 22
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.095) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.099) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.101) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.102) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.106) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.107) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.107) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.108) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.109) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.109) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.11) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.11) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 74, Evaluated States: 109, Time: 0.11) Frontier Size: 35
+f(n) = 35.0 (Expanded Nodes: 76, Evaluated States: 112, Time: 0.111) Frontier Size: 36
+f(n) = 36.0 (Expanded Nodes: 78, Evaluated States: 115, Time: 0.111) Frontier Size: 37
+f(n) = 37.0 (Expanded Nodes: 80, Evaluated States: 118, Time: 0.112) Frontier Size: 38
+f(n) = 38.0 (Expanded Nodes: 82, Evaluated States: 121, Time: 0.116) Frontier Size: 39
+f(n) = 39.0 (Expanded Nodes: 87, Evaluated States: 128, Time: 0.118) Frontier Size: 41
+f(n) = 40.0 (Expanded Nodes: 89, Evaluated States: 131, Time: 0.122) Frontier Size: 42
+f(n) = 41.0 (Expanded Nodes: 91, Evaluated States: 134, Time: 0.122) Frontier Size: 43
+f(n) = 42.0 (Expanded Nodes: 93, Evaluated States: 137, Time: 0.122) Frontier Size: 44
+f(n) = 43.0 (Expanded Nodes: 95, Evaluated States: 140, Time: 0.123) Frontier Size: 45
+f(n) = 44.0 (Expanded Nodes: 97, Evaluated States: 143, Time: 0.124) Frontier Size: 46
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.127) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.127) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.128) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.128) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.129) Frontier Size: 51
+f(n) = 50.0 (Expanded Nodes: 109, Evaluated States: 161, Time: 0.129) Frontier Size: 52
+f(n) = 51.0 (Expanded Nodes: 111, Evaluated States: 164, Time: 0.129) Frontier Size: 53
+f(n) = 52.0 (Expanded Nodes: 113, Evaluated States: 167, Time: 0.13) Frontier Size: 54
+f(n) = 53.0 (Expanded Nodes: 115, Evaluated States: 170, Time: 0.135) Frontier Size: 55
+f(n) = 54.0 (Expanded Nodes: 117, Evaluated States: 173, Time: 0.136) Frontier Size: 56
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [20.0]
+20.0: (validate_payload t1 a4 t2)
+20.0: (sync_actions t1 t2 a4)
+20.0: -----waiting---- [38.0]
+38.0: (validate_payload t2 a20 t3)
+38.0: (sync_actions t2 t3 a20)
+38.0: -----waiting---- [54.0]
+54.0: (validate_payload t3 a27 t4)
+54.0: (sync_actions t3 t4 a27)
+54.0: (add_action a3)
+54.0: (check_added_parameter_model a3)
+54.0: (add_move_automata a3)
+54.0: (stop_wait)
+54.0: (add_action a26)
+54.0: (check_added_parameter_model a26)
+54.0: (add_move_automata a26)
+54.0: (stop_wait)
+54.0: (add_action a24)
+54.0: (check_added_parameter_model a24)
+54.0: (add_move_automata a24)
+54.0: (stop_wait)
+54.0: (add_action a2)
+54.0: (check_added_parameter_model a2)
+54.0: (add_move_automata a2)
+54.0: (stop_wait)
+54.0: (add_action a31)
+54.0: (check_added_parameter_model a31)
+54.0: (add_move_automata a31)
+54.0: (stop_wait)
+54.0: (add_action a30)
+54.0: (check_added_parameter_model a30)
+54.0: (add_move_automata a30)
+54.0: (stop_wait)
+54.0: (add_action a33)
+54.0: (check_added_parameter_model a33)
+54.0: (add_move_automata a33)
+54.0: (stop_wait)
+54.0: (add_action a32)
+54.0: (check_added_parameter_model a32)
+54.0: (add_move_automata a32)
+54.0: (stop_wait)
+54.0: (add_action a5)
+54.0: (check_added_parameter_model a5)
+54.0: (add_move_automata a5)
+54.0: (stop_wait)
+54.0: (add_action a6)
+54.0: (check_added_parameter_model a6)
+54.0: (add_move_automata a6)
+54.0: (stop_wait)
+54.0: (add_action a8)
+54.0: (check_added_parameter_model a8)
+54.0: (add_move_automata a8)
+54.0: (stop_wait)
+54.0: (add_action a11)
+54.0: (check_added_parameter_model a11)
+54.0: (add_move_automata a11)
+54.0: (stop_wait)
+54.0: (add_action a21)
+54.0: (check_added_parameter_model a21)
+54.0: (add_move_automata a21)
+54.0: (stop_wait)
+54.0: (add_action a22)
+54.0: (check_added_parameter_model a22)
+54.0: (add_move_automata a22)
+54.0: (stop_wait)
+54.0: (add_action a12)
+54.0: (check_added_parameter_model a12)
+54.0: (add_move_automata a12)
+54.0: (stop_wait)
+54.0: (add_action a23)
+54.0: (check_added_parameter_model a23)
+54.0: (add_move_automata a23)
+54.0: (stop_wait)
+54.0: (add_action a17)
+54.0: (check_added_parameter_model a17)
+54.0: (add_move_automata a17)
+54.0: (stop_wait)
+54.0: (add_action a18)
+54.0: (check_added_parameter_model a18)
+54.0: (add_move_automata a18)
+
+Plan-Length:133
+Elapsed Time: 54.0
+Metric (Search):54.0
+Planning Time (msec): 218
+Heuristic Time (msec): 9
+Search Time (msec): 208
+Expanded Nodes:274
+States Evaluated:356
+Number of Dead-Ends detected:0
+Number of Duplicates detected:155
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem2.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 42956
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 7, Evaluated States: 11, Time: 0.032) Frontier Size: 4
+f(n) = 2.0 (Expanded Nodes: 11, Evaluated States: 19, Time: 0.057) Frontier Size: 8
+f(n) = 3.0 (Expanded Nodes: 15, Evaluated States: 27, Time: 0.064) Frontier Size: 12
+f(n) = 4.0 (Expanded Nodes: 19, Evaluated States: 35, Time: 0.065) Frontier Size: 16
+f(n) = 5.0 (Expanded Nodes: 23, Evaluated States: 43, Time: 0.071) Frontier Size: 20
+f(n) = 6.0 (Expanded Nodes: 27, Evaluated States: 51, Time: 0.079) Frontier Size: 24
+f(n) = 7.0 (Expanded Nodes: 31, Evaluated States: 59, Time: 0.086) Frontier Size: 28
+f(n) = 8.0 (Expanded Nodes: 35, Evaluated States: 67, Time: 0.087) Frontier Size: 32
+f(n) = 9.0 (Expanded Nodes: 39, Evaluated States: 75, Time: 0.088) Frontier Size: 36
+f(n) = 10.0 (Expanded Nodes: 43, Evaluated States: 83, Time: 0.091) Frontier Size: 40
+f(n) = 11.0 (Expanded Nodes: 47, Evaluated States: 91, Time: 0.092) Frontier Size: 44
+f(n) = 12.0 (Expanded Nodes: 51, Evaluated States: 99, Time: 0.093) Frontier Size: 48
+f(n) = 13.0 (Expanded Nodes: 55, Evaluated States: 107, Time: 0.094) Frontier Size: 52
+f(n) = 14.0 (Expanded Nodes: 59, Evaluated States: 115, Time: 0.103) Frontier Size: 56
+f(n) = 15.0 (Expanded Nodes: 63, Evaluated States: 123, Time: 0.104) Frontier Size: 60
+f(n) = 16.0 (Expanded Nodes: 67, Evaluated States: 131, Time: 0.105) Frontier Size: 64
+f(n) = 17.0 (Expanded Nodes: 71, Evaluated States: 139, Time: 0.114) Frontier Size: 68
+f(n) = 18.0 (Expanded Nodes: 75, Evaluated States: 147, Time: 0.115) Frontier Size: 72
+f(n) = 19.0 (Expanded Nodes: 79, Evaluated States: 155, Time: 0.116) Frontier Size: 76
+f(n) = 20.0 (Expanded Nodes: 83, Evaluated States: 163, Time: 0.121) Frontier Size: 80
+f(n) = 21.0 (Expanded Nodes: 90, Evaluated States: 175, Time: 0.123) Frontier Size: 85
+f(n) = 22.0 (Expanded Nodes: 92, Evaluated States: 178, Time: 0.124) Frontier Size: 86
+f(n) = 23.0 (Expanded Nodes: 94, Evaluated States: 181, Time: 0.128) Frontier Size: 87
+f(n) = 24.0 (Expanded Nodes: 96, Evaluated States: 184, Time: 0.129) Frontier Size: 88
+f(n) = 25.0 (Expanded Nodes: 98, Evaluated States: 187, Time: 0.129) Frontier Size: 89
+f(n) = 26.0 (Expanded Nodes: 100, Evaluated States: 190, Time: 0.13) Frontier Size: 90
+f(n) = 27.0 (Expanded Nodes: 102, Evaluated States: 193, Time: 0.136) Frontier Size: 91
+f(n) = 28.0 (Expanded Nodes: 104, Evaluated States: 196, Time: 0.137) Frontier Size: 92
+f(n) = 29.0 (Expanded Nodes: 106, Evaluated States: 199, Time: 0.138) Frontier Size: 93
+f(n) = 30.0 (Expanded Nodes: 108, Evaluated States: 202, Time: 0.138) Frontier Size: 94
+f(n) = 31.0 (Expanded Nodes: 110, Evaluated States: 205, Time: 0.138) Frontier Size: 95
+f(n) = 32.0 (Expanded Nodes: 112, Evaluated States: 208, Time: 0.139) Frontier Size: 96
+f(n) = 33.0 (Expanded Nodes: 114, Evaluated States: 211, Time: 0.139) Frontier Size: 97
+f(n) = 34.0 (Expanded Nodes: 116, Evaluated States: 214, Time: 0.139) Frontier Size: 98
+f(n) = 35.0 (Expanded Nodes: 118, Evaluated States: 217, Time: 0.14) Frontier Size: 99
+f(n) = 36.0 (Expanded Nodes: 120, Evaluated States: 220, Time: 0.14) Frontier Size: 100
+f(n) = 37.0 (Expanded Nodes: 122, Evaluated States: 223, Time: 0.141) Frontier Size: 101
+f(n) = 38.0 (Expanded Nodes: 124, Evaluated States: 226, Time: 0.141) Frontier Size: 102
+f(n) = 39.0 (Expanded Nodes: 126, Evaluated States: 229, Time: 0.147) Frontier Size: 103
+f(n) = 40.0 (Expanded Nodes: 128, Evaluated States: 232, Time: 0.148) Frontier Size: 104
+f(n) = 41.0 (Expanded Nodes: 133, Evaluated States: 239, Time: 0.152) Frontier Size: 106
+f(n) = 42.0 (Expanded Nodes: 135, Evaluated States: 242, Time: 0.153) Frontier Size: 107
+f(n) = 43.0 (Expanded Nodes: 137, Evaluated States: 245, Time: 0.153) Frontier Size: 108
+f(n) = 44.0 (Expanded Nodes: 139, Evaluated States: 248, Time: 0.155) Frontier Size: 109
+f(n) = 45.0 (Expanded Nodes: 141, Evaluated States: 251, Time: 0.155) Frontier Size: 110
+f(n) = 46.0 (Expanded Nodes: 143, Evaluated States: 254, Time: 0.156) Frontier Size: 111
+f(n) = 47.0 (Expanded Nodes: 145, Evaluated States: 257, Time: 0.156) Frontier Size: 112
+f(n) = 48.0 (Expanded Nodes: 147, Evaluated States: 260, Time: 0.156) Frontier Size: 113
+f(n) = 49.0 (Expanded Nodes: 149, Evaluated States: 263, Time: 0.157) Frontier Size: 114
+f(n) = 50.0 (Expanded Nodes: 151, Evaluated States: 266, Time: 0.157) Frontier Size: 115
+f(n) = 51.0 (Expanded Nodes: 153, Evaluated States: 269, Time: 0.157) Frontier Size: 116
+f(n) = 52.0 (Expanded Nodes: 155, Evaluated States: 272, Time: 0.158) Frontier Size: 117
+f(n) = 53.0 (Expanded Nodes: 157, Evaluated States: 275, Time: 0.165) Frontier Size: 118
+f(n) = 54.0 (Expanded Nodes: 159, Evaluated States: 278, Time: 0.165) Frontier Size: 119
+f(n) = 55.0 (Expanded Nodes: 161, Evaluated States: 281, Time: 0.169) Frontier Size: 120
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [20.0]
+20.0: (validate_payload t1 a4 t2)
+20.0: (sync_actions t1 t2 a4)
+20.0: -----waiting---- [40.0]
+40.0: (validate_payload t2 a20 t3)
+40.0: (sync_actions t2 t3 a20)
+40.0: -----waiting---- [55.0]
+55.0: (validate_payload t3 a19 t4)
+55.0: (sync_actions t3 t4 a19)
+55.0: (add_action a39)
+55.0: (check_added_parameter_model a39)
+55.0: (add_move_automata a39)
+55.0: (stop_wait)
+55.0: (add_action a31)
+55.0: (check_added_parameter_model a31)
+55.0: (add_move_automata a31)
+55.0: (stop_wait)
+55.0: (add_action a30)
+55.0: (check_added_parameter_model a30)
+55.0: (add_move_automata a30)
+55.0: (stop_wait)
+55.0: (add_action a33)
+55.0: (check_added_parameter_model a33)
+55.0: (add_move_automata a33)
+55.0: (stop_wait)
+55.0: (add_action a32)
+55.0: (check_added_parameter_model a32)
+55.0: (add_move_automata a32)
+55.0: (stop_wait)
+55.0: (add_action a5)
+55.0: (check_added_parameter_model a5)
+55.0: (add_move_automata a5)
+55.0: (stop_wait)
+55.0: (add_action a6)
+55.0: (check_added_parameter_model a6)
+55.0: (add_move_automata a6)
+55.0: (stop_wait)
+55.0: (add_action a8)
+55.0: (check_added_parameter_model a8)
+55.0: (add_move_automata a8)
+55.0: (stop_wait)
+55.0: (add_action a11)
+55.0: (check_added_parameter_model a11)
+55.0: (add_move_automata a11)
+55.0: (stop_wait)
+55.0: (add_action a21)
+55.0: (check_added_parameter_model a21)
+55.0: (add_move_automata a21)
+55.0: (stop_wait)
+55.0: (add_action a22)
+55.0: (check_added_parameter_model a22)
+55.0: (add_move_automata a22)
+55.0: (stop_wait)
+55.0: (add_action a12)
+55.0: (check_added_parameter_model a12)
+55.0: (add_move_automata a12)
+55.0: (stop_wait)
+55.0: (add_action a23)
+55.0: (check_added_parameter_model a23)
+55.0: (add_move_automata a23)
+55.0: (stop_wait)
+55.0: (add_action a17)
+55.0: (check_added_parameter_model a17)
+55.0: (add_move_automata a17)
+55.0: (stop_wait)
+55.0: (add_action a18)
+55.0: (check_added_parameter_model a18)
+55.0: (add_move_automata a18)
+
+Plan-Length:122
+Elapsed Time: 55.0
+Metric (Search):55.0
+Planning Time (msec): 243
+Heuristic Time (msec): 7
+Search Time (msec): 230
+Expanded Nodes:282
+States Evaluated:423
+Number of Dead-Ends detected:0
+Number of Duplicates detected:217
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem3.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 43159
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.026) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.055) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.056) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.057) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.057) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.062) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.063) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.065) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.065) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.071) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.076) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.077) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.079) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.08) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.081) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.082) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.088) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.089) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.091) Frontier Size: 20
+f(n) = 20.0 (Expanded Nodes: 46, Evaluated States: 67, Time: 0.097) Frontier Size: 21
+f(n) = 21.0 (Expanded Nodes: 48, Evaluated States: 70, Time: 0.098) Frontier Size: 22
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.103) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.103) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.104) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.106) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.106) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.107) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.107) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.108) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.115) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.116) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.117) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.117) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 74, Evaluated States: 109, Time: 0.118) Frontier Size: 35
+f(n) = 35.0 (Expanded Nodes: 76, Evaluated States: 112, Time: 0.118) Frontier Size: 36
+f(n) = 36.0 (Expanded Nodes: 78, Evaluated States: 115, Time: 0.119) Frontier Size: 37
+f(n) = 37.0 (Expanded Nodes: 80, Evaluated States: 118, Time: 0.124) Frontier Size: 38
+f(n) = 38.0 (Expanded Nodes: 82, Evaluated States: 121, Time: 0.124) Frontier Size: 39
+f(n) = 39.0 (Expanded Nodes: 87, Evaluated States: 128, Time: 0.129) Frontier Size: 41
+f(n) = 40.0 (Expanded Nodes: 89, Evaluated States: 131, Time: 0.129) Frontier Size: 42
+f(n) = 41.0 (Expanded Nodes: 91, Evaluated States: 134, Time: 0.13) Frontier Size: 43
+f(n) = 42.0 (Expanded Nodes: 93, Evaluated States: 137, Time: 0.131) Frontier Size: 44
+f(n) = 43.0 (Expanded Nodes: 95, Evaluated States: 140, Time: 0.131) Frontier Size: 45
+f(n) = 44.0 (Expanded Nodes: 97, Evaluated States: 143, Time: 0.132) Frontier Size: 46
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.132) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.132) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.133) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.133) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.134) Frontier Size: 51
+f(n) = 50.0 (Expanded Nodes: 109, Evaluated States: 161, Time: 0.14) Frontier Size: 52
+f(n) = 51.0 (Expanded Nodes: 111, Evaluated States: 164, Time: 0.14) Frontier Size: 53
+f(n) = 52.0 (Expanded Nodes: 113, Evaluated States: 167, Time: 0.141) Frontier Size: 54
+f(n) = 53.0 (Expanded Nodes: 115, Evaluated States: 170, Time: 0.141) Frontier Size: 55
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [18.0]
+18.0: (validate_payload t1 a4 t2)
+18.0: (sync_actions t1 t2 a4)
+18.0: -----waiting---- [38.0]
+38.0: (validate_payload t2 a20 t3)
+38.0: (sync_actions t2 t3 a20)
+38.0: -----waiting---- [53.0]
+53.0: (validate_payload t3 a19 t4)
+53.0: (sync_actions t3 t4 a19)
+53.0: (add_action a39)
+53.0: (check_added_parameter_model a39)
+53.0: (add_move_automata a39)
+53.0: (stop_wait)
+53.0: (add_action a31)
+53.0: (check_added_parameter_model a31)
+53.0: (add_move_automata a31)
+53.0: (stop_wait)
+53.0: (add_action a30)
+53.0: (check_added_parameter_model a30)
+53.0: (add_move_automata a30)
+53.0: (stop_wait)
+53.0: (add_action a33)
+53.0: (check_added_parameter_model a33)
+53.0: (add_move_automata a33)
+53.0: (stop_wait)
+53.0: (add_action a32)
+53.0: (check_added_parameter_model a32)
+53.0: (add_move_automata a32)
+53.0: (stop_wait)
+53.0: (add_action a5)
+53.0: (check_added_parameter_model a5)
+53.0: (add_move_automata a5)
+53.0: (stop_wait)
+53.0: (add_action a6)
+53.0: (check_added_parameter_model a6)
+53.0: (add_move_automata a6)
+53.0: (stop_wait)
+53.0: (add_action a8)
+53.0: (check_added_parameter_model a8)
+53.0: (add_move_automata a8)
+53.0: (stop_wait)
+53.0: (add_action a11)
+53.0: (check_added_parameter_model a11)
+53.0: (add_move_automata a11)
+53.0: (stop_wait)
+53.0: (add_action a21)
+53.0: (check_added_parameter_model a21)
+53.0: (add_move_automata a21)
+53.0: (stop_wait)
+53.0: (add_action a22)
+53.0: (check_added_parameter_model a22)
+53.0: (add_move_automata a22)
+53.0: (stop_wait)
+53.0: (add_action a12)
+53.0: (check_added_parameter_model a12)
+53.0: (add_move_automata a12)
+53.0: (stop_wait)
+53.0: (add_action a23)
+53.0: (check_added_parameter_model a23)
+53.0: (add_move_automata a23)
+53.0: (stop_wait)
+53.0: (add_action a17)
+53.0: (check_added_parameter_model a17)
+53.0: (add_move_automata a17)
+53.0: (stop_wait)
+53.0: (add_action a18)
+53.0: (check_added_parameter_model a18)
+53.0: (add_move_automata a18)
+
+Plan-Length:120
+Elapsed Time: 53.0
+Metric (Search):53.0
+Planning Time (msec): 230
+Heuristic Time (msec): 3
+Search Time (msec): 216
+Expanded Nodes:236
+States Evaluated:312
+Number of Dead-Ends detected:0
+Number of Duplicates detected:131
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem4.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 42416
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.025) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.049) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.054) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.055) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.056) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.056) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.06) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.062) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.063) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.064) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.065) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.067) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.068) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.069) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.07) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.07) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.071) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.071) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.077) Frontier Size: 20
+f(n) = 20.0 (Expanded Nodes: 46, Evaluated States: 67, Time: 0.077) Frontier Size: 21
+f(n) = 21.0 (Expanded Nodes: 48, Evaluated States: 70, Time: 0.078) Frontier Size: 22
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.078) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.078) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.079) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.079) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.079) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.08) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.08) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.087) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.088) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.088) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.088) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.088) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 74, Evaluated States: 109, Time: 0.089) Frontier Size: 35
+f(n) = 35.0 (Expanded Nodes: 76, Evaluated States: 112, Time: 0.089) Frontier Size: 36
+f(n) = 36.0 (Expanded Nodes: 78, Evaluated States: 115, Time: 0.089) Frontier Size: 37
+f(n) = 37.0 (Expanded Nodes: 80, Evaluated States: 118, Time: 0.09) Frontier Size: 38
+f(n) = 38.0 (Expanded Nodes: 82, Evaluated States: 121, Time: 0.09) Frontier Size: 39
+f(n) = 39.0 (Expanded Nodes: 84, Evaluated States: 124, Time: 0.094) Frontier Size: 40
+f(n) = 40.0 (Expanded Nodes: 86, Evaluated States: 127, Time: 0.094) Frontier Size: 41
+f(n) = 41.0 (Expanded Nodes: 88, Evaluated States: 130, Time: 0.095) Frontier Size: 42
+f(n) = 42.0 (Expanded Nodes: 90, Evaluated States: 133, Time: 0.096) Frontier Size: 43
+f(n) = 43.0 (Expanded Nodes: 92, Evaluated States: 136, Time: 0.096) Frontier Size: 44
+f(n) = 44.0 (Expanded Nodes: 97, Evaluated States: 143, Time: 0.099) Frontier Size: 46
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.099) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.1) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.1) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.107) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.108) Frontier Size: 51
+f(n) = 50.0 (Expanded Nodes: 109, Evaluated States: 161, Time: 0.108) Frontier Size: 52
+f(n) = 51.0 (Expanded Nodes: 111, Evaluated States: 164, Time: 0.108) Frontier Size: 53
+f(n) = 52.0 (Expanded Nodes: 113, Evaluated States: 167, Time: 0.108) Frontier Size: 54
+f(n) = 53.0 (Expanded Nodes: 115, Evaluated States: 170, Time: 0.109) Frontier Size: 55
+f(n) = 54.0 (Expanded Nodes: 117, Evaluated States: 173, Time: 0.109) Frontier Size: 56
+f(n) = 55.0 (Expanded Nodes: 119, Evaluated States: 176, Time: 0.109) Frontier Size: 57
+f(n) = 56.0 (Expanded Nodes: 121, Evaluated States: 179, Time: 0.11) Frontier Size: 58
+f(n) = 57.0 (Expanded Nodes: 123, Evaluated States: 182, Time: 0.11) Frontier Size: 59
+f(n) = 58.0 (Expanded Nodes: 125, Evaluated States: 185, Time: 0.11) Frontier Size: 60
+f(n) = 59.0 (Expanded Nodes: 127, Evaluated States: 188, Time: 0.11) Frontier Size: 61
+f(n) = 60.0 (Expanded Nodes: 129, Evaluated States: 191, Time: 0.111) Frontier Size: 62
+f(n) = 61.0 (Expanded Nodes: 131, Evaluated States: 194, Time: 0.111) Frontier Size: 63
+f(n) = 62.0 (Expanded Nodes: 133, Evaluated States: 197, Time: 0.111) Frontier Size: 64
+f(n) = 63.0 (Expanded Nodes: 135, Evaluated States: 200, Time: 0.112) Frontier Size: 65
+f(n) = 64.0 (Expanded Nodes: 137, Evaluated States: 203, Time: 0.112) Frontier Size: 66
+f(n) = 65.0 (Expanded Nodes: 139, Evaluated States: 206, Time: 0.112) Frontier Size: 67
+f(n) = 66.0 (Expanded Nodes: 141, Evaluated States: 209, Time: 0.112) Frontier Size: 68
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [18.0]
+18.0: (validate_payload t1 a4 t2)
+18.0: (sync_actions t1 t2 a4)
+18.0: -----waiting---- [43.0]
+43.0: (validate_payload t2 a20 t3)
+43.0: (sync_actions t2 t3 a20)
+43.0: -----waiting---- [66.0]
+66.0: (validate_payload t3 a27 t4)
+66.0: (sync_actions t3 t4 a27)
+66.0: (add_action a3)
+66.0: (check_added_parameter_model a3)
+66.0: (add_move_automata a3)
+66.0: (stop_wait)
+66.0: (add_action a26)
+66.0: (check_added_parameter_model a26)
+66.0: (add_move_automata a26)
+66.0: (stop_wait)
+66.0: (add_action a24)
+66.0: (check_added_parameter_model a24)
+66.0: (add_move_automata a24)
+66.0: (stop_wait)
+66.0: (add_action a2)
+66.0: (check_added_parameter_model a2)
+66.0: (add_move_automata a2)
+66.0: (stop_wait)
+66.0: (add_action a31)
+66.0: (check_added_parameter_model a31)
+66.0: (add_move_automata a31)
+66.0: (stop_wait)
+66.0: (add_action a30)
+66.0: (check_added_parameter_model a30)
+66.0: (add_move_automata a30)
+66.0: (stop_wait)
+66.0: (add_action a33)
+66.0: (check_added_parameter_model a33)
+66.0: (add_move_automata a33)
+66.0: (stop_wait)
+66.0: (add_action a32)
+66.0: (check_added_parameter_model a32)
+66.0: (add_move_automata a32)
+66.0: (stop_wait)
+66.0: (add_action a5)
+66.0: (check_added_parameter_model a5)
+66.0: (add_move_automata a5)
+66.0: (stop_wait)
+66.0: (add_action a6)
+66.0: (check_added_parameter_model a6)
+66.0: (add_move_automata a6)
+66.0: (stop_wait)
+66.0: (add_action a8)
+66.0: (check_added_parameter_model a8)
+66.0: (add_move_automata a8)
+66.0: (stop_wait)
+66.0: (add_action a11)
+66.0: (check_added_parameter_model a11)
+66.0: (add_move_automata a11)
+66.0: (stop_wait)
+66.0: (add_action a21)
+66.0: (check_added_parameter_model a21)
+66.0: (add_move_automata a21)
+66.0: (stop_wait)
+66.0: (add_action a22)
+66.0: (check_added_parameter_model a22)
+66.0: (add_move_automata a22)
+66.0: (stop_wait)
+66.0: (add_action a12)
+66.0: (check_added_parameter_model a12)
+66.0: (add_move_automata a12)
+66.0: (stop_wait)
+66.0: (add_action a23)
+66.0: (check_added_parameter_model a23)
+66.0: (add_move_automata a23)
+66.0: (stop_wait)
+66.0: (add_action a17)
+66.0: (check_added_parameter_model a17)
+66.0: (add_move_automata a17)
+66.0: (stop_wait)
+66.0: (add_action a18)
+66.0: (check_added_parameter_model a18)
+66.0: (add_move_automata a18)
+
+Plan-Length:145
+Elapsed Time: 66.0
+Metric (Search):66.0
+Planning Time (msec): 170
+Heuristic Time (msec): 6
+Search Time (msec): 158
+Expanded Nodes:298
+States Evaluated:392
+Number of Dead-Ends detected:0
+Number of Duplicates detected:167
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem5.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 40000
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.029) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.049) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.051) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.052) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.056) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.057) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.058) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.059) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.063) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.064) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.065) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.069) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.07) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.071) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.072) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.077) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.078) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.079) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 41, Evaluated States: 60, Time: 0.081) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 43, Evaluated States: 63, Time: 0.081) Frontier Size: 20
+f(n) = 21.0 (Expanded Nodes: 45, Evaluated States: 66, Time: 0.082) Frontier Size: 21
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.09) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.091) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.092) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.092) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.096) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.097) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.1) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.1) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.101) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.101) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.102) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.102) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 74, Evaluated States: 109, Time: 0.103) Frontier Size: 35
+f(n) = 35.0 (Expanded Nodes: 76, Evaluated States: 112, Time: 0.103) Frontier Size: 36
+f(n) = 36.0 (Expanded Nodes: 78, Evaluated States: 115, Time: 0.109) Frontier Size: 37
+f(n) = 37.0 (Expanded Nodes: 80, Evaluated States: 118, Time: 0.109) Frontier Size: 38
+f(n) = 38.0 (Expanded Nodes: 82, Evaluated States: 121, Time: 0.11) Frontier Size: 39
+f(n) = 39.0 (Expanded Nodes: 84, Evaluated States: 124, Time: 0.11) Frontier Size: 40
+f(n) = 40.0 (Expanded Nodes: 86, Evaluated States: 127, Time: 0.111) Frontier Size: 41
+f(n) = 41.0 (Expanded Nodes: 88, Evaluated States: 130, Time: 0.111) Frontier Size: 42
+f(n) = 42.0 (Expanded Nodes: 90, Evaluated States: 133, Time: 0.111) Frontier Size: 43
+f(n) = 43.0 (Expanded Nodes: 92, Evaluated States: 136, Time: 0.112) Frontier Size: 44
+f(n) = 44.0 (Expanded Nodes: 94, Evaluated States: 139, Time: 0.116) Frontier Size: 45
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.118) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.119) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.125) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.125) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.126) Frontier Size: 51
+f(n) = 50.0 (Expanded Nodes: 109, Evaluated States: 161, Time: 0.127) Frontier Size: 52
+f(n) = 51.0 (Expanded Nodes: 111, Evaluated States: 164, Time: 0.127) Frontier Size: 53
+f(n) = 52.0 (Expanded Nodes: 113, Evaluated States: 167, Time: 0.127) Frontier Size: 54
+f(n) = 53.0 (Expanded Nodes: 115, Evaluated States: 170, Time: 0.128) Frontier Size: 55
+f(n) = 54.0 (Expanded Nodes: 117, Evaluated States: 173, Time: 0.128) Frontier Size: 56
+f(n) = 55.0 (Expanded Nodes: 119, Evaluated States: 176, Time: 0.128) Frontier Size: 57
+f(n) = 56.0 (Expanded Nodes: 121, Evaluated States: 179, Time: 0.129) Frontier Size: 58
+f(n) = 57.0 (Expanded Nodes: 123, Evaluated States: 182, Time: 0.129) Frontier Size: 59
+f(n) = 58.0 (Expanded Nodes: 125, Evaluated States: 185, Time: 0.129) Frontier Size: 60
+f(n) = 59.0 (Expanded Nodes: 127, Evaluated States: 188, Time: 0.129) Frontier Size: 61
+f(n) = 60.0 (Expanded Nodes: 129, Evaluated States: 191, Time: 0.13) Frontier Size: 62
+f(n) = 61.0 (Expanded Nodes: 131, Evaluated States: 194, Time: 0.136) Frontier Size: 63
+f(n) = 62.0 (Expanded Nodes: 133, Evaluated States: 197, Time: 0.136) Frontier Size: 64
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [21.0]
+21.0: (validate_payload t1 a13 t2)
+21.0: (sync_actions t1 t2 a13)
+21.0: -----waiting---- [44.0]
+44.0: (validate_payload t2 a15 t3)
+44.0: (sync_actions t2 t3 a15)
+44.0: -----waiting---- [62.0]
+62.0: (validate_payload t3 a16 t4)
+62.0: (sync_actions t3 t4 a16)
+62.0: (add_action a14)
+62.0: (check_added_parameter_model a14)
+62.0: (add_move_automata a14)
+62.0: (stop_wait)
+62.0: (add_action a8)
+62.0: (check_added_parameter_model a8)
+62.0: (add_move_automata a8)
+62.0: (stop_wait)
+62.0: (add_action a11)
+62.0: (check_added_parameter_model a11)
+62.0: (add_move_automata a11)
+62.0: (stop_wait)
+62.0: (add_action a21)
+62.0: (check_added_parameter_model a21)
+62.0: (add_move_automata a21)
+62.0: (stop_wait)
+62.0: (add_action a22)
+62.0: (check_added_parameter_model a22)
+62.0: (add_move_automata a22)
+62.0: (stop_wait)
+62.0: (add_action a12)
+62.0: (check_added_parameter_model a12)
+62.0: (add_move_automata a12)
+62.0: (stop_wait)
+62.0: (add_action a23)
+62.0: (check_added_parameter_model a23)
+62.0: (add_move_automata a23)
+62.0: (stop_wait)
+62.0: (add_action a17)
+62.0: (check_added_parameter_model a17)
+62.0: (add_move_automata a17)
+62.0: (stop_wait)
+62.0: (add_action a18)
+62.0: (check_added_parameter_model a18)
+62.0: (add_move_automata a18)
+
+Plan-Length:105
+Elapsed Time: 62.0
+Metric (Search):62.0
+Planning Time (msec): 182
+Heuristic Time (msec): 5
+Search Time (msec): 172
+Expanded Nodes:240
+States Evaluated:323
+Number of Dead-Ends detected:0
+Number of Duplicates detected:131
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem6.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 39501
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.019) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.043) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.044) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.045) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.05) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.051) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.054) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.056) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.06) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.061) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.062) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.062) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.067) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.068) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.069) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 38, Evaluated States: 55, Time: 0.078) Frontier Size: 17
+f(n) = 17.0 (Expanded Nodes: 40, Evaluated States: 58, Time: 0.079) Frontier Size: 18
+f(n) = 18.0 (Expanded Nodes: 42, Evaluated States: 61, Time: 0.079) Frontier Size: 19
+f(n) = 19.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.08) Frontier Size: 20
+f(n) = 20.0 (Expanded Nodes: 46, Evaluated States: 67, Time: 0.084) Frontier Size: 21
+f(n) = 21.0 (Expanded Nodes: 48, Evaluated States: 70, Time: 0.085) Frontier Size: 22
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.085) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.086) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.086) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.087) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.089) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.089) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.093) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.094) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.094) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.095) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.095) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.096) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 77, Evaluated States: 113, Time: 0.102) Frontier Size: 36
+f(n) = 35.0 (Expanded Nodes: 79, Evaluated States: 116, Time: 0.106) Frontier Size: 37
+f(n) = 36.0 (Expanded Nodes: 81, Evaluated States: 119, Time: 0.107) Frontier Size: 38
+f(n) = 37.0 (Expanded Nodes: 83, Evaluated States: 122, Time: 0.107) Frontier Size: 39
+f(n) = 38.0 (Expanded Nodes: 85, Evaluated States: 125, Time: 0.108) Frontier Size: 40
+f(n) = 39.0 (Expanded Nodes: 87, Evaluated States: 128, Time: 0.112) Frontier Size: 41
+f(n) = 40.0 (Expanded Nodes: 89, Evaluated States: 131, Time: 0.112) Frontier Size: 42
+f(n) = 41.0 (Expanded Nodes: 91, Evaluated States: 134, Time: 0.113) Frontier Size: 43
+f(n) = 42.0 (Expanded Nodes: 93, Evaluated States: 137, Time: 0.113) Frontier Size: 44
+f(n) = 43.0 (Expanded Nodes: 95, Evaluated States: 140, Time: 0.113) Frontier Size: 45
+f(n) = 44.0 (Expanded Nodes: 97, Evaluated States: 143, Time: 0.114) Frontier Size: 46
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.114) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.115) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.119) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.119) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.12) Frontier Size: 51
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [15.0]
+15.0: (validate_payload t1 a13 t2)
+15.0: (sync_actions t1 t2 a13)
+15.0: -----waiting---- [33.0]
+33.0: (validate_payload t2 a15 t3)
+33.0: (sync_actions t2 t3 a15)
+33.0: -----waiting---- [49.0]
+49.0: (validate_payload t3 a16 t4)
+49.0: (sync_actions t3 t4 a16)
+49.0: (add_action a14)
+49.0: (check_added_parameter_model a14)
+49.0: (add_move_automata a14)
+49.0: (stop_wait)
+49.0: (add_action a8)
+49.0: (check_added_parameter_model a8)
+49.0: (add_move_automata a8)
+49.0: (stop_wait)
+49.0: (add_action a11)
+49.0: (check_added_parameter_model a11)
+49.0: (add_move_automata a11)
+49.0: (stop_wait)
+49.0: (add_action a21)
+49.0: (check_added_parameter_model a21)
+49.0: (add_move_automata a21)
+49.0: (stop_wait)
+49.0: (add_action a22)
+49.0: (check_added_parameter_model a22)
+49.0: (add_move_automata a22)
+49.0: (stop_wait)
+49.0: (add_action a12)
+49.0: (check_added_parameter_model a12)
+49.0: (add_move_automata a12)
+49.0: (stop_wait)
+49.0: (add_action a23)
+49.0: (check_added_parameter_model a23)
+49.0: (add_move_automata a23)
+49.0: (stop_wait)
+49.0: (add_action a17)
+49.0: (check_added_parameter_model a17)
+49.0: (add_move_automata a17)
+49.0: (stop_wait)
+49.0: (add_action a18)
+49.0: (check_added_parameter_model a18)
+49.0: (add_move_automata a18)
+
+Plan-Length:92
+Elapsed Time: 49.0
+Metric (Search):49.0
+Planning Time (msec): 161
+Heuristic Time (msec): 5
+Search Time (msec): 151
+Expanded Nodes:214
+States Evaluated:284
+Number of Dead-Ends detected:0
+Number of Duplicates detected:118
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem7.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 39680
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.028) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.051) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.052) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.052) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.053) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.058) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.059) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.06) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.061) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.062) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.069) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.07) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.07) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.075) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.076) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.077) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.078) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.079) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 41, Evaluated States: 60, Time: 0.08) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 43, Evaluated States: 63, Time: 0.081) Frontier Size: 20
+f(n) = 21.0 (Expanded Nodes: 45, Evaluated States: 66, Time: 0.081) Frontier Size: 21
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.089) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.09) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.095) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.096) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.096) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.097) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.097) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.098) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.1) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.103) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.104) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.104) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 74, Evaluated States: 109, Time: 0.105) Frontier Size: 35
+f(n) = 35.0 (Expanded Nodes: 76, Evaluated States: 112, Time: 0.105) Frontier Size: 36
+f(n) = 36.0 (Expanded Nodes: 81, Evaluated States: 119, Time: 0.108) Frontier Size: 38
+f(n) = 37.0 (Expanded Nodes: 83, Evaluated States: 122, Time: 0.112) Frontier Size: 39
+f(n) = 38.0 (Expanded Nodes: 85, Evaluated States: 125, Time: 0.113) Frontier Size: 40
+f(n) = 39.0 (Expanded Nodes: 87, Evaluated States: 128, Time: 0.113) Frontier Size: 41
+f(n) = 40.0 (Expanded Nodes: 89, Evaluated States: 131, Time: 0.114) Frontier Size: 42
+f(n) = 41.0 (Expanded Nodes: 91, Evaluated States: 134, Time: 0.114) Frontier Size: 43
+f(n) = 42.0 (Expanded Nodes: 93, Evaluated States: 137, Time: 0.114) Frontier Size: 44
+f(n) = 43.0 (Expanded Nodes: 95, Evaluated States: 140, Time: 0.115) Frontier Size: 45
+f(n) = 44.0 (Expanded Nodes: 97, Evaluated States: 143, Time: 0.117) Frontier Size: 46
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.121) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.121) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.122) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.122) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.123) Frontier Size: 51
+f(n) = 50.0 (Expanded Nodes: 109, Evaluated States: 161, Time: 0.123) Frontier Size: 52
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [21.0]
+21.0: (validate_payload t1 a13 t2)
+21.0: (sync_actions t1 t2 a13)
+21.0: -----waiting---- [35.0]
+35.0: (validate_payload t2 a15 t3)
+35.0: (sync_actions t2 t3 a15)
+35.0: -----waiting---- [50.0]
+50.0: (validate_payload t3 a16 t4)
+50.0: (sync_actions t3 t4 a16)
+50.0: (add_action a14)
+50.0: (check_added_parameter_model a14)
+50.0: (add_move_automata a14)
+50.0: (stop_wait)
+50.0: (add_action a8)
+50.0: (check_added_parameter_model a8)
+50.0: (add_move_automata a8)
+50.0: (stop_wait)
+50.0: (add_action a11)
+50.0: (check_added_parameter_model a11)
+50.0: (add_move_automata a11)
+50.0: (stop_wait)
+50.0: (add_action a21)
+50.0: (check_added_parameter_model a21)
+50.0: (add_move_automata a21)
+50.0: (stop_wait)
+50.0: (add_action a22)
+50.0: (check_added_parameter_model a22)
+50.0: (add_move_automata a22)
+50.0: (stop_wait)
+50.0: (add_action a12)
+50.0: (check_added_parameter_model a12)
+50.0: (add_move_automata a12)
+50.0: (stop_wait)
+50.0: (add_action a23)
+50.0: (check_added_parameter_model a23)
+50.0: (add_move_automata a23)
+50.0: (stop_wait)
+50.0: (add_action a17)
+50.0: (check_added_parameter_model a17)
+50.0: (add_move_automata a17)
+50.0: (stop_wait)
+50.0: (add_action a18)
+50.0: (check_added_parameter_model a18)
+50.0: (add_move_automata a18)
+
+Plan-Length:93
+Elapsed Time: 50.0
+Metric (Search):50.0
+Planning Time (msec): 186
+Heuristic Time (msec): 9
+Search Time (msec): 181
+Expanded Nodes:216
+States Evaluated:287
+Number of Dead-Ends detected:0
+Number of Duplicates detected:119
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem8.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 39811
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 7, Evaluated States: 11, Time: 0.025) Frontier Size: 4
+f(n) = 2.0 (Expanded Nodes: 11, Evaluated States: 19, Time: 0.045) Frontier Size: 8
+f(n) = 3.0 (Expanded Nodes: 15, Evaluated States: 27, Time: 0.055) Frontier Size: 12
+f(n) = 4.0 (Expanded Nodes: 19, Evaluated States: 35, Time: 0.057) Frontier Size: 16
+f(n) = 5.0 (Expanded Nodes: 23, Evaluated States: 43, Time: 0.06) Frontier Size: 20
+f(n) = 6.0 (Expanded Nodes: 27, Evaluated States: 51, Time: 0.065) Frontier Size: 24
+f(n) = 7.0 (Expanded Nodes: 31, Evaluated States: 59, Time: 0.068) Frontier Size: 28
+f(n) = 8.0 (Expanded Nodes: 35, Evaluated States: 67, Time: 0.073) Frontier Size: 32
+f(n) = 9.0 (Expanded Nodes: 39, Evaluated States: 75, Time: 0.074) Frontier Size: 36
+f(n) = 10.0 (Expanded Nodes: 43, Evaluated States: 83, Time: 0.076) Frontier Size: 40
+f(n) = 11.0 (Expanded Nodes: 47, Evaluated States: 91, Time: 0.077) Frontier Size: 44
+f(n) = 12.0 (Expanded Nodes: 51, Evaluated States: 99, Time: 0.079) Frontier Size: 48
+f(n) = 13.0 (Expanded Nodes: 55, Evaluated States: 107, Time: 0.079) Frontier Size: 52
+f(n) = 14.0 (Expanded Nodes: 59, Evaluated States: 115, Time: 0.086) Frontier Size: 56
+f(n) = 15.0 (Expanded Nodes: 63, Evaluated States: 123, Time: 0.09) Frontier Size: 60
+f(n) = 16.0 (Expanded Nodes: 67, Evaluated States: 131, Time: 0.091) Frontier Size: 64
+f(n) = 17.0 (Expanded Nodes: 71, Evaluated States: 139, Time: 0.092) Frontier Size: 68
+f(n) = 18.0 (Expanded Nodes: 75, Evaluated States: 147, Time: 0.098) Frontier Size: 72
+f(n) = 19.0 (Expanded Nodes: 82, Evaluated States: 159, Time: 0.1) Frontier Size: 77
+f(n) = 20.0 (Expanded Nodes: 84, Evaluated States: 162, Time: 0.103) Frontier Size: 78
+f(n) = 21.0 (Expanded Nodes: 86, Evaluated States: 165, Time: 0.103) Frontier Size: 79
+f(n) = 22.0 (Expanded Nodes: 88, Evaluated States: 168, Time: 0.104) Frontier Size: 80
+f(n) = 23.0 (Expanded Nodes: 90, Evaluated States: 171, Time: 0.104) Frontier Size: 81
+f(n) = 24.0 (Expanded Nodes: 92, Evaluated States: 174, Time: 0.105) Frontier Size: 82
+f(n) = 25.0 (Expanded Nodes: 94, Evaluated States: 177, Time: 0.105) Frontier Size: 83
+f(n) = 26.0 (Expanded Nodes: 96, Evaluated States: 180, Time: 0.105) Frontier Size: 84
+f(n) = 27.0 (Expanded Nodes: 98, Evaluated States: 183, Time: 0.106) Frontier Size: 85
+f(n) = 28.0 (Expanded Nodes: 100, Evaluated States: 186, Time: 0.112) Frontier Size: 86
+f(n) = 29.0 (Expanded Nodes: 102, Evaluated States: 189, Time: 0.113) Frontier Size: 87
+f(n) = 30.0 (Expanded Nodes: 104, Evaluated States: 192, Time: 0.113) Frontier Size: 88
+f(n) = 31.0 (Expanded Nodes: 106, Evaluated States: 195, Time: 0.114) Frontier Size: 89
+f(n) = 32.0 (Expanded Nodes: 108, Evaluated States: 198, Time: 0.114) Frontier Size: 90
+f(n) = 33.0 (Expanded Nodes: 110, Evaluated States: 201, Time: 0.115) Frontier Size: 91
+f(n) = 34.0 (Expanded Nodes: 112, Evaluated States: 204, Time: 0.115) Frontier Size: 92
+f(n) = 35.0 (Expanded Nodes: 114, Evaluated States: 207, Time: 0.121) Frontier Size: 93
+f(n) = 36.0 (Expanded Nodes: 116, Evaluated States: 210, Time: 0.121) Frontier Size: 94
+f(n) = 37.0 (Expanded Nodes: 118, Evaluated States: 213, Time: 0.122) Frontier Size: 95
+f(n) = 38.0 (Expanded Nodes: 120, Evaluated States: 216, Time: 0.122) Frontier Size: 96
+f(n) = 39.0 (Expanded Nodes: 122, Evaluated States: 219, Time: 0.123) Frontier Size: 97
+f(n) = 40.0 (Expanded Nodes: 127, Evaluated States: 226, Time: 0.124) Frontier Size: 99
+f(n) = 41.0 (Expanded Nodes: 129, Evaluated States: 229, Time: 0.124) Frontier Size: 100
+f(n) = 42.0 (Expanded Nodes: 131, Evaluated States: 232, Time: 0.128) Frontier Size: 101
+f(n) = 43.0 (Expanded Nodes: 133, Evaluated States: 235, Time: 0.128) Frontier Size: 102
+f(n) = 44.0 (Expanded Nodes: 135, Evaluated States: 238, Time: 0.129) Frontier Size: 103
+f(n) = 45.0 (Expanded Nodes: 137, Evaluated States: 241, Time: 0.129) Frontier Size: 104
+f(n) = 46.0 (Expanded Nodes: 139, Evaluated States: 244, Time: 0.129) Frontier Size: 105
+f(n) = 47.0 (Expanded Nodes: 141, Evaluated States: 247, Time: 0.13) Frontier Size: 106
+f(n) = 48.0 (Expanded Nodes: 143, Evaluated States: 250, Time: 0.13) Frontier Size: 107
+f(n) = 49.0 (Expanded Nodes: 145, Evaluated States: 253, Time: 0.131) Frontier Size: 108
+f(n) = 50.0 (Expanded Nodes: 147, Evaluated States: 256, Time: 0.131) Frontier Size: 109
+f(n) = 51.0 (Expanded Nodes: 149, Evaluated States: 259, Time: 0.136) Frontier Size: 110
+f(n) = 52.0 (Expanded Nodes: 151, Evaluated States: 262, Time: 0.137) Frontier Size: 111
+f(n) = 53.0 (Expanded Nodes: 153, Evaluated States: 265, Time: 0.137) Frontier Size: 112
+f(n) = 54.0 (Expanded Nodes: 155, Evaluated States: 268, Time: 0.138) Frontier Size: 113
+f(n) = 55.0 (Expanded Nodes: 157, Evaluated States: 271, Time: 0.138) Frontier Size: 114
+f(n) = 56.0 (Expanded Nodes: 159, Evaluated States: 274, Time: 0.138) Frontier Size: 115
+f(n) = 57.0 (Expanded Nodes: 161, Evaluated States: 277, Time: 0.139) Frontier Size: 116
+f(n) = 58.0 (Expanded Nodes: 163, Evaluated States: 280, Time: 0.144) Frontier Size: 117
+f(n) = 59.0 (Expanded Nodes: 165, Evaluated States: 283, Time: 0.145) Frontier Size: 118
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [18.0]
+18.0: (validate_payload t1 a4 t2)
+18.0: (sync_actions t1 t2 a4)
+18.0: -----waiting---- [39.0]
+39.0: (validate_payload t2 a20 t3)
+39.0: (sync_actions t2 t3 a20)
+39.0: -----waiting---- [59.0]
+59.0: (validate_payload t3 a27 t4)
+59.0: (sync_actions t3 t4 a27)
+59.0: (add_action a3)
+59.0: (check_added_parameter_model a3)
+59.0: (add_move_automata a3)
+59.0: (stop_wait)
+59.0: (add_action a26)
+59.0: (check_added_parameter_model a26)
+59.0: (add_move_automata a26)
+59.0: (stop_wait)
+59.0: (add_action a24)
+59.0: (check_added_parameter_model a24)
+59.0: (add_move_automata a24)
+59.0: (stop_wait)
+59.0: (add_action a2)
+59.0: (check_added_parameter_model a2)
+59.0: (add_move_automata a2)
+59.0: (stop_wait)
+59.0: (add_action a31)
+59.0: (check_added_parameter_model a31)
+59.0: (add_move_automata a31)
+59.0: (stop_wait)
+59.0: (add_action a30)
+59.0: (check_added_parameter_model a30)
+59.0: (add_move_automata a30)
+59.0: (stop_wait)
+59.0: (add_action a33)
+59.0: (check_added_parameter_model a33)
+59.0: (add_move_automata a33)
+59.0: (stop_wait)
+59.0: (add_action a32)
+59.0: (check_added_parameter_model a32)
+59.0: (add_move_automata a32)
+59.0: (stop_wait)
+59.0: (add_action a5)
+59.0: (check_added_parameter_model a5)
+59.0: (add_move_automata a5)
+59.0: (stop_wait)
+59.0: (add_action a6)
+59.0: (check_added_parameter_model a6)
+59.0: (add_move_automata a6)
+59.0: (stop_wait)
+59.0: (add_action a8)
+59.0: (check_added_parameter_model a8)
+59.0: (add_move_automata a8)
+59.0: (stop_wait)
+59.0: (add_action a11)
+59.0: (check_added_parameter_model a11)
+59.0: (add_move_automata a11)
+59.0: (stop_wait)
+59.0: (add_action a21)
+59.0: (check_added_parameter_model a21)
+59.0: (add_move_automata a21)
+59.0: (stop_wait)
+59.0: (add_action a22)
+59.0: (check_added_parameter_model a22)
+59.0: (add_move_automata a22)
+59.0: (stop_wait)
+59.0: (add_action a12)
+59.0: (check_added_parameter_model a12)
+59.0: (add_move_automata a12)
+59.0: (stop_wait)
+59.0: (add_action a23)
+59.0: (check_added_parameter_model a23)
+59.0: (add_move_automata a23)
+59.0: (stop_wait)
+59.0: (add_action a17)
+59.0: (check_added_parameter_model a17)
+59.0: (add_move_automata a17)
+59.0: (stop_wait)
+59.0: (add_action a18)
+59.0: (check_added_parameter_model a18)
+59.0: (add_move_automata a18)
+
+Plan-Length:138
+Elapsed Time: 59.0
+Metric (Search):59.0
+Planning Time (msec): 235
+Heuristic Time (msec): 5
+Search Time (msec): 223
+Expanded Nodes:322
+States Evaluated:466
+Number of Dead-Ends detected:0
+Number of Duplicates detected:236
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem9.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 39683
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.026) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.046) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.047) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.055) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.056) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.057) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.057) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.058) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.059) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.062) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.063) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.063) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.064) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.065) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.068) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.068) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.071) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.072) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 41, Evaluated States: 60, Time: 0.072) Frontier Size: 19
+f(n) = 20.0 (Expanded Nodes: 48, Evaluated States: 72, Time: 0.076) Frontier Size: 24
+f(n) = 21.0 (Expanded Nodes: 52, Evaluated States: 80, Time: 0.076) Frontier Size: 28
+f(n) = 22.0 (Expanded Nodes: 56, Evaluated States: 88, Time: 0.077) Frontier Size: 32
+f(n) = 23.0 (Expanded Nodes: 60, Evaluated States: 96, Time: 0.077) Frontier Size: 36
+f(n) = 24.0 (Expanded Nodes: 64, Evaluated States: 104, Time: 0.081) Frontier Size: 40
+f(n) = 25.0 (Expanded Nodes: 68, Evaluated States: 112, Time: 0.082) Frontier Size: 44
+f(n) = 26.0 (Expanded Nodes: 72, Evaluated States: 120, Time: 0.083) Frontier Size: 48
+f(n) = 27.0 (Expanded Nodes: 76, Evaluated States: 128, Time: 0.083) Frontier Size: 52
+f(n) = 28.0 (Expanded Nodes: 80, Evaluated States: 136, Time: 0.084) Frontier Size: 56
+f(n) = 29.0 (Expanded Nodes: 84, Evaluated States: 144, Time: 0.084) Frontier Size: 60
+f(n) = 30.0 (Expanded Nodes: 88, Evaluated States: 152, Time: 0.085) Frontier Size: 64
+f(n) = 31.0 (Expanded Nodes: 92, Evaluated States: 160, Time: 0.09) Frontier Size: 68
+f(n) = 32.0 (Expanded Nodes: 96, Evaluated States: 168, Time: 0.094) Frontier Size: 72
+f(n) = 33.0 (Expanded Nodes: 100, Evaluated States: 176, Time: 0.095) Frontier Size: 76
+f(n) = 34.0 (Expanded Nodes: 104, Evaluated States: 184, Time: 0.095) Frontier Size: 80
+f(n) = 35.0 (Expanded Nodes: 108, Evaluated States: 192, Time: 0.096) Frontier Size: 84
+f(n) = 36.0 (Expanded Nodes: 112, Evaluated States: 200, Time: 0.097) Frontier Size: 88
+f(n) = 37.0 (Expanded Nodes: 116, Evaluated States: 208, Time: 0.1) Frontier Size: 92
+f(n) = 38.0 (Expanded Nodes: 120, Evaluated States: 216, Time: 0.102) Frontier Size: 96
+f(n) = 39.0 (Expanded Nodes: 129, Evaluated States: 233, Time: 0.103) Frontier Size: 104
+f(n) = 40.0 (Expanded Nodes: 133, Evaluated States: 241, Time: 0.103) Frontier Size: 108
+f(n) = 41.0 (Expanded Nodes: 137, Evaluated States: 249, Time: 0.104) Frontier Size: 112
+f(n) = 42.0 (Expanded Nodes: 141, Evaluated States: 257, Time: 0.104) Frontier Size: 116
+f(n) = 43.0 (Expanded Nodes: 145, Evaluated States: 265, Time: 0.105) Frontier Size: 120
+f(n) = 44.0 (Expanded Nodes: 149, Evaluated States: 273, Time: 0.111) Frontier Size: 124
+f(n) = 45.0 (Expanded Nodes: 153, Evaluated States: 281, Time: 0.111) Frontier Size: 128
+f(n) = 46.0 (Expanded Nodes: 157, Evaluated States: 289, Time: 0.111) Frontier Size: 132
+f(n) = 47.0 (Expanded Nodes: 161, Evaluated States: 297, Time: 0.112) Frontier Size: 136
+f(n) = 48.0 (Expanded Nodes: 165, Evaluated States: 305, Time: 0.112) Frontier Size: 140
+f(n) = 49.0 (Expanded Nodes: 169, Evaluated States: 313, Time: 0.113) Frontier Size: 144
+f(n) = 50.0 (Expanded Nodes: 173, Evaluated States: 321, Time: 0.113) Frontier Size: 148
+f(n) = 51.0 (Expanded Nodes: 177, Evaluated States: 329, Time: 0.122) Frontier Size: 152
+f(n) = 52.0 (Expanded Nodes: 181, Evaluated States: 337, Time: 0.123) Frontier Size: 156
+f(n) = 53.0 (Expanded Nodes: 185, Evaluated States: 345, Time: 0.123) Frontier Size: 160
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [19.0]
+19.0: (validate_payload t1 a13 t2)
+19.0: (sync_actions t1 t2 a13)
+19.0: -----waiting---- [38.0]
+38.0: (validate_payload t2 a15 t3)
+38.0: (sync_actions t2 t3 a15)
+38.0: -----waiting---- [53.0]
+53.0: (validate_payload t3 a16 t4)
+53.0: (sync_actions t3 t4 a16)
+53.0: (add_action a14)
+53.0: (check_added_parameter_model a14)
+53.0: (add_move_automata a14)
+53.0: (stop_wait)
+53.0: (add_action a8)
+53.0: (check_added_parameter_model a8)
+53.0: (add_move_automata a8)
+53.0: (stop_wait)
+53.0: (add_action a11)
+53.0: (check_added_parameter_model a11)
+53.0: (add_move_automata a11)
+53.0: (stop_wait)
+53.0: (add_action a21)
+53.0: (add_parameter a21 sDEC2_2 integer v5)
+53.0: (check_added_parameter_model a21)
+53.0: (add_move_automata a21)
+53.0: (stop_wait)
+53.0: (add_action a22)
+53.0: (check_added_parameter_model a22)
+53.0: (add_move_automata a22)
+53.0: (stop_wait)
+53.0: (add_action a12)
+53.0: (check_added_parameter_model a12)
+53.0: (add_move_automata a12)
+53.0: (stop_wait)
+53.0: (add_action a23)
+53.0: (check_added_parameter_model a23)
+53.0: (add_move_automata a23)
+53.0: (stop_wait)
+53.0: (add_action a17)
+53.0: (check_added_parameter_model a17)
+53.0: (add_move_automata a17)
+53.0: (stop_wait)
+53.0: (add_action a18)
+53.0: (check_added_parameter_model a18)
+53.0: (add_move_automata a18)
+
+Plan-Length:97
+Elapsed Time: 53.0
+Metric (Search):53.0
+Planning Time (msec): 222
+Heuristic Time (msec): 3
+Search Time (msec): 214
+Expanded Nodes:566
+States Evaluated:876
+Number of Dead-Ends detected:0
+Number of Duplicates detected:529
+/usr/bin/time -v timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem10.pddl -h blind -s WAStar
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 39460
+UFX:true
+|F|:105066
+|X|:17
+Heuristic Problem Creation
+|A|:1751
+|P|:2
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.025) Frontier Size: 1
+f(n) = 2.0 (Expanded Nodes: 7, Evaluated States: 9, Time: 0.043) Frontier Size: 2
+f(n) = 3.0 (Expanded Nodes: 9, Evaluated States: 12, Time: 0.05) Frontier Size: 3
+f(n) = 4.0 (Expanded Nodes: 11, Evaluated States: 15, Time: 0.051) Frontier Size: 4
+f(n) = 5.0 (Expanded Nodes: 13, Evaluated States: 18, Time: 0.051) Frontier Size: 5
+f(n) = 6.0 (Expanded Nodes: 15, Evaluated States: 21, Time: 0.056) Frontier Size: 6
+f(n) = 7.0 (Expanded Nodes: 17, Evaluated States: 24, Time: 0.057) Frontier Size: 7
+f(n) = 8.0 (Expanded Nodes: 19, Evaluated States: 27, Time: 0.058) Frontier Size: 8
+f(n) = 9.0 (Expanded Nodes: 21, Evaluated States: 30, Time: 0.059) Frontier Size: 9
+f(n) = 10.0 (Expanded Nodes: 23, Evaluated States: 33, Time: 0.064) Frontier Size: 10
+f(n) = 11.0 (Expanded Nodes: 25, Evaluated States: 36, Time: 0.065) Frontier Size: 11
+f(n) = 12.0 (Expanded Nodes: 27, Evaluated States: 39, Time: 0.066) Frontier Size: 12
+f(n) = 13.0 (Expanded Nodes: 29, Evaluated States: 42, Time: 0.07) Frontier Size: 13
+f(n) = 14.0 (Expanded Nodes: 31, Evaluated States: 45, Time: 0.071) Frontier Size: 14
+f(n) = 15.0 (Expanded Nodes: 33, Evaluated States: 48, Time: 0.072) Frontier Size: 15
+f(n) = 16.0 (Expanded Nodes: 35, Evaluated States: 51, Time: 0.073) Frontier Size: 16
+f(n) = 17.0 (Expanded Nodes: 37, Evaluated States: 54, Time: 0.073) Frontier Size: 17
+f(n) = 18.0 (Expanded Nodes: 39, Evaluated States: 57, Time: 0.078) Frontier Size: 18
+f(n) = 19.0 (Expanded Nodes: 44, Evaluated States: 64, Time: 0.081) Frontier Size: 20
+f(n) = 20.0 (Expanded Nodes: 46, Evaluated States: 67, Time: 0.082) Frontier Size: 21
+f(n) = 21.0 (Expanded Nodes: 48, Evaluated States: 70, Time: 0.087) Frontier Size: 22
+f(n) = 22.0 (Expanded Nodes: 50, Evaluated States: 73, Time: 0.088) Frontier Size: 23
+f(n) = 23.0 (Expanded Nodes: 52, Evaluated States: 76, Time: 0.088) Frontier Size: 24
+f(n) = 24.0 (Expanded Nodes: 54, Evaluated States: 79, Time: 0.089) Frontier Size: 25
+f(n) = 25.0 (Expanded Nodes: 56, Evaluated States: 82, Time: 0.089) Frontier Size: 26
+f(n) = 26.0 (Expanded Nodes: 58, Evaluated States: 85, Time: 0.09) Frontier Size: 27
+f(n) = 27.0 (Expanded Nodes: 60, Evaluated States: 88, Time: 0.095) Frontier Size: 28
+f(n) = 28.0 (Expanded Nodes: 62, Evaluated States: 91, Time: 0.096) Frontier Size: 29
+f(n) = 29.0 (Expanded Nodes: 64, Evaluated States: 94, Time: 0.097) Frontier Size: 30
+f(n) = 30.0 (Expanded Nodes: 66, Evaluated States: 97, Time: 0.097) Frontier Size: 31
+f(n) = 31.0 (Expanded Nodes: 68, Evaluated States: 100, Time: 0.098) Frontier Size: 32
+f(n) = 32.0 (Expanded Nodes: 70, Evaluated States: 103, Time: 0.098) Frontier Size: 33
+f(n) = 33.0 (Expanded Nodes: 72, Evaluated States: 106, Time: 0.099) Frontier Size: 34
+f(n) = 34.0 (Expanded Nodes: 74, Evaluated States: 109, Time: 0.099) Frontier Size: 35
+f(n) = 35.0 (Expanded Nodes: 79, Evaluated States: 116, Time: 0.104) Frontier Size: 37
+f(n) = 36.0 (Expanded Nodes: 81, Evaluated States: 119, Time: 0.105) Frontier Size: 38
+f(n) = 37.0 (Expanded Nodes: 83, Evaluated States: 122, Time: 0.105) Frontier Size: 39
+f(n) = 38.0 (Expanded Nodes: 85, Evaluated States: 125, Time: 0.106) Frontier Size: 40
+f(n) = 39.0 (Expanded Nodes: 87, Evaluated States: 128, Time: 0.107) Frontier Size: 41
+f(n) = 40.0 (Expanded Nodes: 89, Evaluated States: 131, Time: 0.107) Frontier Size: 42
+f(n) = 41.0 (Expanded Nodes: 91, Evaluated States: 134, Time: 0.111) Frontier Size: 43
+f(n) = 42.0 (Expanded Nodes: 93, Evaluated States: 137, Time: 0.112) Frontier Size: 44
+f(n) = 43.0 (Expanded Nodes: 95, Evaluated States: 140, Time: 0.113) Frontier Size: 45
+f(n) = 44.0 (Expanded Nodes: 97, Evaluated States: 143, Time: 0.114) Frontier Size: 46
+f(n) = 45.0 (Expanded Nodes: 99, Evaluated States: 146, Time: 0.114) Frontier Size: 47
+f(n) = 46.0 (Expanded Nodes: 101, Evaluated States: 149, Time: 0.115) Frontier Size: 48
+f(n) = 47.0 (Expanded Nodes: 103, Evaluated States: 152, Time: 0.115) Frontier Size: 49
+f(n) = 48.0 (Expanded Nodes: 105, Evaluated States: 155, Time: 0.115) Frontier Size: 50
+f(n) = 49.0 (Expanded Nodes: 107, Evaluated States: 158, Time: 0.116) Frontier Size: 51
+f(n) = 50.0 (Expanded Nodes: 109, Evaluated States: 161, Time: 0.116) Frontier Size: 52
+f(n) = 51.0 (Expanded Nodes: 111, Evaluated States: 164, Time: 0.117) Frontier Size: 53
+f(n) = 52.0 (Expanded Nodes: 113, Evaluated States: 167, Time: 0.122) Frontier Size: 54
+f(n) = 53.0 (Expanded Nodes: 115, Evaluated States: 170, Time: 0.122) Frontier Size: 55
+f(n) = 54.0 (Expanded Nodes: 117, Evaluated States: 173, Time: 0.123) Frontier Size: 56
+f(n) = 55.0 (Expanded Nodes: 119, Evaluated States: 176, Time: 0.123) Frontier Size: 57
+f(n) = 56.0 (Expanded Nodes: 121, Evaluated States: 179, Time: 0.124) Frontier Size: 58
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate_payload t0 a7 t1)
+0: (sync_actions t0 t1 a7)
+0: -----waiting---- [18.0]
+18.0: (validate_payload t1 a4 t2)
+18.0: (sync_actions t1 t2 a4)
+18.0: -----waiting---- [34.0]
+34.0: (validate_payload t2 a20 t3)
+34.0: (sync_actions t2 t3 a20)
+34.0: -----waiting---- [56.0]
+56.0: (validate_payload t3 a27 t4)
+56.0: (sync_actions t3 t4 a27)
+56.0: (add_action a3)
+56.0: (check_added_parameter_model a3)
+56.0: (add_move_automata a3)
+56.0: (stop_wait)
+56.0: (add_action a26)
+56.0: (check_added_parameter_model a26)
+56.0: (add_move_automata a26)
+56.0: (stop_wait)
+56.0: (add_action a24)
+56.0: (check_added_parameter_model a24)
+56.0: (add_move_automata a24)
+56.0: (stop_wait)
+56.0: (add_action a2)
+56.0: (check_added_parameter_model a2)
+56.0: (add_move_automata a2)
+56.0: (stop_wait)
+56.0: (add_action a31)
+56.0: (check_added_parameter_model a31)
+56.0: (add_move_automata a31)
+56.0: (stop_wait)
+56.0: (add_action a30)
+56.0: (check_added_parameter_model a30)
+56.0: (add_move_automata a30)
+56.0: (stop_wait)
+56.0: (add_action a33)
+56.0: (check_added_parameter_model a33)
+56.0: (add_move_automata a33)
+56.0: (stop_wait)
+56.0: (add_action a32)
+56.0: (check_added_parameter_model a32)
+56.0: (add_move_automata a32)
+56.0: (stop_wait)
+56.0: (add_action a5)
+56.0: (check_added_parameter_model a5)
+56.0: (add_move_automata a5)
+56.0: (stop_wait)
+56.0: (add_action a6)
+56.0: (check_added_parameter_model a6)
+56.0: (add_move_automata a6)
+56.0: (stop_wait)
+56.0: (add_action a8)
+56.0: (check_added_parameter_model a8)
+56.0: (add_move_automata a8)
+56.0: (stop_wait)
+56.0: (add_action a11)
+56.0: (check_added_parameter_model a11)
+56.0: (add_move_automata a11)
+56.0: (stop_wait)
+56.0: (add_action a21)
+56.0: (check_added_parameter_model a21)
+56.0: (add_move_automata a21)
+56.0: (stop_wait)
+56.0: (add_action a22)
+56.0: (check_added_parameter_model a22)
+56.0: (add_move_automata a22)
+56.0: (stop_wait)
+56.0: (add_action a12)
+56.0: (check_added_parameter_model a12)
+56.0: (add_move_automata a12)
+56.0: (stop_wait)
+56.0: (add_action a23)
+56.0: (check_added_parameter_model a23)
+56.0: (add_move_automata a23)
+56.0: (stop_wait)
+56.0: (add_action a17)
+56.0: (check_added_parameter_model a17)
+56.0: (add_move_automata a17)
+56.0: (stop_wait)
+56.0: (add_action a18)
+56.0: (check_added_parameter_model a18)
+56.0: (add_move_automata a18)
+
+Plan-Length:135
+Elapsed Time: 56.0
+Metric (Search):56.0
+Planning Time (msec): 211
+Heuristic Time (msec): 7
+Search Time (msec): 199
+Expanded Nodes:278
+States Evaluated:362
+Number of Dead-Ends detected:0
+Number of Duplicates detected:157
+Loading openjdk/17.0.8.1_1
+  Loading requirement: glibc/2.35-aocc-3.2.0-wetwhfr
+    gcc-runtime/12.1.0-gcc-12.1.0-uotjsm3 glibc/2.35-aocc-3.2.0-dkzxmta
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem1.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 91.60
+	System time (seconds): 4.14
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:35.83
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7490044
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4485313
+	Voluntary context switches: 6024
+	Involuntary context switches: 7930
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 528
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem2.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 92.17
+	System time (seconds): 4.04
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:36.29
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7493772
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4631587
+	Voluntary context switches: 5797
+	Involuntary context switches: 7691
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 552
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem3.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 91.33
+	System time (seconds): 4.16
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:35.59
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7544296
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4682150
+	Voluntary context switches: 5997
+	Involuntary context switches: 7957
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 552
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem4.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 87.39
+	System time (seconds): 3.99
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:31.44
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7487768
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4270467
+	Voluntary context switches: 5974
+	Involuntary context switches: 7647
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 528
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem5.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 84.57
+	System time (seconds): 3.96
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:28.59
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7460052
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4318583
+	Voluntary context switches: 5800
+	Involuntary context switches: 7784
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 504
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem6.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 84.27
+	System time (seconds): 3.87
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:28.21
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7493060
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4270570
+	Voluntary context switches: 5948
+	Involuntary context switches: 7743
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 512
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem7.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 84.35
+	System time (seconds): 3.89
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:28.33
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7523004
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4327190
+	Voluntary context switches: 5726
+	Involuntary context switches: 7734
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 504
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem8.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 85.02
+	System time (seconds): 3.91
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:29.02
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7505724
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4337582
+	Voluntary context switches: 6104
+	Involuntary context switches: 7880
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 528
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem9.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 84.57
+	System time (seconds): 3.89
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:28.54
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7535572
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4267404
+	Voluntary context switches: 5809
+	Involuntary context switches: 7543
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 504
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "timeout 600 java -Xmx64g -jar ./enhsp3.jar -o ./domain_framed_autonomy_process_reset.pddl -f ./problems/a42g11XOR-prefix-4-a42g11XOR_5_data/problem10.pddl -h blind -s WAStar -dap -dl 1500"
+	User time (seconds): 84.25
+	System time (seconds): 3.88
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:28.21
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7586068
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4291417
+	Voluntary context switches: 5883
+	Involuntary context switches: 7830
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 512
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

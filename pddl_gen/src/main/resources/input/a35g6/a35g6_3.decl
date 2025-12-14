@@ -1,0 +1,7 @@
+Response[ActivityG, ActivityAP] |A.integer > 10 |T.integer < 10 |
+Precedence[ActivityF, ActivityV] |A.categorical is c1 |T.categorical is c2 |
+Not Response[ActivityAL, ActivityH] |A.integer > 20 |T.integer < 10 |
+Absence[ActivityK] |A.integer < 20 |
+Chain Response[ActivityA, ActivityAR] |A.integer < 5 |T.categorical is c1 |
+Existence[ActivityB] |A.categorical is c2 | 
+Response[ActivityAT, ActivityAU] |A.integer > 10 |T.integer > 10 |

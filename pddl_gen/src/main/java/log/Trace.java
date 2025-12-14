@@ -55,6 +55,10 @@ public class Trace {
   private ArrayList<Double> getTimeStamps(XTrace trace) {
     int l = trace.size();
 
+    if (l < 1) {
+      return new ArrayList<>();
+    }
+
     XEvent initialEvent = trace.get(0);
     Date iTimeStamp = XTimeExtension.instance().extractTimestamp(initialEvent);
 
