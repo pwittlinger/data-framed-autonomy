@@ -1,46 +1,6 @@
-This model contains 12 activities:
-
-ActivityC=> My attributes are: 
-categorical of type enum with values: [c1, c2, c3]
-
-
-
-ActivityD=> My attributes are: 
-categorical of type enum with values: [c1, c2, c3]
-
-
-
-ActivityF=> My attributes are: 
-categorical of type enum with values: [c1, c2, c3]
-
-
-
-ActivityO=> My attributes are: 
-integer of type integer with bounds: [0.0, 100.0]
-
-
+This model contains 2 activities:
 
 ActivityP=> My attributes are: 
-integer of type integer with bounds: [0.0, 100.0]
-
-
-
-ActivityQ=> My attributes are: 
-integer of type integer with bounds: [0.0, 100.0]
-
-
-
-ActivityA=> My attributes are: 
-integer of type integer with bounds: [0.0, 100.0]
-
-
-
-ActivityM=> My attributes are: 
-integer of type integer with bounds: [0.0, 100.0]
-
-
-
-ActivityN=> My attributes are: 
 integer of type integer with bounds: [0.0, 100.0]
 
 
@@ -50,21 +10,5 @@ integer of type integer with bounds: [0.0, 100.0]
 
 
 
-ActivityH=> My attributes are: 
-integer of type integer with bounds: [0.0, 100.0]
-
-
-
-ActivityJ=> My attributes are: 
-categorical of type enum with values: [c1, c2, c3]
-
-
-
 This model contains following constraints:
-[template=Absence, activationActivity=ActivityN, activationCondition=, targetActivity=null, targetCondition=null]
-[template=Existence, activationActivity=ActivityJ, activationCondition=, targetActivity=null, targetCondition=null]
-[template=Response, activationActivity=ActivityG, activationCondition=null, targetActivity=ActivityP, targetCondition=null]
-[template=Precedence, activationActivity=ActivityD, activationCondition=null, targetActivity=ActivityF, targetCondition=null]
-[template=Not_Response, activationActivity=ActivityM, activationCondition=null, targetActivity=ActivityO, targetCondition=null]
-[template=Chain_Response, activationActivity=ActivityA, activationCondition=null, targetActivity=ActivityC, targetCondition=null]
-[template=Response, activationActivity=ActivityH, activationCondition=null, targetActivity=ActivityQ, targetCondition=null]
+[template=Response, activationActivity=ActivityG, activationCondition=A.integer > 10 , targetActivity=ActivityP, targetCondition=T.integer < 10 ]

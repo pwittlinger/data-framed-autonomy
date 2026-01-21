@@ -35,7 +35,6 @@ public class Runner {
       throw new Error(errString);
     }
     */
-    // args = new String[5];
 
     //findAlignments(args[0], args[1], args[2], args[3], args[4], args[5]);
 
@@ -43,13 +42,12 @@ public class Runner {
     
     findAlignments(
       //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
-      "declare/a20g6/a20g6_7_timed_parsed.decl",
-       "petrinet/a20g6.pnml",
-       "logs/a20g6-prefix-non-conforming-4.xes",
-       "variable_values_multi_model.txt", 
-       "variable_subs/variable_substitutions_a20g6_7.decl.txt", 
-       "cost_models/cost_model-a20g6.txt");
-    
+      "pddl_gen/src/main/resources/input/declare/BasePN-0And/BasePN-0And_1_data_parsed.decl",
+       "pddl_gen/src/main/resources/input/petrinet/BasePN-0And.pnml",
+       "pddl_gen/src/main/resources/input/logs/BasePN-0And-prefix-non-conforming-4.xes",
+       "pddl_gen/src/main/resources/input/variable_values_multi_model.txt", 
+       "pddl_gen/src/main/resources/input/variable_subs/variable_substitutions_BasePN-0And_7.decl.txt", 
+       "pddl_gen/src/main/resources/input/cost_models/cost_model-BasePN-0And.txt");
     /*
     findAlignments(
       //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
@@ -82,32 +80,57 @@ public class Runner {
     
     DeclareModel model = ioManager.readDeclareModel(modelString); // OKAY!
     //model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
+    Map<String, Integer> variableAssignments;
+    Set<VariableSubstitution> substitutions;
 
-    Map<String, Integer> variableAssignments = ioManager.readVariableAssignments(variablesString);
-    Set<VariableSubstitution> substitutions = ioManager.readVariablesSubstitutions(substitutionsString);
+    if (!ioManager.variableAssignmentsExist(variablesString)) {
+      /*2026-01-15 On the current version, only INTEGERS are supported.
+        In the DeclareModel.generateVariableValues() method all function calls are cast to int.
+        The readVariableAssignments method cannot deal with floats in the form "2.0"
+      */
+      String varAssignmentString = model.generateVariableValues();
+      ioManager.exportVariableAssignments(variablesString, varAssignmentString);
+    }
 
-    System.out.println("Model: " + model);
+    if (!ioManager.variableSubstitutionExists(substitutionsString)) {
+      String varSubstitutionString = model.generateVariableSubstitutions();
+      ioManager.exportVariableSubstitution(substitutionsString, varSubstitutionString);
+    }
 
-    
+    variableAssignments = ioManager.readVariableAssignments(variablesString);
+    substitutions = ioManager.readVariablesSubstitutions(substitutionsString);
+
+    System.out.println("Model: " + model);    
 
     if ((petriNetString == "") | (petriNetString == null) | !(petriNetString.endsWith(".pnml"))) {
+
+      /*Check if cost model exists and otherwise use standard cost model*/
+      if (!ioManager.costModelExists(costsString)) {
+        ioManager.exportCostModel(costsString, model.activities.keySet());
+      }      
+
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       LogFile log = ioManager.readDeclareLog(traceString, model);
       PDDLGenerator pddlGenerator = new PDDLGenerator(model);
-    String domain = pddlGenerator.defineDomain();
-    ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
+      String domain = pddlGenerator.defineDomain();
+      ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
-        int i = 1;
-    for (String problem : problems) {
+      int i = 1;
+      for (String problem : problems) {
       IOManager.getInstance().exportProblemPDDL(problem, i);
       i++;
-    }
-    IOManager.getInstance().exportDomainPDDL(domain);
-    }
+      }
+      IOManager.getInstance().exportDomainPDDL(domain);
+      }
     else {
 
       DataPetriNet petriNet = ioManager.readDataPetriNet(petriNetString);
       MixedModel myMixedModel = new MixedModel(petriNet, model);
+
+      if (!ioManager.costModelExists(costsString)) {
+        ioManager.exportCostModel(costsString, myMixedModel.activities.keySet());
+      }
+
       myMixedModel.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
 
       LogFile log = ioManager.readLog(traceString, myMixedModel); // OKAY!
@@ -132,10 +155,7 @@ public class Runner {
     IOManager.getInstance().exportDomainPDDL(domain);
     }
 
-    
-    //System.out.println(myMixedModel.declareModel.getActivities());
-
-    
+        
     ioManager.exportModel(model);
    
 

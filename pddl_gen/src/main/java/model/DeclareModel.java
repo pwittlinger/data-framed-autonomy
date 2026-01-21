@@ -1,7 +1,6 @@
 package model;
-
 import java.util.*;
-
+//import org.w3c.dom.Attr;
 import Automaton.Pair;
 
 public class DeclareModel {
@@ -10,13 +9,16 @@ public class DeclareModel {
   private final ArrayList<DeclareConstraint> declareConstraints;
   private Map<Pair<Activity, CostEnum>, Integer> costs;
   public ArrayList<String> params;
+  private Map<String, Attribute> attr;
   
   public DeclareModel(Map<String, ArrayList<String[]>> parsedLines) {
     this.activities = addActivities(parsedLines.get("activityLines")); // ok
     this.params = new ArrayList<>();
     Map<String, Attribute> attributes = bindAttributes(parsedLines.get("bindingLines")); 
     initializeAttributes(parsedLines.get("intAttributeLines"), parsedLines.get("floatAttributeLines"), parsedLines.get("enumAttributeLines"), attributes);
-    this.declareConstraints = addConstraints(parsedLines.get("binaryConstraintLines"), parsedLines.get("unaryConstraintLines"), parsedLines.get("binaryTimeConstraintLines"), parsedLines.get("unaryTimeConstraintLines"));
+    this.declareConstraints = addConstraints(parsedLines.get("binaryConstraintLines"), parsedLines.get("unaryConstraintLines"));
+    initializeNumericAttributeVariableValues(attributes);
+    this.attr = attributes;
   }
   
   
@@ -150,15 +152,10 @@ public class DeclareModel {
   
   
   //Section: Evaluation of each Constraint
-  private ArrayList<DeclareConstraint> addConstraints(ArrayList<String[]> binaryConstraints,
-                                                     ArrayList<String[]> unaryConstraints,
-                                                      ArrayList<String[]> binaryTimeConstraints,
-                                                      ArrayList<String[]> unaryTimeConstraints) {
+  private ArrayList<DeclareConstraint> addConstraints(ArrayList<String[]> binaryConstraints, ArrayList<String[]> unaryConstraints) {
     ArrayList<DeclareConstraint> newConstraints = new ArrayList<>();
     addUnaryConstraints(newConstraints, unaryConstraints);
     addBinaryConstraints(newConstraints, binaryConstraints);
-    addUnaryTimeConstraints(newConstraints, unaryTimeConstraints);
-    addBinaryTimeConstraints(newConstraints, binaryTimeConstraints);
     return newConstraints;
   }
   
@@ -217,91 +214,6 @@ public class DeclareModel {
     }
     return null;
   }
-
-  /*
-   * NEW PART
-   * ADDING TIME CONDITIONS TO THE CONSTRAINTS
-   */
-
-   private void addUnaryTimeConstraints(ArrayList<DeclareConstraint> constraints, ArrayList<String[]> unaryConstraints) {
-    for (String[] line : unaryConstraints) {
-      DeclareConstraint constraint = constructUnaryTimeConstraint(line);
-      if (constraint != null && constraint.assignConditionsToAttributes(activities)) {
-        constraints.add(constraint);
-      }
-    }
-  }
-
-  private DeclareConstraint constructUnaryTimeConstraint(String[] constraintTokens) {
-    DeclareTemplate template = DeclareTemplate.getByTemplateName(constraintTokens[0]);
-    String activity = constraintTokens[1];
-    if (template != null && activities.get(activity) != null) {
-      String activationCondition = constraintTokens[2] == null? null : constraintTokens[2];
-      DeclareConstraint dc = new DeclareConstraint(template, activity, activationCondition, null,null);
-      
-      String[] timeCond = constraintTokens[3].split(",");
-      dc.setActivationTimeConditions(Double.parseDouble(timeCond[1]), Double.parseDouble(timeCond[2]));
-      
-      //return new DeclareConstraint(template, activity, activationCondition, null,null);
-      return dc;
-    }
-    return null;
-  }
-  
-  private void addBinaryTimeConstraints(ArrayList<DeclareConstraint> constraints, ArrayList<String[]> binaryConstraints) {
-    for (String[] line : binaryConstraints) {
-      DeclareConstraint constraint = constructBinaryTimeConstraint(line);
-      if (constraint != null && constraint.assignConditionsToAttributes(activities)) {
-        constraints.add(constraint);
-      }
-    }
-  }
-
-  private DeclareConstraint constructBinaryTimeConstraint(String[] constraintTokens) {
-    DeclareTemplate template = DeclareTemplate.getByTemplateName(constraintTokens[0]);
-    String activationActivity, targetActivity;
-    
-    if (template != null) {
-      if (template.getReverseActivationTarget()) {
-        targetActivity = constraintTokens[1];
-        activationActivity = constraintTokens[2];
-      } else {
-        activationActivity = constraintTokens[1];
-        targetActivity = constraintTokens[2];
-      }
-      
-      if (activities.get(targetActivity) != null && activities.get(activationActivity) != null) {
-        String activationCondition = constraintTokens[3].isBlank()? null : constraintTokens[3];
-
-        String targetCondition = constraintTokens[4].isBlank()? null : constraintTokens[4];
-
-        String[] timeConds = constraintTokens[5].split("/");
-
-        String[] at = timeConds[0].split(",");
-        String[] tt = timeConds[1].split(",");
-
-
-        DeclareConstraint dc = new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
-
-        if (activationActivity.contentEquals(at[0])){
-          dc.setActivationTimeConditions(Double.parseDouble(at[1]), Double.parseDouble(at[2]));
-          dc.setTargetTimeConditions(Double.parseDouble(tt[1]), Double.parseDouble(tt[2]));
-        }
-        else if (activationActivity.contentEquals(tt[0])){
-          dc.setActivationTimeConditions(Double.parseDouble(tt[1]), Double.parseDouble(tt[2]));
-          dc.setTargetTimeConditions(Double.parseDouble(at[1]), Double.parseDouble(at[2]));
-        }
-        /*
-        if (constraintTokens[4] == "") {
-          targetCondition = null;
-        }
-        */
-        //return new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
-        return dc;
-      }
-    }
-    return null;
-  }
   
   
   //Section: Utils
@@ -330,4 +242,117 @@ public class DeclareModel {
   public Map<Pair<Activity, CostEnum>, Integer> getCosts() {
     return this.costs;
   }
+
+  private void initializeNumericAttributeVariableValues(Map<String, Attribute> attributesMap) {
+    /* 
+    FIRST ADD THE VALUE RANGE DEFINED IN THE DECLARE FILE
+    INTEGER / FLOAT ONLY
+     */
+    for (Attribute a : attributesMap.values()) {
+      if (a.getType().equals("enum")) {
+        continue;
+      }
+      a.getCriticalValues().add(a.getMinValue());
+      a.getCriticalValues().add(a.getMaxValue());
+    }
+
+    /*
+    THEN ADD ALL VALUES MENTIONED IN A CONSTRAINT
+    E.G. x < 10 or x > 20
+    */
+    // first find all possible values mentioned in the declare model
+    // assuming the min and max value is already given
+    for (DeclareConstraint dc : this.declareConstraints) {
+      List<Condition> conditionsList = dc.getActivationConditions();
+      // If the constraint has an AND relation there can be multiple parameters and values
+      for (Condition cond : conditionsList) {
+          String localAttrib = cond.parameterName;
+          Attribute globalAttribute = attributesMap.get(localAttrib);
+          String localType = globalAttribute.getType();
+          if (localType.equals("enum")) {
+            continue;
+          }
+          globalAttribute.getCriticalValues().add((double) cond.value);
+
+      }
+
+    }
+
+    /*
+    At this point, all numeric variables have been processed for the first time.
+    The next stage is to add the median values between the critical points to the set of critical points,
+    which is relevant if there are any inequality constraints or lt/gt
+    */
+
+    for (Attribute a : attributesMap.values()) {
+      if (a.getType().equals("enum")) {
+        continue;
+      }
+      
+      TreeSet<Double> initCritVal = a.getCriticalValues();
+
+      List<Double> hp = new ArrayList<>();
+
+      Iterator<Double> it = initCritVal.iterator();
+
+      if (it.hasNext()) {
+        Double prev = it.next();
+        while (it.hasNext()) {
+          Double curr = it.next();
+          hp.add((prev+curr)/2.0);
+          prev = curr;
+        }
+      }
+
+      if (a.getType().equals("integer")) {
+        hp = hp.stream()
+          .map(d -> Math.floor(d))
+          .toList(); 
+      }
+      a.getCriticalValues().addAll(hp);
+      a.setVariableValueMap();
+    
+    }
+
+  }  
+
+  public String generateVariableSubstitutions(){
+    StringBuilder sb = new StringBuilder();
+
+    for (Activity act : this.activities.values()) {
+      // Default case if the activity has no attributes
+      if (act.getAttributes().isEmpty()) {
+        continue;
+      }
+
+      for (Attribute attr : act.getAttributes()) {
+        Set<String> attributeValues = attr.variableValueMap.keySet();
+
+        for (String attrValName : attributeValues) {
+          sb.append(attrValName + " "+ act.getName() + " " + attr.getName()+"\n");
+        }
+      }
+
+      sb.append("\n");
+
+    }
+
+    return sb.toString();
+  }
+
+  public String generateVariableValues() {
+    StringBuilder sb = new StringBuilder();
+
+    for (Attribute att : this.attr.values()) {
+        for (String sAtt : att.variableValueMap.keySet()) {
+          Integer sAttNumVal = (int) Math.round(att.variableValueMap.get(sAtt));
+          //sb.append(sAtt + " " + att.variableValueMap.get(sAtt).toString() + "\n");
+          sb.append(sAtt + " " + sAttNumVal.toString() + "\n");
+        }
+    }
+
+    return sb.toString();
+
+  }
+  
 }

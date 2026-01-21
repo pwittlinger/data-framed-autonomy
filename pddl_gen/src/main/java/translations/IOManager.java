@@ -34,6 +34,7 @@ public class IOManager {
   private String inputFolder;
   private String outputFolder;
   private String pddlFolder;
+  private String currentPath;
   //private String alignmentFolder = outputFolder + "alignments" + File.separator;
   
   private IOManager() {
@@ -48,16 +49,26 @@ public class IOManager {
   }
 
   private void setPaths() {
+    this.currentPath = System.getProperty("user.dir") + File.separator;
+    this.outputFolder = currentPath + "output" + File.separator;
+    this.pddlFolder = outputFolder + "pddl" + File.separator;
+
+    /*
+    
     this.resourcesFolder = this.projectPrefix + "src" + File.separator + "main" + File.separator + "resources" + File.separator;
     this.inputFolder = resourcesFolder + "input" + File.separator;
     this.outputFolder = resourcesFolder + "output" + File.separator;
     this.pddlFolder = outputFolder + "pddl" + File.separator;
 
+    */
+
     // Create folders if these don't exist.
+    /* 
     File inputDir = new File(inputFolder);
     if (!inputDir.exists()) {
       inputDir.mkdirs();
     }
+    */
     File outputDir = new File(outputFolder);
     if (!outputDir.exists()) {
       outputDir.mkdirs();
@@ -75,7 +86,12 @@ public class IOManager {
   
   //Section: Reading declare model
   public DeclareModel readDeclareModel(String modelFileName) {
-    File declareFile = new File(inputFolder + modelFileName);
+
+    File declareFile = new File(modelFileName);
+    if (!declareFile.isFile()) {
+      declareFile = new File(currentPath + modelFileName);
+    }
+
     HashMap<String, ArrayList<String[]>> parsedLines = readFile(declareFile);
     return new DeclareModel(parsedLines);
   }
@@ -95,9 +111,35 @@ public class IOManager {
     return lines;
   }
 
+  public boolean variableAssignmentsExist(String fileName) {
+
+    File variablesFile = new File(fileName);
+
+    if (!variablesFile.isFile()) {
+      variablesFile = new File(this.currentPath + fileName);
+    }
+
+    return variablesFile.exists();
+  }
+
+  public void exportVariableAssignments(String fileName, String content) {
+    //File variablesFile = new File(this.inputFolder + fileName);
+
+    try (FileWriter fileWriter = new FileWriter(this.currentPath + fileName)) {
+      fileWriter.write(content);
+    } catch (IOException e) {
+      System.out.println("Error exporting variable assignment file");
+    }
+
+  }
+
   public Map<String, Integer> readVariableAssignments(String fileName) {
     HashMap<String, Integer> map = new HashMap<>();
-    File variablesFile = new File(this.inputFolder + fileName);
+    File variablesFile = new File(fileName);
+
+    if (!variablesFile.isFile()) {
+      variablesFile = new File(this.currentPath + fileName);
+    }
 
     try (Scanner scanner = new Scanner(variablesFile)) {
       while (scanner.hasNextLine()) {
@@ -121,7 +163,12 @@ public class IOManager {
   public Set<VariableSubstitution> readVariablesSubstitutions(String fileName) {
     HashSet<VariableSubstitution> set = new HashSet<>();
 
-    File assignmentFile = new File(this.inputFolder + fileName);
+    File assignmentFile = new File(fileName);
+
+    if (!assignmentFile.isFile()) {
+      assignmentFile = new File(this.currentPath + fileName);
+    }
+
     try (Scanner scanner = new Scanner(assignmentFile)) {
       while (scanner.hasNextLine()) {
 
@@ -146,10 +193,31 @@ public class IOManager {
     
     return set;
   }
+
+  public boolean variableSubstitutionExists(String fileName) {
+    File assignmentFile = new File(fileName);
+    
+    if (!assignmentFile.isFile()) {
+      assignmentFile = new File(this.currentPath + fileName);
+    }
+
+    return assignmentFile.exists();
+  }
+
+  public void exportVariableSubstitution(String fileName, String content) {
+    //File variablesFile = new File(this.inputFolder + fileName);
+
+    try (FileWriter fileWriter = new FileWriter(this.currentPath + fileName)) {
+      fileWriter.write(content);
+    } catch (IOException e) {
+      System.out.println("Error exporting variable substitution file");
+    }
+
+  }
   
   private HashMap<String, ArrayList<String[]>> initializeSortingMap() {
     HashMap<String, ArrayList<String[]>> lines = new HashMap<>();
-    String[] lineDefinitions = {"activityLines", "bindingLines", "intAttributeLines", "floatAttributeLines", "enumAttributeLines", "unaryConstraintLines", "binaryConstraintLines", "unaryTimeConstraintLines", "binaryTimeConstraintLines"};
+    String[] lineDefinitions = {"activityLines", "bindingLines", "intAttributeLines", "floatAttributeLines", "enumAttributeLines", "unaryConstraintLines", "binaryConstraintLines"};
     for (String container : lineDefinitions) {
       lines.put(container, new ArrayList<>());
     }
@@ -165,11 +233,9 @@ public class IOManager {
     Pattern enumPattern = Pattern.compile("^\\s*([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*:\\s+([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*$");
     
     Pattern unaryPattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-z\\d!=(),.<> -]*)\\|\\s*$");
-    Pattern unaryTimePattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z]+[a-zA-Z\\d]*,\\d+,\\d+,h)$");
     //Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*$");
     Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*$");
-    Pattern binaryTimePattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z]+[a-zA-Z\\d]*,\\d+,\\d+,h\\/[a-zA-Z]+[a-zA-Z\\d]*,\\d+,\\d+,h)$");
-
+    
     Pattern numericConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(>=|<=|>|<|=|!=)\\s+-?\\d+.?\\d*\\s*$");
     Pattern enumConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(is not|is)\\s+[a-zA-Z]+[a-zA-Z\\d]*\\s*$*");
     Pattern listConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(not in|in)\\s+[a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*\\s*$");
@@ -187,9 +253,7 @@ public class IOManager {
       binaryPattern,
       numericConditionPattern, 
       enumConditionPattern, 
-      listConditionPattern,
-      unaryTimePattern,
-      binaryTimePattern
+      listConditionPattern
     };
   }
     
@@ -203,9 +267,6 @@ public class IOManager {
     Matcher enumMatcher = patterns[4].matcher(line);
     Matcher unaryMatcher = patterns[5].matcher(line);
     Matcher binaryMatcher = patterns[6].matcher(line);
-
-    Matcher unaryTimeMatcher = patterns[10].matcher(line);
-    Matcher binaryTimeMatcher = patterns[11].matcher(line);
     
     if (activityMatcher.find()) {
       lines.get("activityLines").add(new String[] {activityMatcher.group(1)});
@@ -228,18 +289,6 @@ public class IOManager {
         lines.get("unaryConstraintLines").add(tokenizeUnaryConstraint(unaryMatcher));
       } else {
         System.out.println("Error parsing condition: " + unaryMatcher.group(3));
-      }
-    } else if (unaryTimeMatcher.find()) {
-      if (isConditionValid(unaryTimeMatcher.group(3), patterns)) {
-        lines.get("unaryTimeConstraintLines").add(tokenizeUnaryTimeConstraint(unaryTimeMatcher));
-      } else {
-        System.out.println("Error parsing condition: " + unaryTimeMatcher.group(3));
-      }
-    } else if (binaryTimeMatcher.find()) {
-      if (isConditionValid(binaryTimeMatcher.group(4), patterns) && isConditionValid(binaryTimeMatcher.group(5), patterns)) {
-        lines.get("binaryTimeConstraintLines").add(tokenizeBinaryTimeConstraint(binaryTimeMatcher));
-      } else {
-        System.out.println("Error parsing condition: " + binaryTimeMatcher.group(4) + " or " + binaryTimeMatcher.group(5));
       }
     } else {
       System.out.println("Error parsing line: " + line);
@@ -266,14 +315,6 @@ public class IOManager {
   
   private String[] tokenizeBinaryConstraint(Matcher matcher) {
     return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5)};
-  }
-
-  private String[] tokenizeUnaryTimeConstraint(Matcher matcher) {
-    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4)};
-  }
-
-  private String[] tokenizeBinaryTimeConstraint(Matcher matcher) {
-    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6)};
   }
   
   
@@ -312,7 +353,11 @@ public class IOManager {
   
   //Section: Reading log file
   public LogFile readLog(String logFileName, MixedModel myMixedModel) {
-    File logFile = new File(inputFolder + logFileName);
+    File logFile = new File(logFileName);
+
+    if (!logFile.isFile()) {
+      logFile = new File(this.currentPath + logFileName);
+    }
     XLog xlog = null;
     XesXmlParser parser = new XesXmlParser();
     if (parser.canParse(logFile)) {
@@ -328,7 +373,11 @@ public class IOManager {
 
   
   public LogFile readDeclareLog(String logFileName, DeclareModel model) {
-    File logFile = new File(inputFolder + logFileName);
+    File logFile = new File(logFileName);
+    
+    if (!logFile.isFile()) {
+      logFile = new File(this.currentPath + logFileName);
+    }
     XLog xlog = null;
     XesXmlParser parser = new XesXmlParser();
     if (parser.canParse(logFile)) {
@@ -370,10 +419,40 @@ public class IOManager {
     }
   }
   
+  public boolean costModelExists(String costsFileName) {
+    File costModel = new File(costsFileName);
+  
+    if (!costModel.isFile()) {
+      costModel = new File(this.currentPath + costsFileName);
+    }
+
+    return costModel.exists();
+  }
+
+  public void exportCostModel(String fileName, Set<String> actKeys) {
+    //File variablesFile = new File(this.inputFolder + fileName);
+    StringBuilder sb = new StringBuilder();
+
+    for (String aK : actKeys) {
+      sb.append(aK + " 1 1 1 1\n");
+    }
+
+    try (FileWriter fileWriter = new FileWriter(this.currentPath + fileName)) {
+      fileWriter.write(sb.toString());
+    } catch (IOException e) {
+      System.out.println("Error exporting variable substitution file");
+    }
+
+  }
   
   //Section: Reading cost model
   public ArrayList<String[]> readCostModel(String costsFileName) {
-    File costModel = new File(inputFolder + costsFileName);
+    File costModel = new File(costsFileName);
+
+    if (!costModel.isFile()) {
+      costModel = new File(currentPath + costsFileName);
+    }
+
     ArrayList<String[]> costsList = new ArrayList<>();
 
     try (Scanner scanner = new Scanner(costModel)) {
@@ -409,19 +488,41 @@ public class IOManager {
 
     //Section: Reading declare model
     public DataPetriNet readDataPetriNet(String modelFileName) throws FileNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, InvocationTargetException, DPNIOException {
-      File dpnFilepath = new File(inputFolder + modelFileName);
+      File dpnFilepath = new File(modelFileName);
 
+    if (!dpnFilepath.isFile()) {
+      dpnFilepath = new File(currentPath + modelFileName);
+    }
 
       String dpnFile = dpnFilepath.getAbsolutePath();
       return new DataPetriNet(dpnFile);
     }
   
   public void exportActivityMapping(String activityMapping, String modelName) {
+    modelName = findFileNameFromPath(modelName);
     try (FileWriter fileWriter = new FileWriter(outputFolder + "activityMapping_" + modelName + ".txt")) {
       fileWriter.write(activityMapping);
     } catch (IOException e) {
       System.out.println("Error creating the activityMapping file. \n" + e.toString());
     }
+  }
+
+  private static String findFileNameFromPath(String inputPath) {
+    if (!inputPath.contains("/") && (!inputPath.contains("\\"))) {
+      return inputPath;
+    }
+
+    if (inputPath.contains("/")) {
+      
+      int lastIndex = inputPath.lastIndexOf("/");
+      return inputPath.substring(lastIndex+1);
+    }
+
+    if (inputPath.contains("\\")) {
+      int lastIndex = inputPath.lastIndexOf("\\");
+      return inputPath.substring(lastIndex+1);
+    }
+    return inputPath;
   }
 
 }
