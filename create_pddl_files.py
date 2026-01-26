@@ -8,11 +8,11 @@ import pm4py
 
 
 
-input_path = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\src\main\resources\input"
-output_path = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
+input_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\src\main\resources\input"
+output_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\src\main\resources\output\pddl"
 cost_model = "cost_model.txt"
 variable_values = "variable_values.txt"
-jar_path = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar"
+jar_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar"
 
 
 #cmd = r'java -jar '

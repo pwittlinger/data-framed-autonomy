@@ -54,6 +54,7 @@
     (after_sync)
     (after_add)
     (after_add_check)
+    (after_reset)
 
     (recovery_finished)
 
@@ -85,14 +86,14 @@
     (variable_value ?var - value_name)
     (added_parameter_aut ?a - activity ?par - parameter_name ?s1 - automaton_state)
     ;; Cost functions
-    (violation_cost ?c - constraint)
+    ;(violation_cost ?c - constraint)
     ;; TIME CONDITIONS
     (timestamp ?t1 ?t2 - trace_state)
     (min_t_condition ?s1 - automaton_state ?a - activity ?s2 - automaton_state)
     (max_t_condition ?s1 - automaton_state ?a - activity ?s2 - automaton_state)
     (start_clock ?c - constraint)
     (current_timestamp)
-    (wait)
+    ;(wait)
   )
 
 
@@ -143,6 +144,8 @@
       (cur_s_state ?s1)
       
       (not (goal_state ?s1))
+      (not (failure_state ?s1))
+      (not (failure))
 
       (not (has_added_parameter_aut ?a ?pn ?s1))
       (not (after_add_check))
@@ -170,6 +173,8 @@
 
       :effect (and 
 
+      ;(when (after_reset) (not (after_reset)))
+
       (increase (total_cost) 0)
       (has_added_parameter_aut ?a ?pn ?s1)
       (assign (added_parameter_aut ?a ?pn ?s1) (variable_value ?vn)))
@@ -195,8 +200,10 @@
             
               ; validate that the current selection of states is a valid arc that reads the current parameter
               (cur_s_state ?s1)
+              (not (failure_state ?s1))
               (automaton ?s1 ?a ?s2)
               (has_constraint ?a ?pn ?s1 ?s2)
+              (not (invalid ?s1 ?a ?s2))
               ;; 
               (or
                 ;; If the arc has a guard but the added activity no additional payload -> defaults to invalid
@@ -263,6 +270,7 @@
             (not (goal_state ?s1))
             (not (invalid ?s1 ?a ?s2))
             (cur_s_state ?s1)
+            (not (failure_state ?s1))
             (automaton ?s1 ?a ?s2)
             (not (failure_state ?s2))
           )
@@ -282,6 +290,7 @@
           (cur_s_state ?s1)
           ;(not (failure_state ?s2))
           (clock ?s1 ?s2)
+          (not (failure_state ?s1))
           (associated ?s1 ?c)
           (associated ?s2 ?c)
 
@@ -317,18 +326,6 @@
           )
         )
 	  
-      ;(forall (?s1 - automaton_state ?s2 - automaton_state)
-      ;  (when (and
-      ;    (not (invalid ?s1 ?a ?s2))
-      ;    (automaton ?s1 ?a ?s2)
-      ;    (cur_s_state ?s1)
-      ;    (failure_state ?s2)
-      ;  ) (and
-      ;    (not (cur_s_state ?s1))
-      ;    (cur_s_state ?s2)
-      ;    (failure)    
-      ;  ))
-      ;)
 
       (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
         (when (and
@@ -422,6 +419,7 @@
                 (cur_s_state ?s1)
                 (automaton ?s1 ?a ?s2)
                 (has_constraint ?a ?pn ?s1 ?s2)
+                (not (invalid ?s1 ?a ?s2))
                 (or
                   (not (has_parameter ?a ?pn ?t1 ?t2))
                   (< (trace_parameter ?a ?pn ?t1 ?t2) (majority_constraint ?a ?pn ?s1 ?s2))
@@ -501,7 +499,6 @@
       (cur_t_state ?t2)
       (when (final_t_state ?t2) (recovery_finished))
       (not (after_sync))
-      ;(assign (current_timestamp) (timestamp ?t1 ?t2))
       
       ; Move all enabled automata that are ending in a valid state
       (forall (?s1 - automaton_state ?s2 - automaton_state)
@@ -544,11 +541,6 @@
           (associated ?s1 ?c)
           (associated ?s2 ?c)
 
-          ;(<= (-(current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
-          ;(>= (-(current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
-          
-          ;(<= (timestamp ?t1 ?t2) (+ (start_clock ?c) (max_t_condition ?s1 ?c ?s2)))
-          ;(>= (timestamp ?t1 ?t2) (+ (start_clock ?c) (min_t_condition ?s1 ?c ?s2)))
 
           (<= (current_timestamp) (+ (start_clock ?c) (max_t_condition ?s1 ?a ?s2)))
           (>= (current_timestamp) (+ (start_clock ?c) (min_t_condition ?s1 ?a ?s2)))
@@ -578,6 +570,20 @@
           (not (after_sync))
           (not (after_add))
           (not (after_add_check))
+          ;(not (violated ?c))
+          ;(not (after_reset))
+
+          (or
+            (recovery_finished)
+
+            (exists (?t1 ?t2 - trace_state) 
+              (and
+                (cur_t_state ?t2)
+                (= (current_timestamp) (timestamp ?t1 ?t2))
+              )
+            )
+          
+          )
 
           (exists (?s1 - automaton_state)
           (and
@@ -601,6 +607,7 @@
         ) 
         (violated ?c))
         )
+        (after_reset)
       )
   )
   
@@ -614,6 +621,7 @@
           (not (after_sync))
           (not (after_add))
           (not (after_add_check))
+          (after_reset)
           )
       :effect (and 
 
@@ -627,7 +635,7 @@
             (initial_state ?s2)
             (associated ?s1 ?c)
             (associated ?s2 ?c)
-            (not (failure_state ?s2))
+            ;(not (failure_state ?s2))
             )
             (and
             (not (cur_s_state ?s1))
@@ -635,6 +643,7 @@
             )  
         )
         )
+      (not (after_reset))
       (not (failure))
       (not (violated ?c))
       (assign (start_clock ?c) (current_timestamp))
@@ -647,7 +656,14 @@
       (= current_timestamp (timestamp ?t1 ?t2))
       (cur_t_state ?t1) 
       (trace ?t1 ?a ?t2)
+      (not (after_reset))
+      (not (failure))
+      (not (complete_sync ?a))
       (not (recovery_finished))
+      ;(not (after_sync))
+      ;(not (after_add))
+      ;(not (after_add_check))
+      
       (not (exists (?s1 - automaton_state ?s2 - automaton_state) 
         (and
         
@@ -655,6 +671,15 @@
         (not (failure_state ?s2))
         )
       ))
+
+      (forall (?s1 ?s2 - automaton_state)
+        (imply  
+          (automaton ?s1 ?a ?s2)
+          (failure_state ?s2)
+        )
+
+      )
+
       )
       :effect (and 
       (increase (total_cost) 0)
@@ -672,18 +697,21 @@
                 (not (after_sync))
                 (not (after_add))
                 (not (failure))
+                (not (after_reset))
                 
                 (not (after_add_check))
                 (or
                 (exists (?s1 ?s2 - automaton_state ?a - activity ?n - constraint) 
                     (and
+                        (not (failure_state ?s1))
+                        (not (failure_state ?s2))
                         (cur_s_state ?s1)
                         (associated ?s1 ?n)
                         (associated ?s2 ?n)
                         (automaton ?s1 ?a ?s2)
                         (not (goal_state ?s1))
                         (not (complete_sync ?a))
-                        (not (invalid ?s1 ?a ?s2))
+                        ;(not (invalid ?s1 ?a ?s2))
                         (not (violated ?n))
 
                         (< (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?n)))
@@ -701,7 +729,7 @@
                 )
 
             
-            ) ; or specify a real condition
+            )
         :effect (and 
             ; Increase the current timestamp by the fixed progression rate.
             ; This also means the timestamp needs to be rounded to the nearest first digit, otherwise this approach won't work

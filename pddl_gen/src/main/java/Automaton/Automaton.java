@@ -345,7 +345,7 @@ public class Automaton {
   }
   
   public List<StateEC> getStatesEC() {
-	  	List<StateEC> getStatesEC = new ArrayList();
+	  	List<StateEC> getStatesEC = new ArrayList<StateEC>();
 	  	for (State s : this.states) {
 	  		getStatesEC.add(new StateEC(s));
 	  	}

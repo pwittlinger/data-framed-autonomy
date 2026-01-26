@@ -1,12 +1,12 @@
 Domain parsed
 Problem parsed
 Grounding..
-Grounding Time: 3737
+Grounding Time: 4290
 UFX:true
-|F|:11742
+|F|:11743
 |X|:14
 Heuristic Problem Creation
-|A|:674
+|A|:519
 |P|:1
 |E|:0
 Delta time heuristic model:1.0
@@ -14,13 +14,14 @@ Delta time planning model:1.0
 Delta time search-execution model:1.0
 Delta time validation model:1
 h(I):0.0
-f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.023) Frontier Size: 1
+f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 5, Time: 0.02) Frontier Size: 0
 Extracting plan with execution delta: 1.0
 Problem Solved
 
 Found Plan:
 0: (validate-payload t0 a9 t1)
 0: (sync-actions t0 t1 a9)
+0: (validate-failure pn)
 0: (reset pn)
 0: (add_action a7)
 0: (check_added_parameter_model a7)
@@ -50,34 +51,34 @@ Found Plan:
 0: (check_added_parameter_model a9)
 0: (add_move_automata a9)
 
-Plan-Length:30
+Plan-Length:31
 Elapsed Time: 0
 Metric (Search):1000.0
-Planning Time (msec): 71
+Planning Time (msec): 74
 Heuristic Time (msec): 4
-Search Time (msec): 59
-Expanded Nodes:66
-States Evaluated:67
+Search Time (msec): 64
+Expanded Nodes:65
+States Evaluated:65
 Number of Dead-Ends detected:0
 Number of Duplicates detected:31
 	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
-	User time (seconds): 20.66
-	System time (seconds): 3.72
-	Percent of CPU this job got: 256%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.51
+	User time (seconds): 23.14
+	System time (seconds): 4.09
+	Percent of CPU this job got: 248%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.98
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 2347476
+	Maximum resident set size (kbytes): 2311092
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 597536
-	Voluntary context switches: 13571
-	Involuntary context switches: 83
+	Minor (reclaiming a frame) page faults: 582167
+	Voluntary context switches: 12868
+	Involuntary context switches: 64
 	Swaps: 0
 	File system inputs: 0
-	File system outputs: 64
+	File system outputs: 128
 	Socket messages sent: 0
 	Socket messages received: 0
 	Signals delivered: 0
@@ -86,12 +87,12 @@ Number of Duplicates detected:31
 Domain parsed
 Problem parsed
 Grounding..
-Grounding Time: 3696
+Grounding Time: 3532
 UFX:true
-|F|:11742
+|F|:11743
 |X|:14
 Heuristic Problem Creation
-|A|:674
+|A|:519
 |P|:1
 |E|:0
 Delta time heuristic model:1.0
@@ -99,13 +100,14 @@ Delta time planning model:1.0
 Delta time search-execution model:1.0
 Delta time validation model:1
 h(I):0.0
-f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.022) Frontier Size: 1
+f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 5, Time: 0.017) Frontier Size: 0
 Extracting plan with execution delta: 1.0
 Problem Solved
 
 Found Plan:
 0: (validate-payload t0 a9 t1)
 0: (sync-actions t0 t1 a9)
+0: (validate-failure pn)
 0: (reset pn)
 0: (add_action a7)
 0: (check_added_parameter_model a7)
@@ -135,30 +137,202 @@ Found Plan:
 0: (check_added_parameter_model a9)
 0: (add_move_automata a9)
 
-Plan-Length:30
+Plan-Length:31
+Elapsed Time: 0
+Metric (Search):1000.0
+Planning Time (msec): 74
+Heuristic Time (msec): 3
+Search Time (msec): 62
+Expanded Nodes:65
+States Evaluated:65
+Number of Dead-Ends detected:0
+Number of Duplicates detected:31
+	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
+	User time (seconds): 20.75
+	System time (seconds): 4.16
+	Percent of CPU this job got: 250%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.96
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2599492
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 666865
+	Voluntary context switches: 13388
+	Involuntary context switches: 59
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 96
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 4194
+UFX:true
+|F|:11743
+|X|:14
+Heuristic Problem Creation
+|A|:519
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 5, Time: 0.017) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a9 t1)
+0: (sync-actions t0 t1 a9)
+0: (validate-failure pn)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (add_action a10)
+0: (check_added_parameter_model a10)
+0: (add_move_automata a10)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (add_action a8)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+0: (add_action a2)
+0: (check_added_parameter_model a2)
+0: (add_move_automata a2)
+0: (add_action a9)
+0: (check_added_parameter_model a9)
+0: (add_move_automata a9)
+
+Plan-Length:31
+Elapsed Time: 0
+Metric (Search):1000.0
+Planning Time (msec): 66
+Heuristic Time (msec): 3
+Search Time (msec): 55
+Expanded Nodes:65
+States Evaluated:65
+Number of Dead-Ends detected:0
+Number of Duplicates detected:31
+	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
+	User time (seconds): 21.26
+	System time (seconds): 4.82
+	Percent of CPU this job got: 244%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.65
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2467392
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 629889
+	Voluntary context switches: 13540
+	Involuntary context switches: 149
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 128
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 3469
+UFX:true
+|F|:11743
+|X|:14
+Heuristic Problem Creation
+|A|:519
+|P|:1
+|E|:0
+Delta time heuristic model:1.0
+Delta time planning model:1.0
+Delta time search-execution model:1.0
+Delta time validation model:1
+h(I):0.0
+f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 5, Time: 0.019) Frontier Size: 0
+Extracting plan with execution delta: 1.0
+Problem Solved
+
+Found Plan:
+0: (validate-payload t0 a9 t1)
+0: (sync-actions t0 t1 a9)
+0: (validate-failure pn)
+0: (reset pn)
+0: (add_action a7)
+0: (check_added_parameter_model a7)
+0: (add_move_automata a7)
+0: (add_action a10)
+0: (check_added_parameter_model a10)
+0: (add_move_automata a10)
+0: (add_action a12)
+0: (check_added_parameter_model a12)
+0: (add_move_automata a12)
+0: (add_action a11)
+0: (check_added_parameter_model a11)
+0: (add_move_automata a11)
+0: (add_action a8)
+0: (check_added_parameter_model a8)
+0: (add_move_automata a8)
+0: (add_action a0)
+0: (check_added_parameter_model a0)
+0: (add_move_automata a0)
+0: (add_action a1)
+0: (check_added_parameter_model a1)
+0: (add_move_automata a1)
+0: (add_action a2)
+0: (check_added_parameter_model a2)
+0: (add_move_automata a2)
+0: (add_action a9)
+0: (check_added_parameter_model a9)
+0: (add_move_automata a9)
+
+Plan-Length:31
 Elapsed Time: 0
 Metric (Search):1000.0
 Planning Time (msec): 76
 Heuristic Time (msec): 4
 Search Time (msec): 64
-Expanded Nodes:66
-States Evaluated:67
+Expanded Nodes:65
+States Evaluated:65
 Number of Dead-Ends detected:0
 Number of Duplicates detected:31
 	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
-	User time (seconds): 19.79
-	System time (seconds): 4.03
-	Percent of CPU this job got: 239%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.95
+	User time (seconds): 20.35
+	System time (seconds): 4.71
+	Percent of CPU this job got: 247%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.14
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 2694264
+	Maximum resident set size (kbytes): 2573932
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 685618
-	Voluntary context switches: 12542
+	Minor (reclaiming a frame) page faults: 655336
+	Voluntary context switches: 14106
 	Involuntary context switches: 66
 	Swaps: 0
 	File system inputs: 0
@@ -171,12 +345,12 @@ Number of Duplicates detected:31
 Domain parsed
 Problem parsed
 Grounding..
-Grounding Time: 3880
+Grounding Time: 3339
 UFX:true
-|F|:11742
+|F|:11743
 |X|:14
 Heuristic Problem Creation
-|A|:674
+|A|:519
 |P|:1
 |E|:0
 Delta time heuristic model:1.0
@@ -184,13 +358,14 @@ Delta time planning model:1.0
 Delta time search-execution model:1.0
 Delta time validation model:1
 h(I):0.0
-f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.019) Frontier Size: 1
+f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 5, Time: 0.017) Frontier Size: 0
 Extracting plan with execution delta: 1.0
 Problem Solved
 
 Found Plan:
 0: (validate-payload t0 a9 t1)
 0: (sync-actions t0 t1 a9)
+0: (validate-failure pn)
 0: (reset pn)
 0: (add_action a7)
 0: (check_added_parameter_model a7)
@@ -220,201 +395,31 @@ Found Plan:
 0: (check_added_parameter_model a9)
 0: (add_move_automata a9)
 
-Plan-Length:30
+Plan-Length:31
 Elapsed Time: 0
 Metric (Search):1000.0
-Planning Time (msec): 63
-Heuristic Time (msec): 3
-Search Time (msec): 52
-Expanded Nodes:66
-States Evaluated:67
+Planning Time (msec): 64
+Heuristic Time (msec): 4
+Search Time (msec): 53
+Expanded Nodes:65
+States Evaluated:65
 Number of Dead-Ends detected:0
 Number of Duplicates detected:31
 	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
-	User time (seconds): 21.48
-	System time (seconds): 4.01
-	Percent of CPU this job got: 257%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.88
+	User time (seconds): 20.90
+	System time (seconds): 3.86
+	Percent of CPU this job got: 255%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.69
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 2533476
+	Maximum resident set size (kbytes): 2478928
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 644772
-	Voluntary context switches: 12092
-	Involuntary context switches: 65
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 64
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-Domain parsed
-Problem parsed
-Grounding..
-Grounding Time: 3412
-UFX:true
-|F|:11742
-|X|:14
-Heuristic Problem Creation
-|A|:674
-|P|:1
-|E|:0
-Delta time heuristic model:1.0
-Delta time planning model:1.0
-Delta time search-execution model:1.0
-Delta time validation model:1
-h(I):0.0
-f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.02) Frontier Size: 1
-Extracting plan with execution delta: 1.0
-Problem Solved
-
-Found Plan:
-0: (validate-payload t0 a9 t1)
-0: (sync-actions t0 t1 a9)
-0: (reset pn)
-0: (add_action a7)
-0: (check_added_parameter_model a7)
-0: (add_move_automata a7)
-0: (add_action a10)
-0: (check_added_parameter_model a10)
-0: (add_move_automata a10)
-0: (add_action a12)
-0: (check_added_parameter_model a12)
-0: (add_move_automata a12)
-0: (add_action a11)
-0: (check_added_parameter_model a11)
-0: (add_move_automata a11)
-0: (add_action a8)
-0: (check_added_parameter_model a8)
-0: (add_move_automata a8)
-0: (add_action a0)
-0: (check_added_parameter_model a0)
-0: (add_move_automata a0)
-0: (add_action a1)
-0: (check_added_parameter_model a1)
-0: (add_move_automata a1)
-0: (add_action a2)
-0: (check_added_parameter_model a2)
-0: (add_move_automata a2)
-0: (add_action a9)
-0: (check_added_parameter_model a9)
-0: (add_move_automata a9)
-
-Plan-Length:30
-Elapsed Time: 0
-Metric (Search):1000.0
-Planning Time (msec): 72
-Heuristic Time (msec): 3
-Search Time (msec): 59
-Expanded Nodes:66
-States Evaluated:67
-Number of Dead-Ends detected:0
-Number of Duplicates detected:31
-	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
-	User time (seconds): 19.53
-	System time (seconds): 3.45
-	Percent of CPU this job got: 253%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.05
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 2398284
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 611030
-	Voluntary context switches: 13017
-	Involuntary context switches: 108
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 64
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-Domain parsed
-Problem parsed
-Grounding..
-Grounding Time: 3625
-UFX:true
-|F|:11742
-|X|:14
-Heuristic Problem Creation
-|A|:674
-|P|:1
-|E|:0
-Delta time heuristic model:1.0
-Delta time planning model:1.0
-Delta time search-execution model:1.0
-Delta time validation model:1
-h(I):0.0
-f(n) = 1000.0 (Expanded Nodes: 5, Evaluated States: 6, Time: 0.018) Frontier Size: 1
-Extracting plan with execution delta: 1.0
-Problem Solved
-
-Found Plan:
-0: (validate-payload t0 a9 t1)
-0: (sync-actions t0 t1 a9)
-0: (reset pn)
-0: (add_action a7)
-0: (check_added_parameter_model a7)
-0: (add_move_automata a7)
-0: (add_action a10)
-0: (check_added_parameter_model a10)
-0: (add_move_automata a10)
-0: (add_action a12)
-0: (check_added_parameter_model a12)
-0: (add_move_automata a12)
-0: (add_action a11)
-0: (check_added_parameter_model a11)
-0: (add_move_automata a11)
-0: (add_action a8)
-0: (check_added_parameter_model a8)
-0: (add_move_automata a8)
-0: (add_action a0)
-0: (check_added_parameter_model a0)
-0: (add_move_automata a0)
-0: (add_action a1)
-0: (check_added_parameter_model a1)
-0: (add_move_automata a1)
-0: (add_action a2)
-0: (check_added_parameter_model a2)
-0: (add_move_automata a2)
-0: (add_action a9)
-0: (check_added_parameter_model a9)
-0: (add_move_automata a9)
-
-Plan-Length:30
-Elapsed Time: 0
-Metric (Search):1000.0
-Planning Time (msec): 63
-Heuristic Time (msec): 3
-Search Time (msec): 52
-Expanded Nodes:66
-States Evaluated:67
-Number of Dead-Ends detected:0
-Number of Duplicates detected:31
-	Command being timed: "java -Xmx10g -jar pddl_gen/src/main/resources/output/enhsp3.jar -o pddl_gen/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f pddl_gen/src/main/resources/output/pddl/BasePN-1And-prefix-non-conforming-1-BasePN-1And_5_timed_data//problem1.pddl -planner opt-blind"
-	User time (seconds): 20.00
-	System time (seconds): 3.95
-	Percent of CPU this job got: 252%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.49
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 2487300
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 634261
-	Voluntary context switches: 12196
-	Involuntary context switches: 89
+	Minor (reclaiming a frame) page faults: 631085
+	Voluntary context switches: 11688
+	Involuntary context switches: 121
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 64

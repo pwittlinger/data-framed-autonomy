@@ -127,7 +127,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     }
 
     if (this.finalTraceState == null) {
-      this.finalTraceState = new State("t0");;
+      this.finalTraceState = new State("t0");
     }
     return assignments;
   }
@@ -303,44 +303,6 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     return b;
   }
 
-  /*
-  public StringBuilder buildAutomatons(List<State> finalAutomatonStates) {
-    StringBuilder b = new StringBuilder();
-    b.append("    ;; AUTOMATON STATES\n");
-
-    for (Automaton aut : this.constraintAutomatons) {
-      
-      for (State state : aut.getStates()) {
-        if (state.isInitial) {
-          b.append("    (cur_s_state " + state.name + ")\n");
-        }
-        if (state.isFailure) {
-          b.append("    (failure_state " + state.name + ")\n");
-        }
-      }
-
-      for (Transition t : aut.getTransitions()) {
-        b.append("    (automaton " + t.getActiviationState().name + " " + t.getActivity() + " " + t.getTargetState().name + ")\n");
-
-        List<Condition> conditions = t.getReformedConditions();
-        if (conditions != null) {
-          for (Condition c : conditions) {
-            b.append(this.getConditionString(t, c));
-          }
-        }
-      }
-    
-      b.append("\n");
-    }
-    
-
-
-    // Close init
-    b.append("  )\n");
-    return b;
-  }
-  */
-
   public StringBuilder buildAutomatons(List<State> finalAutomatonStates) {
     StringBuilder b = new StringBuilder();
     b.append("    ;; AUTOMATON STATES\n");
@@ -387,17 +349,16 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
   
      for (Automaton aut : this.mixedModel.constraintAutomatons) {
-          // Set the "associated" relation between states and constraints
-           b.append("\n");
-  	      List<StateEC> allStates = aut.getStatesEC();
+        // Set the "associated" relation between states and constraints
+        b.append("\n");
+  	    List<StateEC> allStates = aut.getStatesEC();
 
-	
-          String aName = aut.getConstraint().getConstraintName();
-          ArrayList<String> clocks =  aut.getConstraint().getClockConditions();
+        String aName = aut.getConstraint().getConstraintName();
+        ArrayList<String> clocks =  aut.getConstraint().getClockConditions();
   	      
-  	      for (StateEC g : allStates) {
+  	    for (StateEC g : allStates) {
   	    	  b.append("    (associated " + g.name + " " + aName + ")\n");
-            }
+        }
 
         for(String cString : clocks) {
           if (cString.contains("sDEC")) {
@@ -479,24 +440,6 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         "\n" + //
         "  (:types activity automaton_state trace_state parameter_name value_name)\n" + //
         "\n" + //
-        "  ; ; Constants for prob\n" + //
-        "  ; (:constants\n" + //
-        "  ;   t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 - trace_state\n" + //
-        "  ;   s10 s11 s20 s21 s30 s31 s40 s41 s50 s51 s60 s61 s62 s70 s71 s72 s73 s80 s81 s82 - automaton_state\n" + //
-        "  ;   A B C D E F G - activity\n" + //
-        "  ;   x y z - parameter_name\n" + //
-        "  ;   a_x20 a_x40 a_y4 a_y6 a_z0 a_z1 c40 c30 c20 d10 d20 d40 e_x20 e_z0 e_z1 - value_name\n" + //
-        "  ; )\n" + //
-        "\n" + //
-        "  ; ; Constants for prob2\n" + //
-        "  ; (:constants\n" + //
-        "  ;   t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 - trace_state\n" + //
-        "  ;   s10 s11 s20 s21 s30 s31 s40 s41 s50 s51 s52 s60 s61 s62 s70 s71 s80 s81 s100 s101 - automaton_state\n" + //
-        "  ;   a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 - activity\n" + //
-        "  ;   int cat - parameter_name\n" + //
-        "  ;   int5 int10 int15 cat1 cat2 cat3 - value_name\n" + //
-        "  ; )\n" + //
-        "\n" + //
         "  ;; Majority: >=\n" + //
         "  ;; Minority: <=\n" + //
         "  ;; Interval: [, ]\n" + //
@@ -510,26 +453,24 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         "    (automaton ?s1 - automaton_state ?a - activity ?s2 - automaton_state)\n" + //
         "    (cur_t_state ?t - trace_state)\n" + //
         "    (cur_s_state ?s - automaton_state)\n" + //
+        "    (goal_state ?s - automaton_state)\n" + 
         "\n" + //
         "    ;; PARAMETER AND CONSTRAINT DECLARATION\n" + //
         "    (has_parameter ?a - activity ?pn - parameter_name ?t1 - trace_state ?t2 - trace_state)\n" + //
-        "    (has_maj_c ?a - activity ?pn - parameter_name ?s1 - automaton_state ?s2 - automaton_state)\n" + //
-        "    (has_min_c ?a - activity ?pn - parameter_name ?s1 - automaton_state ?s2 - automaton_state)\n" + //
-        "    (has_interval_c ?a - activity ?pn - parameter_name ?s1 - automaton_state ?s2 - automaton_state)\n" + //
-        "    (has_eq_c ?a - activity ?pn - parameter_name ?s1 - automaton_state ?s2 - automaton_state)\n" + //
-        "    (has_ineq_c ?a - activity ?pn - parameter_name ?s1 - automaton_state ?s2 - automaton_state)\n" + //
+        "    (has_constraint ?a - activity ?pn - parameter_name ?s1 - automaton_state ?s2 - automaton_state)\n" + //
         "\n" + //
         "    (invalid ?s1 - automaton_state ?a - activity ?s2 - automaton_state)\n" + //
         "    (complete_sync ?a - activity)\n" + //
         "    (after_sync)\n" + //
         "    (after_change)\n" + //
-        "    (adding_value ?a - activity ?t1 - trace_state)\n" + //
         "    (after_add)\n" + //
+        "    (after_add_check)\n" +
+        "    (changed ?t1 - trace_state ?pn - parameter_name)\n" + 
         "\n" + //
         "    ; Declare this to indicate that such activity-parameter-value assignment exists.\n" + //
         "    (has_substitution_value ?vn - value_name ?a - activity ?pn - parameter_name)\n" + //
         "    ; Indicates that the new activity has a new (defined) parameter.\n" + //
-        "    (has_added_parameter ?a - activity ?par - parameter_name ?t1 - trace_state)\n" + //
+        "    (has_added_parameter_aut ?a - activity ?par - parameter_name ?s1 - automaton_state)\n" + //
         "\n" + //
         "    ; Used in the problem definition to indicate that this state must not be reached. In that case, the trace is **automatically** failed.\n" + //
         "    (failure_state ?s - automaton_state)\n" + //
@@ -552,7 +493,12 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         "\n" + //
         "    ;; VARIABLES SUBSTITUTION / ADDITION\n" + //
         "    (variable_value ?var - value_name)\n" + //
-        "    (added_parameter ?a - activity ?par - parameter_name ?t1 - trace_state)\n" + //
+        "    (added_parameter_aut ?a - activity ?par - parameter_name ?s1 - automaton_state)\n" + //
+        "    ;; Cost Matrix\n" + 
+        "    (change_cost ?a - activity)\n"+
+        "    (delete_cost ?a - activity)\n"+
+        "    (set_cost ?a - activity)\n"+
+        "    (add_cost ?a - activity)\n"+
         "  )\n" + //
         "\n" + //
         "  ;; SYNC OPERATIONS\n" + //
