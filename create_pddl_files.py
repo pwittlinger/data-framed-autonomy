@@ -5,9 +5,6 @@ import time
 import pm4py
 
 
-
-
-
 input_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\src\main\resources\input"
 output_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\src\main\resources\output\pddl"
 cost_model = "cost_model.txt"
@@ -102,6 +99,7 @@ if __name__ == "__main__":
                 #if "BasePN" in f:
                 #    f2 = f[f.find("_"):]
                 
+                # Lazy checking if the log name contains a path
                 if (len(l.split("/"))>1):
                     new_folder_name = l.split("/")[1]
                     #new_folder_name = (new_folder_name+"-d"+(f.replace("_parsed.decl", "").replace("_", "-d").split("-d")[1])).replace(".xes", "")
@@ -122,10 +120,8 @@ if __name__ == "__main__":
 
                 cost_model = f"cost_models/cost_model-{pname}.txt"
                 
+                # Run the jar file to create the PDDL instances
                 subprocess.call(['java', '-jar', jar_path, decl_loc, pn_loc, l, variable_values, var_sub_loc, cost_model])
-
-
-                #output_path = r"C:\Users\paulw\Desktop\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
 
                 pddl_files = os.listdir(output_path)
 
