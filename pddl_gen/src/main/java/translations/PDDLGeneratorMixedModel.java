@@ -104,7 +104,12 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     s.append(this.buildActionCosts());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
-     s.append(this.buildTimeStamps(timeStamps));
+    //s.append(this.buildTimeStamps(timeStamps));
+
+    if (!this.mixedModel.allResources.isEmpty()) {
+      s.append(this.buildResourceAlloc());
+    }
+    
     s.append(this.buildAutomatons(finalAutomatonStates));
    
 
@@ -184,6 +189,12 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     b.append("pn ");
     b.append("- constraint\n");
 
+    if (this.mixedModel.allResources.size() > 0) {
+      b.append("    ");
+      this.mixedModel.allResources.forEach(x -> b.append(x + " "));
+      b.append("- resource\n");
+    }
+
     b.append("  )\n");
     return b;
   }
@@ -194,7 +205,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     b.append("  (:init\n\n");
     b.append("    ; Initialize plan cost. Some planners might need this explicitly\n");
     b.append("    (= (total_cost) 0)\n\n");
-    b.append("    (= (current_timestamp) 0)\n\n");
+    //b.append("    (= (current_timestamp) 0)\n\n");
     b.append("    ;; SUBSTITUTION VARIABLES\n");
 
     for (Map.Entry<String, Integer> entry : variables.entrySet()) {
@@ -219,6 +230,8 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     this.constraints.forEach(x -> b.append("    (= (violation_cost " + x.getConstraintName() + ") 1)\n"));
     b.append("    (= (violation_cost pn) 1)\n");
+
+    b.append(this.buildResourceCosts());
 
     /*
     for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
@@ -399,6 +412,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
   	    	  b.append("    (associated " + g.name + " " + aName + ")\n");
             }
 
+        /*
         for(String cString : clocks) {
           if (cString.contains("sDEC")) {
             b.append(cString);
@@ -419,6 +433,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         if (setClock == true) {
           b.append("    (= (start_clock " + aName + ") 0)\n");
         }
+        */
           //if (aut.getConstraint().getActivationTimeConditions() != null) {
            // b.append("    (has_time_conditions " + aName + " activation " + aut.getConstraint().getActivationTimeConditions()[0] + " " + aut.getConstraint().getActivationTimeConditions()[1] + ")\n");
           //}
@@ -880,5 +895,39 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     return b;
   }
+
+  public StringBuilder buildResourceCosts() {
+    StringBuilder b = new StringBuilder();
+
+    if (this.mixedModel.allResources.isEmpty()){
+      return b;
+    }
+
+    for (Pair<Activity, String> a: this.mixedModel.resourceMap.keySet()) {
+        //System.out.println("buildResourceCosts"+this.mixedModel.activities.get(a.getKey().getName()));
+
+        b.append("    (= (activity_cost " + a.getKey().getName() + " " + a.getValue() + ") " + this.mixedModel.resourceMap.get(a)+ ")\n");
+    }
+
+    return b;
+  }
+
+  public StringBuilder buildResourceAlloc() {
+    StringBuilder b = new StringBuilder();
+
+    if (this.mixedModel.allResources.isEmpty()){
+      return b;
+    }
+
+    for (Pair<Activity, String> a: this.mixedModel.resourceMap.keySet()) {
+        //System.out.println("buildResourceCosts"+this.mixedModel.activities.get(a.getKey().getName()));
+
+        b.append("    (can_work " + a.getKey().getName() + " " + a.getValue() + ")\n");
+    }
+
+    return b;
+  }
+
+
 
 }

@@ -25,6 +25,7 @@ import log.LogFile;
 import model.DataPetriNet;
 import model.DeclareModel;
 import model.MixedModel;
+import utils.JsonParser;
 
 public class IOManager {
   
@@ -451,6 +452,16 @@ public class IOManager {
 
     if (!costModel.isFile()) {
       costModel = new File(currentPath + costsFileName);
+      costsFileName = currentPath + costsFileName;
+    }
+
+    if (costsFileName.contains(".json")) {
+      try {
+        return JsonParser.parseJsonFile(costsFileName);
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
 
     ArrayList<String[]> costsList = new ArrayList<>();

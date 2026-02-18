@@ -44,6 +44,9 @@ public class MixedModel {
 	public HashMap<String, Activity> activityObjects;
 	public ArrayList<String> allPetriNetStates;
 	private Map<Pair<Activity, CostEnum>, Integer> costs;
+	public Map<Pair<Activity, String>, Integer> resourceMap;
+	public Map<String, Integer> constraintViolation;
+	public Set<String> allResources;
 	
     
 
@@ -59,6 +62,7 @@ public class MixedModel {
 		this.activities = new HashMap<>();
 		this.allAutomatonStates = new ArrayList<>();
 		this.allPetriNetStates = new ArrayList<>();
+		this.allResources = new HashSet<String>();
 
 
         //this.dpnModel.dataPetriNet.getVariables();
@@ -224,19 +228,15 @@ public class MixedModel {
 
 	switch (c.operator) {
 		case BIGGER_OR_EQUAL:
-		  b.append("    (has_maj_c " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
 		  b.append("    (= (majority_constraint " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
 		  break;
 		case LESS_OR_EQUAL:
-		  b.append("    (has_min_c " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
 		  b.append("    (= (minority_constraint " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
 		  break;
 		case EQUAL:
-		  b.append("    (has_eq_c " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
 		  b.append("    (= (equality_constraint " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
 		  break;
 		case NOT_EQUAL:
-		  b.append("    (has_ineq_c " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
 		  b.append("    (= (inequality_constraint " + this.activities.get(c.activity) + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
 		  break;
   
@@ -331,6 +331,31 @@ public class MixedModel {
     //Activity a;
 	String sa;
 	Activity a;
+	String resource;
+
+
+	if (costsList.get(0).length == 3) {
+		
+    	Set<Activity> seenActivities = new HashSet<>();
+		this.resourceMap = new HashMap<>();
+
+		for (String[] costs : costsList) {
+			sa = this.activities.get(costs[0]);
+			resource = costs[1];
+			this.allResources.add(resource);
+			if (sa == null) {
+			throw new Error("Activity not found! What I parsed: " + costs[0]);
+			}	
+			a = new Activity(sa);
+			seenActivities.add(a);
+			this.resourceMap.put(new Pair<Activity, String>(a, resource), Integer.parseInt(costs[2]));
+    }
+
+	}
+	else {
+
+	
+
     Integer[] costsArray = new Integer[4];
 
     this.costs = new HashMap<>();
@@ -351,6 +376,7 @@ public class MixedModel {
       this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
       this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
     }
+	}
 
     // TODO Implement handling of missing activities
     // Set<Activity> undefinedActivities = new HashSet<>();

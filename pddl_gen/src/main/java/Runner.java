@@ -6,6 +6,7 @@ import Automaton.VariableSubstitution;
 import translations.IOManager;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
+import utils.JsonParser;
 import log.LogFile;
 import model.DataPetriNet;
 import model.DeclareModel;
@@ -38,8 +39,15 @@ public class Runner {
 
     //findAlignments(args[0], args[1], args[2], args[3], args[4], args[5]);
 
-    
-    
+    findAlignments(
+      //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
+      "pddl_gen/src/main/resources/input/a20g6/a20g6_1_data_parsed.decl",
+       "pddl_gen/src/main/resources/input/petrinet/a20g6.pnml",
+       "pddl_gen\\src\\main\\resources\\input\\logs\\a20g6-prefix-non-conforming-3.xes",
+       "pddl_gen/src/main/resources/input/variable_values_multi_model.txt", 
+       "pddl_gen/src/main/resources/input/variable_subs/variable_substitutions_a20g6_7.decl.txt", 
+       "pddl_gen/src/main/resources/input/cost_models/cost_model-a20g6.json");
+    /*
     findAlignments(
       //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
       "pddl_gen/src/main/resources/input/declare/BasePN-0And/BasePN-0And_1_data_parsed.decl",
@@ -112,7 +120,7 @@ public class Runner {
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       LogFile log = ioManager.readDeclareLog(traceString, model);
       PDDLGenerator pddlGenerator = new PDDLGenerator(model);
-      String domain = pddlGenerator.defineDomain();
+      //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
       int i = 1;
@@ -120,7 +128,7 @@ public class Runner {
       IOManager.getInstance().exportProblemPDDL(problem, i);
       i++;
       }
-      IOManager.getInstance().exportDomainPDDL(domain);
+      //IOManager.getInstance().exportDomainPDDL(domain);
       }
     else {
 
@@ -137,7 +145,7 @@ public class Runner {
       
       PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel);
 
-      String domain = pddlGenerator.defineDomain();
+      //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
       String pnName = petriNetString;
@@ -152,7 +160,7 @@ public class Runner {
       IOManager.getInstance().exportProblemPDDL(problem, i);
       i++;
     }
-    IOManager.getInstance().exportDomainPDDL(domain);
+    //IOManager.getInstance().exportDomainPDDL(domain);
     }
 
         

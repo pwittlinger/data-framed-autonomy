@@ -10,6 +10,7 @@ public class DeclareModel {
   private Map<Pair<Activity, CostEnum>, Integer> costs;
   public ArrayList<String> params;
   private Map<String, Attribute> attr;
+  //public Map<String, Integer> violationCosts;
   
   public DeclareModel(Map<String, ArrayList<String[]>> parsedLines) {
     this.activities = addActivities(parsedLines.get("activityLines")); // ok

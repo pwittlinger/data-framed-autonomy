@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,7 +34,7 @@ import org.processmining.plugins.declareminer.PossibleNodes;
 
 public class DataPetriNet {
     
-	public static Set<String> activities = new HashSet<String>();
+	public Set<String> activities = new HashSet<String>();
 
 	private DeterministicAutomaton automaton;
 	public ExecutableAutomaton executableAutomaton;
@@ -167,7 +166,7 @@ public class DataPetriNet {
 		markingToAutomatonState.put(marking, automatonState);
 	}
 
-
+	/*
 	//For building a DOT string of the automaton
 	public static String createAutomatonVisualizationString(Automaton aut, boolean alternativeLayout) {
 		//Adopted from org.processmining.ltl2automaton.plugins.automaton.DOTExporter, but significantly modified
@@ -254,6 +253,7 @@ public class DataPetriNet {
 
 
 	}
+	*/
 	//A helper method for building the DOT string
 	public static boolean isNonAcceptingTrap(State s) {
 		if (!s.isAccepting() && s.getOutputSize()==1) {
@@ -289,7 +289,7 @@ public class DataPetriNet {
 		}
 	}
 	
-	public static List<HashMap<State, List<String>>> listAutomatonActivities(Automaton aut) {
+	public List<HashMap<State, List<String>>> listAutomatonActivities(Automaton aut) {
 		
 		List<HashMap<State, List<String>>> outputList = new ArrayList<HashMap<State, List<String>>>();
 		//HashMap<State, Collection<List<String>>> outputList = new HashMap<State, Collection<List<String>>>();
@@ -311,11 +311,11 @@ public class DataPetriNet {
 				String transitionLabel = t.toString();
 				if (t.isNegative()) { //Only one outgoing negative transitions per state
 					List<String> negLabels = Arrays.asList(transitionLabel.split("&"));
-					if (negLabels.size() == activities.size()) { //Not adding the edge if all activities were negated
+					if (negLabels.size() == this.activities.size()) { //Not adding the edge if all activities were negated
 						outStateToLabels.remove(t.getTarget());
 						continue;
 					}
-					for (String activity : activities) {
+					for (String activity : this.activities) {
 						if (!negLabels.contains("!"+activity)) {
 							outStateToLabels.get(t.getTarget()).add(activity);
 						}
