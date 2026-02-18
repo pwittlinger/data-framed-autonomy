@@ -81,7 +81,7 @@ public class IOManager {
   }
 
   public void setProjectPrefix(String projectPrefix) {
-    this.projectPrefix = projectPrefix + File.separator;
+    //this.projectPrefix = projectPrefix + File.separator;
     this.setPaths();
   }
   

@@ -6,79 +6,80 @@ import Automaton.VariableSubstitution;
 import translations.IOManager;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
+import utils.CmdArgsUtils;
+import utils.CmdFileUtils;
 import utils.JsonParser;
 import log.LogFile;
 import model.DataPetriNet;
 import model.DeclareModel;
 import model.MixedModel;
+import org.apache.commons.cli.*;
 
 public class Runner {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) throws Exception {   
 
-    /*
-    args = new String[6];
-    args[0] = "models\\model2_30.decl";
-    args[1] = "test05_VT_DPN.pnml";
-
-    
-    if (args.length != 6) {
-      String errString = new String(
-        "Pass as args the names of the following files:\n" +
-        "1: declare model\n" +
-        "2: petri net\n" + 
-        "3: trace\n" +
-        "4: variables\n" +
-        "5: variable substitutions\n" +
-        "6: cost model"
-      );
-      System.err.println(args.length);
-      throw new Error(errString);
-    }
-    */
-
-    //findAlignments(args[0], args[1], args[2], args[3], args[4], args[5]);
-
-    findAlignments(
-      //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
-      "pddl_gen/src/main/resources/input/a20g6/a20g6_1_data_parsed.decl",
-       "pddl_gen/src/main/resources/input/petrinet/a20g6.pnml",
-       "pddl_gen\\src\\main\\resources\\input\\logs\\a20g6-prefix-non-conforming-3.xes",
-       "pddl_gen/src/main/resources/input/variable_values_multi_model.txt", 
-       "pddl_gen/src/main/resources/input/variable_subs/variable_substitutions_a20g6_7.decl.txt", 
-       "pddl_gen/src/main/resources/input/cost_models/cost_model-a20g6.json");
-    /*
-    findAlignments(
-      //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
-      "pddl_gen/src/main/resources/input/declare/BasePN-0And/BasePN-0And_1_data_parsed.decl",
-       "pddl_gen/src/main/resources/input/petrinet/BasePN-0And.pnml",
-       "pddl_gen/src/main/resources/input/logs/BasePN-0And-prefix-non-conforming-4.xes",
-       "pddl_gen/src/main/resources/input/variable_values_multi_model.txt", 
-       "pddl_gen/src/main/resources/input/variable_subs/variable_substitutions_BasePN-0And_7.decl.txt", 
-       "pddl_gen/src/main/resources/input/cost_models/cost_model-BasePN-0And.txt");
-    /*
-    findAlignments(
-      //"declare/a20g6/a20g6_7_timed_data_parsed.decl",
-      "declare/a40g17AND/a40g17AND_7_timed_data_parsed.decl",
-       "petrinet/a40g17AND.pnml",
-       "logs/a40g17AND-prefix-non-conforming-4.xes",
-       "variable_values_multi_model.txt", 
-       "variable_subs/variable_substitutions_a40g17AND_7.decl.txt", 
-       "cost_models/cost_model-a40g17AND.txt");
-    */
-
+    findAlignments(args);
       
   }
   
-  public static void findAlignments(
-    String modelString, 
-    String petriNetString,
-    String traceString, 
-    String variablesString, 
-    String substitutionsString, 
-    String costsString) 
+  public static void findAlignments(String[] args) 
     throws Exception 
   {
+     CommandLine cmds = CmdArgsUtils.parseCmdInputs(args);
+
+
+    String modelString= cmds.getOptionValue("declare");
+    String traceString= cmds.getOptionValue("log");
+
+    if (!CmdFileUtils.declareFileExists(modelString)) {
+          throw new Exception("Error in accessing DECLARE model.");
+    }
+
+    if (!CmdFileUtils.logFileExists(traceString)) {
+      throw new Exception("Error in accessing XES file." + "\nGiven path:" + traceString);
+    }
+
+    String petriNetString = null;
+    String variablesString= "";
+    String substitutionsString= ""; 
+    String costsString = "";
+
+    boolean hasPetri = cmds.hasOption("petri");
+    boolean hasVarAssign = cmds.hasOption("varAssign");
+    boolean hasVarSub = cmds.hasOption("varSub");
+    boolean hasCost = cmds.hasOption("cost");
+
+    if (hasPetri) {
+        petriNetString = cmds.getOptionValue("petri");
+        if (!CmdFileUtils.petriFileExists(petriNetString)) {
+          throw new Exception("Error in accessing Petri Net File.");
+        }
+    } 
+    
+    if (hasVarAssign) {
+      variablesString = cmds.getOptionValue("varAssign");
+    }
+    else {
+      variablesString = "variable_values.txt";
+    }
+
+    if (hasVarSub) {
+      substitutionsString = cmds.getOptionValue("varSub");
+    }
+    else {
+      substitutionsString = "variable_substitutions.txt";
+    }
+
+    if (hasCost) {
+      costsString = cmds.getOptionValue("cost");
+      if (!costsString.endsWith(".json") & !costsString.endsWith(".txt")) {
+        throw new Error("Invalid format for Cost file.\n Accepted are only .txt or .json");
+      }
+    }
+    else {
+      costsString = "cost_model.txt";
+    }
 
     // Read model and logs to find ltl formula
     IOManager ioManager = IOManager.getInstance();
@@ -166,21 +167,6 @@ public class Runner {
         
     ioManager.exportModel(model);
    
-
-    // If formula exists, define and write PDDL problems.
-    // PDDLGenerator pddlGenerator = new PDDLGenerator(model, ltlFormula);
-    //PDDLGenerator pddlGenerator = new PDDLGenerator(model);
-    //PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel);
-    //String domain = pddlGenerator.defineDomain();
-    //ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
-    /*
-    int i = 1;
-    for (String problem : problems) {
-      IOManager.getInstance().exportProblemPDDL(problem, i);
-      i++;
-    }
-    IOManager.getInstance().exportDomainPDDL(domain);
-    */
   }
 }
 
