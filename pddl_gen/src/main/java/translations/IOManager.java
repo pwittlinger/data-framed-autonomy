@@ -80,6 +80,10 @@ public class IOManager {
     }
   }
 
+  public void overrideOutputPath(String pathToOutputDirectory) {
+    this.outputFolder = pathToOutputDirectory + "output" + File.separator;
+  }
+
   public void setProjectPrefix(String projectPrefix) {
     //this.projectPrefix = projectPrefix + File.separator;
     this.setPaths();

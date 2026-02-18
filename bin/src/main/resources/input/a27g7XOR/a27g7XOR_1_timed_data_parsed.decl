@@ -1,0 +1,41 @@
+activity ActivityV
+activity ActivityA
+activity ActivityK
+activity ActivityF
+activity ActivityI
+activity ActivityB
+activity ActivityZ
+activity ActivityN
+activity ActivityS
+activity ActivityT
+activity ActivityQ
+activity ActivityAB
+activity ActivityX
+activity ActivityU
+activity ActivityL
+activity ActivityJ
+activity ActivityY
+activity ActivityH
+activity ActivityC
+activity ActivityG
+activity ActivityO
+activity ActivityP
+activity ActivityM
+activity ActivityAA
+activity ActivityE
+activity ActivityR
+activity ActivityW
+bind ActivityB: categorical 
+bind ActivityC: categorical 
+bind ActivityA: integer 
+bind ActivityF: categorical 
+bind ActivityG: integer 
+bind ActivityN: integer 
+bind ActivityP: integer 
+bind ActivityM: integer 
+bind ActivityO: categorical
+bind ActivityJ: integer
+bind ActivityH: integer
+integer: integer between 0 and 100 
+categorical: c1, c2, c3
+Response[ActivityG, ActivityP] |A.integer > 10 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h

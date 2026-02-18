@@ -49,6 +49,7 @@ public class Runner {
     boolean hasVarAssign = cmds.hasOption("varAssign");
     boolean hasVarSub = cmds.hasOption("varSub");
     boolean hasCost = cmds.hasOption("cost");
+    boolean newOutput = cmds.hasOption("output");
 
     if (hasPetri) {
         petriNetString = cmds.getOptionValue("petri");
@@ -86,6 +87,10 @@ public class Runner {
 
     // In case the jar you run is outside the directory in which the project is; Add directory name as prefix.
     ioManager.setProjectPrefix("pddl_gen");
+
+    if (newOutput) {
+      ioManager.overrideOutputPath(cmds.getOptionValue("output"));
+    }
     
     DeclareModel model = ioManager.readDeclareModel(modelString); // OKAY!
     //model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!

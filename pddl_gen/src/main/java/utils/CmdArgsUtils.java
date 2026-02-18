@@ -23,7 +23,7 @@ public class CmdArgsUtils {
         Option petriParam = new Option("p", "petri", true, "Path to Petri-net model");
         options.addOption(petriParam);
 
-		Option logParam = new Option("o", "log", true, "Input event log path");
+		Option logParam = new Option("l", "log", true, "Input event log path");
 		logParam.setRequired(true);
 		options.addOption(logParam);
 
@@ -36,6 +36,8 @@ public class CmdArgsUtils {
         Option varSubs = new Option("s", "varSub",true,  "Path to the variable substitution");
         options.addOption(varSubs);
 
+        Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
+        options.addOption(outputPath);
 
 		CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();

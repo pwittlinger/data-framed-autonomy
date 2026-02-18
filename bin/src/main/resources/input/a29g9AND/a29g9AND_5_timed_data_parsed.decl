@@ -1,0 +1,30 @@
+activity ActivityO
+bind ActivityO: categorical 
+activity ActivityJ
+bind ActivityJ: integer 
+activity ActivityC
+bind ActivityC: categorical 
+activity ActivityN
+bind ActivityN: integer 
+activity ActivityK
+bind ActivityK: integer 
+activity ActivityA
+bind ActivityA: integer 
+activity ActivityL
+activity ActivityB
+bind ActivityB: categorical 
+activity ActivityP
+bind ActivityP: integer 
+activity ActivityF
+bind ActivityF: categorical 
+activity ActivityI
+bind ActivityI: integer
+activity ActivityU
+bind ActivityU: integer  
+integer: integer between 0 and 100 
+categorical: c1, c2, c3
+Response[ActivityJ, ActivityP] |A.integer > 10 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h
+Precedence[ActivityF, ActivityO] |A.categorical is c1 |T.categorical is c2 | ActivityP,0,100,h/ActivityG,2,5,h
+Not Response[ActivityI, ActivityU] |A.integer > 20 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h
+Absence[ActivityK] |A.integer < 20 | ActivityB,0,100,h
+Chain Response[ActivityA, ActivityC] |A.integer < 5 |T.categorical is c1 | ActivityP,0,100,h/ActivityG,2,5,h

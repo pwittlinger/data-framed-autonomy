@@ -1,0 +1,34 @@
+activity ActivityAR
+bind ActivityAR: categorical 
+activity ActivityF
+bind ActivityF: categorical 
+activity ActivityK
+bind ActivityK: integer 
+activity ActivityA
+bind ActivityA: integer 
+activity ActivityAT
+bind ActivityAT: integer 
+activity ActivityG
+bind ActivityG: integer 
+activity ActivityB
+bind ActivityB: categorical 
+activity ActivityV
+bind ActivityV: categorical 
+activity ActivityAP
+bind ActivityAP: integer 
+activity ActivityAU
+bind ActivityAU: integer 
+activity ActivityL
+activity ActivityAL
+bind ActivityAL: integer 
+activity ActivityH
+bind ActivityH: integer 
+integer: integer between 0 and 100 
+categorical: c1, c2, c3
+Response[ActivityG, ActivityAP] |A.integer > 10 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h
+Precedence[ActivityF, ActivityV] |A.categorical is c1 |T.categorical is c2 | ActivityP,0,100,h/ActivityG,2,5,h
+Not Response[ActivityAL, ActivityH] |A.integer > 20 |T.integer < 10 | ActivityP,0,100,h/ActivityG,2,5,h
+Absence[ActivityK] |A.integer < 20 | ActivityB,0,100,h
+Chain Response[ActivityA, ActivityAR] |A.integer < 5 |T.categorical is c1 | ActivityP,0,100,h/ActivityG,2,5,h
+Existence[ActivityB] |A.categorical is c2 | ActivityB,0,100,h
+Response[ActivityAT, ActivityAU] |A.integer > 10 |T.integer > 10 | ActivityP,0,100,h/ActivityG,2,5,h
