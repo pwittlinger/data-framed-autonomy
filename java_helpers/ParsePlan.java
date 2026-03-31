@@ -30,9 +30,10 @@ public class ParsePlan {
 	
 	static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	//static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}\\.[\\d]{0,5}:\\s\\(add_action\\sa[\\d]+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}\\.[\\d]{0,5}:\\s\\(add_move_automata\\sa[\\d]+\\))");
-	static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+	//static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+	static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action[\\s_]a[\\d]+([\\s_][a-zA-Z]+[\\d])?+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata[\\s_]a[\\d]+([\\s_][a-zA-Z]+[\\d])?\\))");
 	//static Pattern actionPlanWithResourcePattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\s[a-zA-Z]+[\\d]*\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
-    static Pattern actionPlanWithResourcePattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\s[a-zA-Z]+[\\d]*\\))");
+    static Pattern actionPlanWithResourcePattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action[\\s_]a[\\d]+[\\s_][a-zA-Z]+[\\d]*\\))");
     static Pattern paramPattern = Pattern.compile("\\(add_parameter.*\\)\\n");
 	static Pattern nPlansPattern = Pattern.compile("Found\\sPlan");
 	
@@ -166,7 +167,8 @@ public class ParsePlan {
 		
 		ArrayList<String> actionPlan = new ArrayList<String>();
 
-		String[] splitPlan = inputPlan.split("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+		//String[] splitPlan = inputPlan.split("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+		String[] splitPlan = inputPlan.split("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata[\\s_]a[\\d]+([\\s_][a-zA-Z]+[\\d])?\\))");
 		for (int i = 0;i<splitPlan.length;i++) {
 			if (splitPlan[i].contains("add_action")) {
 		    	actionPlan.add(splitPlan[i]);
@@ -216,7 +218,7 @@ public class ParsePlan {
 		//1. The first assumption is that the addition and synchronization of the event happen at the same instance
 		//2. The activity name is identical across all actions
 		
-		int start = currentEvent.indexOf("add_action ") + 11;
+		int start = currentEvent.indexOf("add_action") + 11;
 		int end = currentEvent.indexOf(")", start);
 		
 		if (start >= end) {
@@ -225,8 +227,15 @@ public class ParsePlan {
 
         //Now I need to handle the possible space with the resource.
 
+		int countOfUnderscore = currentEvent.substring(start, end).split("_").length;
+		String activity;
+		if (countOfUnderscore<2) {
+			activity = currentEvent.substring(start, end).split(" ")[0]; // encoded activity: e.g. a7
+		}
+		else {
+			activity = currentEvent.substring(start, end).split("_")[0]; // encoded activity: e.g. a7
+		}
 		
-		String activity = currentEvent.substring(start, end).split(" ")[0]; // encoded activity: e.g. a7
 		activityName = activityMap.get(activity);
 		
 		// Now get time stamp
@@ -236,7 +245,13 @@ public class ParsePlan {
         String resource;
 
         if (resourceMatcher.find()) {
-            resource = currentEvent.substring(start, end).split(" ")[1];
+			if (currentEvent.substring(start, end).split("_").length < 2) {
+				resource = currentEvent.substring(start, end).split(" ")[1];
+			}
+			else {
+				resource = currentEvent.substring(start, end).split("_")[1];
+			}
+            
             payload.put("resource", resource);
         }
 		
@@ -259,12 +274,26 @@ public class ParsePlan {
 				//3 is parameter
 				//4 is parameter value
 				
-				if (lines.length != 5) {
-					System.out.println("PROBLEM");
+				if (lines.length == 4) {
+					/* 2026-03-16: When I fixed the bug to ensure that ALL automata states need to be checked I removed the automaton state input.
+					 */
+
+					//payload.put(lines[3], lines[4]);
+					payload.put(lines[2], lines[3]);
+					
 				}
+				else {
+					// Getting into this branch means that the propositionalized version was used.
+					// 
+					lines = line.split("_");
+					payload.put(lines[3], lines[4]);
+
+				}
+
+
 				
 				//System.out.println(lines[3] + " " + lines[4]);
-				payload.put(lines[3], lines[4]);	
+					
 			}	
 		}
 		
@@ -439,12 +468,22 @@ public class ParsePlan {
 			//2 is automaton state
 			//3 is parameter
 			//4 is parameter value
+
+			if (lines.length == 4) {
+					/* 2026-03-16: When I fixed the bug to ensure that ALL automata states need to be checked I removed the automaton state input.
+					 */
+
+				var.add(lines[2]);
+					
+				}
+				else {
+					// Getting into this branch means that the propositionalized version was used.
+					// 
+					lines = line.split("_");
+					var.add(lines[3]);
+
+				}	
 			
-			if (lines.length != 5) {
-				System.out.println("PROBLEM");
-			}
-			
-			var.add(lines[3]);
 			
 		}
 		
