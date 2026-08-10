@@ -279,15 +279,32 @@ public class ParsePlan {
 					 */
 
 					//payload.put(lines[3], lines[4]);
-					payload.put(lines[2], lines[3]);
+					//payload.put(lines[2], lines[3]);
+
+					if (lines[2].contains("integer")) {
+						payload.put(lines[2], lines[3].substring(1));
+
+					}
+					else {
+						payload.put(lines[2], lines[3]);
+					}
+
+
 					
 				}
 				else {
 					// Getting into this branch means that the propositionalized version was used.
 					// 
 					lines = line.split("_");
-					payload.put(lines[3], lines[4]);
+					// 2026-04-13: Quick and Dirty Fix to remove the "v" infront of the integer value.
+					if (lines[3].contains("integer")) {
+						payload.put(lines[3], lines[4].substring(1));
 
+					}
+					else {
+						payload.put(lines[3], lines[4]);
+					}
+						
 				}
 
 
@@ -555,6 +572,7 @@ private static StringBuilder generateTrace(ArrayList<Event> listOfEvents, int id
 		
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFile), StandardOpenOption.APPEND)) {
 			writer.write(sb.toString());
+			writer.flush();
 		} catch (IOException e) {
 			System.err.println("Unable to write to event log file\n" + e.toString());
 		}

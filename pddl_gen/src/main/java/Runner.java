@@ -162,8 +162,10 @@ public class Runner {
       ioManager.exportActivityMapping(pddlGenerator.activityMapping(), pnName);
 
         int i = 1;
+      
     for (String problem : problems) {
-      IOManager.getInstance().exportProblemPDDL(problem, i);
+      //IOManager.getInstance().exportProblemPDDL(problem, i);
+      ioManager.exportProblemPDDL(problem, i);
       i++;
     }
     //IOManager.getInstance().exportDomainPDDL(domain);
