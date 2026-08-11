@@ -20,7 +20,7 @@ public class CmdArgsUtil {
 		declareParam.setRequired(true);
 		options.addOption(declareParam);
 
-        Option petriParam = new Option("p", "petri", true, "Path to Petri-net model");
+        Option petriParam = new Option("p", "petri", true, "Path to Petri-net model(s), comma-separated for multiple");
         options.addOption(petriParam);
 
 		Option logParam = new Option("o", "log", true, "Input event log path");

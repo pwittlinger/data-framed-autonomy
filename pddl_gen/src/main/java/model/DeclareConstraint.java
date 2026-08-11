@@ -168,6 +168,33 @@ public class DeclareConstraint {
     return template;
   }
 
+  // Parses the trailing per-activity time-window suffix from the .decl file,
+  // e.g. "ActivityP,0,100,h/ActivityG,2,5,h", and routes each window to
+  // whichever of activation/target it names (order in the file isn't fixed).
+  public void assignTimeConditions(String timeConditionsString) {
+    if (timeConditionsString == null || timeConditionsString.isBlank()) {
+      return;
+    }
+
+    for (String segment : timeConditionsString.split("/")) {
+      String[] parts = segment.split(",");
+      if (parts.length < 3) {
+        continue;
+      }
+
+      String activityName = parts[0];
+      double min = Double.parseDouble(parts[1]);
+      double max = Double.parseDouble(parts[2]);
+
+      if (activityName.equals(this.activationActivity)) {
+        this.setActivationTimeConditions(min, max);
+      }
+      if (activityName.equals(this.targetActivity)) {
+        this.setTargetTimeConditions(min, max);
+      }
+    }
+  }
+
   public void setActivationTimeConditions(double min, double max) {
     this.activation_min_t_condidition = min;
     this.activation_max_t_condition = max;

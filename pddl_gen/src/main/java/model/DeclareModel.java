@@ -182,7 +182,9 @@ public class DeclareModel {
     String activity = constraintTokens[1];
     if (template != null && activities.get(activity) != null) {
       String activationCondition = constraintTokens[2] == null? null : constraintTokens[2];
-      return new DeclareConstraint(template, activity, activationCondition, null,null);
+      DeclareConstraint constraint = new DeclareConstraint(template, activity, activationCondition, null, null);
+      constraint.assignTimeConditions(constraintTokens[3]);
+      return constraint;
     }
     return null;
   }
@@ -209,7 +211,9 @@ public class DeclareModel {
           targetCondition = null;
         }
         */
-        return new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
+        DeclareConstraint constraint = new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
+        constraint.assignTimeConditions(constraintTokens[5]);
+        return constraint;
       }
     }
     return null;
@@ -264,6 +268,9 @@ public class DeclareModel {
     // assuming the min and max value is already given
     for (DeclareConstraint dc : this.declareConstraints) {
       List<Condition> conditionsList = dc.getActivationConditions();
+      if (conditionsList == null) {
+        continue;
+      }
       // If the constraint has an AND relation there can be multiple parameters and values
       for (Condition cond : conditionsList) {
           String localAttrib = cond.parameterName;

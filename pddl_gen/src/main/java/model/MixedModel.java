@@ -31,7 +31,8 @@ import model.Attribute;
 
 public class MixedModel {
     public DeclareModel declareModel;
-    public DataPetriNet dpnModel;
+    public ArrayList<DataPetriNet> dpnModels;
+    public ArrayList<String> dpnConstraintNames;
     public HashMap<String, String> activities; //Mapping from activity/transition name :--> pddl name
     private Integer activityCounter = 0;
     public ArrayList<String> allInitialStates;
@@ -43,14 +44,23 @@ public class MixedModel {
 	public ArrayList<String> allAutomatonStates;
 	public HashMap<String, Activity> activityObjects;
 	public ArrayList<String> allPetriNetStates;
+	public ArrayList<ArrayList<String>> allPetriNetStatesByDpn;
 	private Map<Pair<Activity, CostEnum>, Integer> costs;
 	
     
 
-    public MixedModel(DataPetriNet dataPetriNet, DeclareModel declare){
-        this.dpnModel = dataPetriNet;
+    public MixedModel(DataPetriNet dataPetriNet, DeclareModel declare) {
+        this(List.of(dataPetriNet), declare);
+    }
+
+    public MixedModel(List<DataPetriNet> dataPetriNets, DeclareModel declare) {
+        if (dataPetriNets == null || dataPetriNets.isEmpty()) {
+            throw new IllegalArgumentException("At least one DataPetriNet is required.");
+        }
+        this.dpnModels = new ArrayList<>(dataPetriNets);
         this.declareModel = declare;
 		this.constraintAutomatons = new ArrayList<>();
+		this.dpnConstraintNames = new ArrayList<>();
 		this.allInitialStates = new ArrayList<>();
 		this.allAcceptingStates = new ArrayList<>();
 		this.allFailureStates = new ArrayList<>();
@@ -59,27 +69,53 @@ public class MixedModel {
 		this.activities = new HashMap<>();
 		this.allAutomatonStates = new ArrayList<>();
 		this.allPetriNetStates = new ArrayList<>();
+		this.allPetriNetStatesByDpn = new ArrayList<>();
 
-
-        //this.dpnModel.dataPetriNet.getVariables();
 		this.mapAllActivities();
 		this.prepareAutomatonStates();
 		this.parseAutomatonStatesIntoList();
 		this.buildAutomatons();
 		this.activityObjects = this.mapActivityObjects();
-		
+    }
+
+    private String dpnStatePrefix(int dpnIndex) {
+        return this.dpnModels.size() == 1 ? "" : ("sPN" + dpnIndex + "_");
+    }
+
+    private String dpnConstraintName(int dpnIndex) {
+        return this.dpnModels.size() == 1 ? "pn" : ("pn" + dpnIndex);
+    }
+
+    private String mappedActivity(String label) {
+        if (label == null || label.isEmpty()) {
+            return null;
+        }
+        return this.activities.get(label);
+    }
+
+    private void addAutomatonTransition(String sourceState, String label, String targetState) {
+        String mappedActivity = mappedActivity(label);
+        if (mappedActivity == null) {
+            return;
+        }
+        ArrayList<String> automatonItem = new ArrayList<>();
+        automatonItem.add(sourceState);
+        automatonItem.add(mappedActivity);
+        automatonItem.add(targetState);
+        this.allAutomatonStrings.add(automatonItem);
     }
 
     public void mapAllActivities(){
 		// Map activities to strings
 		// Shared activities between the PN and DECLARE models have the same index
-        Set<String> dpnActivities = this.dpnModel.activities;
         HashMap<String, Activity> declareActivities = this.declareModel.getActivities();
 
-        for (String act : dpnActivities){
-            if (!this.activities.containsKey(act)){
-                this.activities.put(act, "a"+this.activityCounter);
-                this.activityCounter += 1;
+        for (DataPetriNet dpnModel : this.dpnModels) {
+            for (String act : dpnModel.activities) {
+                if (!this.activities.containsKey(act)) {
+                    this.activities.put(act, "a" + this.activityCounter);
+                    this.activityCounter += 1;
+                }
             }
         }
 
@@ -94,40 +130,65 @@ public class MixedModel {
 
     public void mapAllVariables(){
 		// Variables from the DECLARE model are already mapped in the 
-        Collection<DataElement> dpnVars = this.dpnModel.dataPetriNet.getVariables();
+        for (DataPetriNet dpnModel : this.dpnModels) {
+            Collection<DataElement> dpnVars = dpnModel.dataPetriNet.getVariables();
+        }
 
     }
 
 
     public void parseAutomatonStatesIntoList(){
 
-        // First handling Petri Net states
-        // Checking the initial state of the PN automaton
-        // Working with Deterministic Automatons -> exactly one initial state
-        this.dpnModel.executableAutomaton.ini();
-        PossibleNodes initialState = this.dpnModel.executableAutomaton.currentState();
+        // First handling Petri Net states — one automaton per DPN
+        int dpnIndex = 1;
+        for (DataPetriNet dpnModel : this.dpnModels) {
+            String statePrefix = dpnStatePrefix(dpnIndex);
+            this.dpnConstraintNames.add(dpnConstraintName(dpnIndex));
+            ArrayList<String> dpnStates = new ArrayList<>();
 
-        for (State stt : initialState){
-            this.allInitialStates.add(stt.toString());
-            //this.allAutomatonStates.add(stt.toString());
+            dpnModel.executableAutomaton.ini();
+            PossibleNodes initialState = dpnModel.executableAutomaton.currentState();
+
+            for (State stt : initialState) {
+                String stateName = statePrefix + stt.toString();
+                this.allInitialStates.add(stateName);
+            }
+
+            ArrayList<String> dpnAccepting = new ArrayList<>();
+
+            for (State st : dpnModel.executableAutomaton.states()) {
+                String stateName = statePrefix + st.toString();
+                if (st.isAccepting()) {
+                    dpnAccepting.add(stateName);
+                }
+                if (dpnModel.isNonAcceptingTrap(st)) {
+                    this.allFailureStates.add(stateName);
+                }
+                this.allAutomatonStates.add(stateName);
+                this.allPetriNetStates.add(stateName);
+                dpnStates.add(stateName);
+            }
+            this.allAcceptingStates.add(dpnAccepting);
+            this.allPetriNetStatesByDpn.add(dpnStates);
+
+            for (State stt : dpnModel.executableAutomaton.states()) {
+                String sourcePrefix = statePrefix;
+                for (org.processmining.ltl2automaton.plugins.automaton.Transition t : stt.getOutput()) {
+                    if (t.isPositive()) {
+                        String label = t.getPositiveLabel();
+                        State source = t.getSource();
+                        State target = t.getTarget();
+                        addAutomatonTransition(
+                            sourcePrefix + source.toString(),
+                            label,
+                            sourcePrefix + target.toString()
+                        );
+                    }
+                }
+            }
+            dpnIndex++;
         }
-        
-		ArrayList<String> dpnAccepting = new ArrayList<>();
 
-        for (State st : dpnModel.executableAutomaton.states()) {
-        	if (st.isAccepting()) {
-        		//this.allAcceptingStates.add(st.toString());
-				dpnAccepting.add(st.toString());
-        	}
-        	if (this.dpnModel.isNonAcceptingTrap(st)) {
-        		this.allFailureStates.add(st.toString());
-        	}
-			this.allAutomatonStates.add(st.toString());
-			this.allPetriNetStates.add(st.toString());
-
-        	
-        }
-		this.allAcceptingStates.add(dpnAccepting);
 		//Next adding all Goal states for the Declarative Automaton
         
         for (Automaton aut : this.constraintAutomatons) {
@@ -152,26 +213,6 @@ public class MixedModel {
   	      }
 		  this.allAcceptingStates.add(declareAccepting);
         }
-        
-        for (State stt : this.dpnModel.executableAutomaton.states()) {
-
-			for (org.processmining.ltl2automaton.plugins.automaton.Transition t : stt.getOutput()) {
-				if (t.isPositive()) {
-					ArrayList <String> automatonItem = new ArrayList<>();
-					String label = t.getPositiveLabel();
-					State source = t.getSource();
-					State target = t.getTarget();
-
-					automatonItem.add(source.toString());
-					//automatonItem.add(label);
-					automatonItem.add(this.activities.get(label));
-					automatonItem.add(target.toString());
-					
-					this.allAutomatonStrings.add(automatonItem);
-				}		
-
-			}
-		}
     }
 
       private void prepareAutomatonStates() {
@@ -192,11 +233,15 @@ public class MixedModel {
     for (Automaton aut : this.constraintAutomatons) {
 
       for (Transition t : aut.getTransitions()) {
+        String mappedActivity = mappedActivity(t.getActivity());
+        if (mappedActivity == null) {
+          continue;
+        }
+
 		ArrayList<String> automatonItem = new ArrayList<>();
 
 		automatonItem.add(t.getActiviationState().name);
-		//automatonItem.add(t.getActivity());
-		automatonItem.add(this.activities.get(t.getActivity()));
+		automatonItem.add(mappedActivity);
 		automatonItem.add(t.getTargetState().name);
 
 		this.allAutomatonStrings.add(automatonItem);
@@ -286,37 +331,30 @@ public class MixedModel {
 	HashMap<String, Activity> activityObjectMap = new HashMap<String, Activity>() ;
 
 	HashMap<String, Activity> declActs = this.declareModel.getActivities();
-	HashMap<String, Activity> dpnActs = this.dpnModel.activityMap;
 
 	for (String act : declActs.keySet()){
-		//String mappedAct = this.activities.get(act);
 		Activity actObj = declActs.get(act);
-
-		//activityObjectMap.put(mappedAct, actObj);
 		activityObjectMap.put(act, actObj);
 	}
 
-	for (String act : dpnActs.keySet()){
-		Activity dpnAct = dpnActs.get(act);
-		//this.activities;
-		boolean ins = true;
-		//Activity tmp = null;
+	for (DataPetriNet dpnModel : this.dpnModels) {
+		HashMap<String, Activity> dpnActs = dpnModel.activityMap;
+		for (String act : dpnActs.keySet()) {
+			Activity dpnAct = dpnActs.get(act);
+			boolean ins = true;
 
-
-
-
-		for (Activity objs : activityObjectMap.values()) {
-			if (objs.getName() == dpnAct.getName()) {
-				ins = false;
-				break;
+			for (Activity objs : activityObjectMap.values()) {
+				if (objs.getName() == dpnAct.getName()) {
+					ins = false;
+					break;
+				}
 			}
-		}
 
-		if (ins) {
-			activityObjectMap.put(act, dpnAct);
-		}
-		else {
-			System.out.println("TODO: Activity already in list.");
+			if (ins) {
+				activityObjectMap.put(act, dpnAct);
+			} else {
+				System.out.println("TODO: Activity already in list.");
+			}
 		}
 	}
 

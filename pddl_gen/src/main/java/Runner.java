@@ -34,7 +34,7 @@ public class Runner {
           throw new Exception("Error in accessing DECLARE model.");
     }
 
-    if (!CmdFileUtils.declareFileExists(traceString)) {
+    if (!CmdFileUtils.logFileExists(traceString)) {
       throw new Exception("Error in accessing XES file." + "\nGiven path:" + traceString);
     }
 
@@ -50,10 +50,12 @@ public class Runner {
 
     if (hasPetri) {
         petriNetString = cmds.getOptionValue("petri");
-        if (!CmdFileUtils.petriFileExists(petriNetString)) {
-          throw new Exception("Error in accessing Petri Net File.")
+        for (String petriPath : petriNetString.split(",")) {
+          if (!CmdFileUtils.petriFileExists(petriPath.trim())) {
+            throw new Exception("Error in accessing Petri Net File: " + petriPath.trim());
+          }
         }
-    } 
+    }
     
     if (hasVarAssign) {
       variablesString = cmds.getOptionValue("varAssign");
@@ -133,8 +135,9 @@ public class Runner {
 
     else {
 
-      DataPetriNet petriNet = ioManager.readDataPetriNet(petriNetString);
-      MixedModel myMixedModel = new MixedModel(petriNet, model);
+      String[] petriNetPaths = petriNetString.split(",");
+      ArrayList<DataPetriNet> petriNets = ioManager.readDataPetriNets(petriNetPaths);
+      MixedModel myMixedModel = new MixedModel(petriNets, model);
 
       if (!ioManager.costModelExists(costsString) || (!hasCost)) {
         ioManager.exportCostModel(costsString, myMixedModel.activities.keySet());
