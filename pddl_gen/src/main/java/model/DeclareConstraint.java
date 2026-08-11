@@ -10,7 +10,8 @@ public class DeclareConstraint {
   private ArrayList<Condition> activationConditionsList, targetConditionsList;
   private double activation_min_t_condidition, activation_max_t_condition, target_min_t_condidition, target_max_t_condition;
   private ArrayList<String> clockConditions;
-  
+  private int duplicateIndex = 0;
+
   public DeclareConstraint(DeclareTemplate template, String activationActivity, String activationCondition, String targetActivity, String targetCondition) {
     this.template = template;
     this.activationActivity = activationActivity;
@@ -161,9 +162,16 @@ public class DeclareConstraint {
   }
 
   public String getConstraintName() {
-    return (template.getTemplateName() + "_" + activationActivity + (targetActivity != null ? ("_" + targetActivity) : "")).replaceAll("\s", "_");
+    String baseName = (template.getTemplateName() + "_" + activationActivity + (targetActivity != null ? ("_" + targetActivity) : "")).replaceAll("\s", "_");
+    return duplicateIndex > 0 ? baseName + "_" + duplicateIndex : baseName;
   }
-  
+
+  // Assigns the ordinal (2nd, 3rd, ...) of this constraint among others sharing the same
+  // template/activation/target, so repeated constraints get distinct PDDL object names.
+  public void setDuplicateIndex(int duplicateIndex) {
+    this.duplicateIndex = duplicateIndex;
+  }
+
   public DeclareTemplate getTemplate() {
     return template;
   }

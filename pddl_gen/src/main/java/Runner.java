@@ -30,8 +30,11 @@ public class Runner {
     String modelString= cmds.getOptionValue("declare");
     String traceString= cmds.getOptionValue("log");
 
-    if (!CmdFileUtils.declareFileExists(modelString)) {
-          throw new Exception("Error in accessing DECLARE model.");
+    String[] declareModelPaths = modelString.split(",");
+    for (String declarePath : declareModelPaths) {
+      if (!CmdFileUtils.declareFileExists(declarePath.trim())) {
+        throw new Exception("Error in accessing DECLARE model: " + declarePath.trim());
+      }
     }
 
     if (!CmdFileUtils.logFileExists(traceString)) {
@@ -86,7 +89,7 @@ public class Runner {
     //ioManager.setProjectPrefix("pddl_gen");
     ioManager.setProjectPrefix();
     
-    DeclareModel model = ioManager.readDeclareModel(modelString); // OKAY!
+    DeclareModel model = ioManager.readDeclareModel(declareModelPaths); // OKAY!
     
     Map<String, Integer> variableAssignments;
     Set<VariableSubstitution> substitutions;

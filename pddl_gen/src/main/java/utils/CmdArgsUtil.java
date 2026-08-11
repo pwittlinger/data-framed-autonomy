@@ -16,7 +16,7 @@ public class CmdArgsUtil {
     public static CommandLine parseCmdInputs(String[] args) {
         Options options = new Options();
 
-        Option declareParam = new Option("d", "declare", true, "Path to (MP-)DECLARE model ");
+        Option declareParam = new Option("d", "declare", true, "Path to (MP-)DECLARE model(s), comma-separated for multiple");
 		declareParam.setRequired(true);
 		options.addOption(declareParam);
 

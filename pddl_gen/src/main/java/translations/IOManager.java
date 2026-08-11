@@ -86,14 +86,25 @@ public class IOManager {
   
   //Section: Reading declare model
   public DeclareModel readDeclareModel(String modelFileName) {
+    return readDeclareModel(new String[] {modelFileName});
+  }
 
-    File declareFile = new File(modelFileName);
-    if (!declareFile.isFile()) {
-      declareFile = new File(currentPath + modelFileName);
+  public DeclareModel readDeclareModel(String[] modelFileNames) {
+    HashMap<String, ArrayList<String[]>> mergedLines = initializeSortingMap();
+
+    for (String modelFileName : modelFileNames) {
+      File declareFile = new File(modelFileName.trim());
+      if (!declareFile.isFile()) {
+        declareFile = new File(currentPath + modelFileName.trim());
+      }
+
+      HashMap<String, ArrayList<String[]>> parsedLines = readFile(declareFile);
+      for (Map.Entry<String, ArrayList<String[]>> entry : parsedLines.entrySet()) {
+        mergedLines.get(entry.getKey()).addAll(entry.getValue());
+      }
     }
 
-    HashMap<String, ArrayList<String[]>> parsedLines = readFile(declareFile);
-    return new DeclareModel(parsedLines);
+    return new DeclareModel(mergedLines);
   }
   
   private HashMap<String, ArrayList<String[]>> readFile(File declareFile) {

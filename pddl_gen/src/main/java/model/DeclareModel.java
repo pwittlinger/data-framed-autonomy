@@ -156,7 +156,22 @@ public class DeclareModel {
     ArrayList<DeclareConstraint> newConstraints = new ArrayList<>();
     addUnaryConstraints(newConstraints, unaryConstraints);
     addBinaryConstraints(newConstraints, binaryConstraints);
+    assignUniqueConstraintNames(newConstraints);
     return newConstraints;
+  }
+
+  // Constraints sharing the same template/activation/target would otherwise collide on
+  // getConstraintName(), e.g. when the same Response[A,B] is declared twice (possibly across
+  // merged DECLARE files). Suffix every repeat after the first with its occurrence index.
+  private void assignUniqueConstraintNames(ArrayList<DeclareConstraint> constraints) {
+    Map<String, Integer> occurrences = new HashMap<>();
+    for (DeclareConstraint constraint : constraints) {
+      String baseName = constraint.getConstraintName();
+      int occurrence = occurrences.merge(baseName, 1, Integer::sum);
+      if (occurrence > 1) {
+        constraint.setDuplicateIndex(occurrence);
+      }
+    }
   }
   
   private void addUnaryConstraints(ArrayList<DeclareConstraint> constraints, ArrayList<String[]> unaryConstraints) {
