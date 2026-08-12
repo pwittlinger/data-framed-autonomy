@@ -1,6 +1,7 @@
 package model;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -43,6 +44,8 @@ public class DataPetriNet {
 	public static DataPetriNetImporter dataPetriNetImporter = new DataPetriNetImporter();
 	public List automatonStrings;
 	public HashMap<String, Activity> activityMap;
+	public HashMap<String,String> dpnMappedActivities;
+	public String netName;
 	//private ExecutableAutomaton executableAutomaton;
 	//private DataPetriNetsWithMarkings dataPetriNet;
 	//DataPetriNetImporter dataPetriNetImporter = new DataPetriNetImporter();
@@ -50,12 +53,15 @@ public class DataPetriNet {
 	public DataPetriNet(String inputDPN) throws DPNIOException, FileNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, InvocationTargetException{
 		//DataPetriNetImporter dataPetriNetImporter = new DataPetriNetImporter();
 		InputStream inputStream = new BufferedInputStream(new FileInputStream(inputDPN));
+		File f = new File(inputDPN);
+		netName = f.getName();
+
 		this.dataPetriNet = dataPetriNetImporter.importFromStream(inputStream).getDPN();
 		this.activities = new HashSet<String>();
 
 		for (Transition t : dataPetriNet.getTransitions()) {
 			if (!t.isInvisible() && !activities.contains(t.getLabel())) {
-				activities.add(t.getLabel());
+				this.activities.add(t.getLabel());
 		}
 		}
 		
@@ -64,6 +70,7 @@ public class DataPetriNet {
 		this.executableAutomaton = new ExecutableAutomaton(automaton);
 		this.mapAllActivities();
 		this.activityMap = this.addActivities();
+
 	}
 
 
@@ -168,7 +175,7 @@ public class DataPetriNet {
 
 	/*
 	//For building a DOT string of the automaton
-	public static String createAutomatonVisualizationString(Automaton aut, boolean alternativeLayout) {
+	public String createAutomatonVisualizationString(Automaton aut, boolean alternativeLayout) {
 		//Adopted from org.processmining.ltl2automaton.plugins.automaton.DOTExporter, but significantly modified
 		StringBuilder sb = new StringBuilder();
 		sb.append("digraph \"\" {");
@@ -182,7 +189,7 @@ public class DataPetriNet {
 				sb.append(" rankdir = \"LR\"");
 
 			for (final State s : aut) {
-				if (!isNonAcceptingTrap(s)) {
+				if (!this.isNonAcceptingTrap(s)) {
 					sb.append(" s");
 					sb.append(s.getId());
 					if (s.isAccepting()) {
@@ -195,12 +202,12 @@ public class DataPetriNet {
 			}
 
 			for (final State s : aut) {
-				if (isNonAcceptingTrap(s)) {
+				if (this.isNonAcceptingTrap(s)) {
 					continue; //Skipping the fail-state
 				}
 				Map<State, List<String>> outStateToLabels = new HashMap<State, List<String>>();
 				for (final org.processmining.ltl2automaton.plugins.automaton.Transition t : s.getOutput()) {
-					if (isNonAcceptingTrap(t.getTarget())) {
+					if (this.isNonAcceptingTrap(t.getTarget())) {
 						continue; //Skipping the edges that lead to the fail-state
 					}
 					//Replacing encodings with activity names and merging same labeled transitions (not the most efficient code)
@@ -211,11 +218,11 @@ public class DataPetriNet {
 					String transitionLabel = t.toString();
 					if (t.isNegative()) { //Only one outgoing negative transitions per state
 						List<String> negLabels = Arrays.asList(transitionLabel.split("&"));
-						if (negLabels.size() == activities.size()) { //Not adding the edge if all activities were negated
+						if (negLabels.size() == this.activities.size()) { //Not adding the edge if all activities were negated
 							outStateToLabels.remove(t.getTarget());
 							continue;
 						}
-						for (String activity : activities) {
+						for (String activity : this.activities) {
 							if (!negLabels.contains("!"+activity)) {
 								outStateToLabels.get(t.getTarget()).add(activity);
 							}
@@ -255,7 +262,7 @@ public class DataPetriNet {
 	}
 	*/
 	//A helper method for building the DOT string
-	public static boolean isNonAcceptingTrap(State s) {
+	public boolean isNonAcceptingTrap(State s) {
 		if (!s.isAccepting() && s.getOutputSize()==1) {
 			org.processmining.ltl2automaton.plugins.automaton.Transition t = s.getOutput().iterator().next();
 			if (t.isAll() && t.getTarget()==s) {
@@ -295,12 +302,12 @@ public class DataPetriNet {
 		//HashMap<State, Collection<List<String>>> outputList = new HashMap<State, Collection<List<String>>>();
 		
 		for (final State s : aut) {
-			if (isNonAcceptingTrap(s)) {
+			if (this.isNonAcceptingTrap(s)) {
 				continue; //Skipping the fail-state
 			}
 			HashMap<State, List<String>> outStateToLabels = new HashMap<State, List<String>>();
 			for (final org.processmining.ltl2automaton.plugins.automaton.Transition t : s.getOutput()) {
-				if (isNonAcceptingTrap(t.getTarget())) {
+				if (this.isNonAcceptingTrap(t.getTarget())) {
 					continue; //Skipping the edges that lead to the fail-state
 				}
 				//Replacing encodings with activity names and merging same labeled transitions (not the most efficient code)
@@ -370,6 +377,15 @@ public class DataPetriNet {
 		return newActivities;
 	  }
 	
+
+	public String activityMapping() {
+		StringBuilder s = new StringBuilder();
+		for (String act :this.dpnMappedActivities.keySet()) {
+			s.append(act + ":"+this.dpnMappedActivities.get(act)+"\n");
+		}
+
+		return s.toString(); //
+	}
 
 }
 

@@ -25,16 +25,12 @@ import java.util.stream.Collectors;
 
 public class PDDLGenerator {
 
-  private static final int CHANGE_DEFAULT_COST = 1;
-  private static final int ADD_DEFAULT_COST = 2;
-  private static final int SET_DEFAULT_COST = 1;
-  private static final int DELETE_DEFAULT_COST = 2;
-
   private final Map<Pair<Activity, CostEnum>, Integer> costs;
   
   // NOTE Define action costs above ^^^
   private final HashMap<String, Activity> activities;
   private final ArrayList<DeclareConstraint> constraints;
+  private final ArrayList<String> params;
   private ArrayList<Automaton> constraintAutomatons;
   private List<List<State>> goalAutomatonStates;
   private State finalTraceState;
@@ -61,6 +57,7 @@ public class PDDLGenerator {
 
     this.activities = model.getActivities();
     this.constraints = model.getDeclareConstraints();
+    this.params = model.params;
     this.constraintAutomatons = new ArrayList<>();
     this.goalAutomatonStates = new ArrayList<>();
     this.prepareAutomatonStates();
@@ -91,8 +88,9 @@ public class PDDLGenerator {
     s.append(this.buildObjectsString(attributes, assignments));
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
-    s.append(this.buildActionCosts());
+    //s.append(this.buildActionCosts());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
+    s.append(this.buildTimeStamps(timeStamps));
     s.append(this.buildAutomatons(finalAutomatonStates));
 
     s.append(this.buildGoals());
@@ -145,6 +143,7 @@ public class PDDLGenerator {
       .stream()
       .flatMap(x -> x.keySet().stream())
       .map(x -> x.getName())
+      .filter(this.params::contains)
       .collect(Collectors.toSet());
     b.append("    ");
     attributes.forEach(x -> b.append(x + " "));
@@ -168,6 +167,7 @@ public class PDDLGenerator {
     b.append("  (:init\n\n");
     b.append("    ; Initialize plan cost. Some planners might need this explicitly\n");
     b.append("    (= (total_cost) 0)\n\n");
+    b.append("    (= (current_timestamp) 0)\n\n");
     b.append("    ;; SUBSTITUTION VARIABLES\n");
 
     for (Map.Entry<String, Integer> entry : variables.entrySet()) {
@@ -185,6 +185,7 @@ public class PDDLGenerator {
     StringBuilder b = new StringBuilder();
     b.append("    ; Action costs\n");
 
+    /*/
     for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
       switch (cost.getKey().getValue()) {
         case CHANGE:
@@ -201,15 +202,37 @@ public class PDDLGenerator {
           break;
       }
     }
+      */
     b.append("\n");
 
     return b;
   }
+  public StringBuilder buildTimeStamps(ArrayList<Double> timeStamps) {
+    // Assuming that the length of timeStamps is equal to the number of trace states-1
+    int l = timeStamps.size();
+    StringBuilder b = new StringBuilder();
+    b.append("    ;; TIMESTAMPS\n");
+    for (int i = 0; i < l; i++) {
+      int next = i + 1;
+      b.append("    (= (timestamp t" + i + " t" + next + ") " + timeStamps.get(i) + ")\n");
+    }
+
+    return b;
+  }
+
   private StringBuilder buildTraceDeclaration(List<Event> events, Map<Event, Map<Attribute, String>> assignments) {
     StringBuilder b = new StringBuilder();
     b.append("    ;; TRACE DECLARATION\n");
 
+    if (events.isEmpty()) {
+      b.append("    (recovery_finished)\n");
+      b.append("    (cur_t_state " + this.finalTraceState.name + ")\n");
+      b.append("    (final_t_state " + this.finalTraceState.name + ")\n");
+      return b;
+    }
+
     b.append("    (cur_t_state " + events.get(0).getName() + ")\n");
+    b.append("    (final_t_state " + this.finalTraceState.name + ")\n");
     Iterator<Event> it1 = events.iterator();
     Event cur;
 
@@ -236,11 +259,17 @@ public class PDDLGenerator {
       activity = XConceptExtension.instance().extractName(cur.getXEvent());
       b.append("    (trace " + cur.getName() + " " + activity + " " + nextName + ")\n");
       for(Map.Entry<Attribute, String> singleAssignment : assignments.get(cur).entrySet()) {
+        String attName = singleAssignment.getKey().getName();
+
+        if (!this.params.contains(attName)) {
+          continue;
+        }
+
         String value = singleAssignment.getValue();
         value = value.replaceAll("[a-zA-Z]", ""); // Remove chars, use as if numbers (in case of enum types)
 
-        b.append("    (has_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ")\n");
-        b.append("    (= (trace_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ") " + value + ")\n");
+        b.append("    (has_parameter " + activity + " " + attName + " " + cur.getName() + " " + nextName + ")\n");
+        b.append("    (= (trace_parameter " + activity + " " + attName + " " + cur.getName() + " " + nextName + ") " + value + ")\n");
       }
       b.append("\n");
     }
@@ -253,15 +282,29 @@ public class PDDLGenerator {
     b.append("    ;; AUTOMATON STATES\n");
 
     for (Automaton aut : this.constraintAutomatons) {
-      
+
+      String constraintName = aut.getConstraint().getConstraintName();
+
       for (State state : aut.getStates()) {
+        b.append("    (associated " + state.name + " " + constraintName + ")\n");
+
         if (state.isInitial) {
           b.append("    (cur_s_state " + state.name + ")\n");
+          b.append("    (initial_state " + state.name + ")\n");
         }
         if (state.isFailure) {
           b.append("    (failure_state " + state.name + ")\n");
         }
+        if (state.isGoal) {
+          b.append("    (goal_state " + state.name + ")\n");
+        }
       }
+
+      for (String clockCondition : aut.getConstraint().getClockConditions()) {
+        b.append(clockCondition);
+      }
+
+      boolean setClock = false;
 
       for (Transition t : aut.getTransitions()) {
         b.append("    (automaton " + t.getActiviationState().name + " " + t.getActivity() + " " + t.getTargetState().name + ")\n");
@@ -273,6 +316,16 @@ public class PDDLGenerator {
             b.append(this.getHasConditionString(t, c));
           }
         }
+
+        if ((t.getMinTimeCondition() > -1.0) && (t.getMaxTimeCondition() > 0.0)) {
+          setClock = true;
+          b.append("    (= (min_t_condition " + t.getActiviationState().name + " " + t.getActivity() + " " + t.getTargetState().name + ") " + t.getMinTimeCondition() + ")\n");
+          b.append("    (= (max_t_condition " + t.getActiviationState().name + " " + t.getActivity() + " " + t.getTargetState().name + ") " + t.getMaxTimeCondition() + ")\n");
+        }
+      }
+
+      if (setClock) {
+        b.append("    (= (start_clock " + constraintName + ") 0)\n");
       }
     
       b.append("\n");
@@ -344,9 +397,6 @@ public class PDDLGenerator {
     }
 
     b.append("    (not (failure))\n" +
-            "    (not (after_change))\n" + //
-            "    (not (after_add))\n" + //
-            "    (not (after_sync))\n" + //
             "  ))\n\n"
     );
     return b;

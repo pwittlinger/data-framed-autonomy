@@ -85,21 +85,32 @@ public class IOManager {
     this.pddlFolder = this.outputFolder + "pddl" + File.separator;
   }
 
-  public void setProjectPrefix(String projectPrefix) {
+  public void setProjectPrefix() {
     //this.projectPrefix = projectPrefix + File.separator;
     this.setPaths();
   }
   
   //Section: Reading declare model
   public DeclareModel readDeclareModel(String modelFileName) {
+    return readDeclareModel(new String[] {modelFileName});
+  }
 
-    File declareFile = new File(modelFileName);
-    if (!declareFile.isFile()) {
-      declareFile = new File(currentPath + modelFileName);
+  public DeclareModel readDeclareModel(String[] modelFileNames) {
+    HashMap<String, ArrayList<String[]>> mergedLines = initializeSortingMap();
+
+    for (String modelFileName : modelFileNames) {
+      File declareFile = new File(modelFileName.trim());
+      if (!declareFile.isFile()) {
+        declareFile = new File(currentPath + modelFileName.trim());
+      }
+
+      HashMap<String, ArrayList<String[]>> parsedLines = readFile(declareFile);
+      for (Map.Entry<String, ArrayList<String[]>> entry : parsedLines.entrySet()) {
+        mergedLines.get(entry.getKey()).addAll(entry.getValue());
+      }
     }
 
-    HashMap<String, ArrayList<String[]>> parsedLines = readFile(declareFile);
-    return new DeclareModel(parsedLines);
+    return new DeclareModel(mergedLines);
   }
   
   private HashMap<String, ArrayList<String[]>> readFile(File declareFile) {
@@ -238,9 +249,9 @@ public class IOManager {
     Pattern floatPattern = Pattern.compile("^\\s*([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*:\\s+float\\s+between\\s+(-?\\d+\\.?\\d*)\\s+and\\s+(-?\\d+\\.?\\d*)\\s*$");
     Pattern enumPattern = Pattern.compile("^\\s*([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*:\\s+([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*$");
     
-    Pattern unaryPattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-z\\d!=(),.<> -]*)\\|\\s*$");
+    Pattern unaryPattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
     //Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*$");
-    Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*$");
+    Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
     
     Pattern numericConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(>=|<=|>|<|=|!=)\\s+-?\\d+.?\\d*\\s*$");
     Pattern enumConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(is not|is)\\s+[a-zA-Z]+[a-zA-Z\\d]*\\s*$*");
@@ -316,11 +327,11 @@ public class IOManager {
   }
   
   private String[] tokenizeUnaryConstraint(Matcher matcher) {
-    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3)};
+    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4)};
   }
   
   private String[] tokenizeBinaryConstraint(Matcher matcher) {
-    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5)};
+    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6)};
   }
   
   
@@ -518,6 +529,14 @@ public class IOManager {
 
       String dpnFile = dpnFilepath.getAbsolutePath();
       return new DataPetriNet(dpnFile);
+    }
+
+    public ArrayList<DataPetriNet> readDataPetriNets(String[] modelFileNames) throws FileNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, InvocationTargetException, DPNIOException {
+      ArrayList<DataPetriNet> dpns = new ArrayList<>();
+      for (String modelFileName : modelFileNames) {
+        dpns.add(readDataPetriNet(modelFileName.trim()));
+      }
+      return dpns;
     }
   
   public void exportActivityMapping(String activityMapping, String modelName) {

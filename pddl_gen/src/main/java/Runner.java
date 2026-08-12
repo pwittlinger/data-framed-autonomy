@@ -6,6 +6,7 @@ import Automaton.VariableSubstitution;
 import translations.IOManager;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
+import utils.CmdArgsUtil;
 import utils.CmdArgsUtils;
 import utils.CmdFileUtils;
 import utils.JsonParser;
@@ -26,14 +27,17 @@ public class Runner {
   public static void findAlignments(String[] args) 
     throws Exception 
   {
-     CommandLine cmds = CmdArgsUtils.parseCmdInputs(args);
+    CommandLine cmds = CmdArgsUtil.parseCmdInputs(args);
 
 
     String modelString= cmds.getOptionValue("declare");
     String traceString= cmds.getOptionValue("log");
 
-    if (!CmdFileUtils.declareFileExists(modelString)) {
-          throw new Exception("Error in accessing DECLARE model.");
+    String[] declareModelPaths = modelString.split(",");
+    for (String declarePath : declareModelPaths) {
+      if (!CmdFileUtils.declareFileExists(declarePath.trim())) {
+        throw new Exception("Error in accessing DECLARE model: " + declarePath.trim());
+      }
     }
 
     if (!CmdFileUtils.logFileExists(traceString)) {
@@ -53,10 +57,12 @@ public class Runner {
 
     if (hasPetri) {
         petriNetString = cmds.getOptionValue("petri");
-        if (!CmdFileUtils.petriFileExists(petriNetString)) {
-          throw new Exception("Error in accessing Petri Net File.");
+        for (String petriPath : petriNetString.split(",")) {
+          if (!CmdFileUtils.petriFileExists(petriPath.trim())) {
+            throw new Exception("Error in accessing Petri Net File: " + petriPath.trim());
+          }
         }
-    } 
+    }
     
     if (hasVarAssign) {
       variablesString = cmds.getOptionValue("varAssign");
@@ -74,30 +80,30 @@ public class Runner {
 
     if (hasCost) {
       costsString = cmds.getOptionValue("cost");
-      if (!costsString.endsWith(".json") & !costsString.endsWith(".txt")) {
-        throw new Error("Invalid format for Cost file.\n Accepted are only .txt or .json");
-      }
     }
     else {
       costsString = "cost_model.txt";
     }
 
+
     // Read model and logs to find ltl formula
     IOManager ioManager = IOManager.getInstance();
 
     // In case the jar you run is outside the directory in which the project is; Add directory name as prefix.
-    ioManager.setProjectPrefix("pddl_gen");
+    //ioManager.setProjectPrefix("pddl_gen");
+    ioManager.setProjectPrefix();
 
     if (newOutput) {
       ioManager.overrideOutputPath(cmds.getOptionValue("output"));
     }
+    ioManager.setProjectPrefix();
     
-    DeclareModel model = ioManager.readDeclareModel(modelString); // OKAY!
-    //model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
+    DeclareModel model = ioManager.readDeclareModel(declareModelPaths); // OKAY!
+    
     Map<String, Integer> variableAssignments;
     Set<VariableSubstitution> substitutions;
 
-    if (!ioManager.variableAssignmentsExist(variablesString)) {
+    if (!ioManager.variableAssignmentsExist(variablesString) || (!hasVarAssign)) {
       /*2026-01-15 On the current version, only INTEGERS are supported.
         In the DeclareModel.generateVariableValues() method all function calls are cast to int.
         The readVariableAssignments method cannot deal with floats in the form "2.0"
@@ -106,7 +112,7 @@ public class Runner {
       ioManager.exportVariableAssignments(variablesString, varAssignmentString);
     }
 
-    if (!ioManager.variableSubstitutionExists(substitutionsString)) {
+    if (!ioManager.variableSubstitutionExists(substitutionsString) || (!hasVarSub)) {
       String varSubstitutionString = model.generateVariableSubstitutions();
       ioManager.exportVariableSubstitution(substitutionsString, varSubstitutionString);
     }
@@ -116,10 +122,12 @@ public class Runner {
 
     System.out.println("Model: " + model);    
 
-    if ((petriNetString == "") | (petriNetString == null) | !(petriNetString.endsWith(".pnml"))) {
+    if (!hasPetri) {
+      //Only DECLARE model present
+      // Using the pre-existing implementation for the 
 
       /*Check if cost model exists and otherwise use standard cost model*/
-      if (!ioManager.costModelExists(costsString)) {
+      if (!ioManager.costModelExists(costsString) || (!hasCost)) {
         ioManager.exportCostModel(costsString, model.activities.keySet());
       }      
 
@@ -131,17 +139,19 @@ public class Runner {
 
       int i = 1;
       for (String problem : problems) {
-      IOManager.getInstance().exportProblemPDDL(problem, i);
-      i++;
+        IOManager.getInstance().exportProblemPDDL(problem, i);
+        i++;
       }
       //IOManager.getInstance().exportDomainPDDL(domain);
       }
+
     else {
 
-      DataPetriNet petriNet = ioManager.readDataPetriNet(petriNetString);
-      MixedModel myMixedModel = new MixedModel(petriNet, model);
+      String[] petriNetPaths = petriNetString.split(",");
+      ArrayList<DataPetriNet> petriNets = ioManager.readDataPetriNets(petriNetPaths);
+      MixedModel myMixedModel = new MixedModel(petriNets, model);
 
-      if (!ioManager.costModelExists(costsString)) {
+      if (!ioManager.costModelExists(costsString) || (!hasCost)) {
         ioManager.exportCostModel(costsString, myMixedModel.activities.keySet());
       }
 
@@ -154,12 +164,15 @@ public class Runner {
       //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
-      String pnName = petriNetString;
-      if (petriNetString.contains("\\")) {
-        String[] s_ = petriNetString.split("\\\\");
-        pnName = s_[s_.length-1];
+
+      for (DataPetriNet dpn : myMixedModel.dpnModels) {
+        ioManager.exportActivityMapping(dpn.activityMapping(), dpn.netName);
       }
-      ioManager.exportActivityMapping(pddlGenerator.activityMapping(), pnName);
+
+      ioManager.exportActivityMapping(myMixedModel.declareModel.activityMapping(), "DECLARE");
+
+
+
 
         int i = 1;
       

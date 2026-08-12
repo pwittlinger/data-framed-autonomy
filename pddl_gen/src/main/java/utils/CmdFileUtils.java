@@ -17,7 +17,7 @@ public class CmdFileUtils {
 
     public static boolean petriFileExists(String filePath) {
         String currentPath = System.getProperty("user.dir") + File.separator;
-        if (!filePath.endsWith(".pnml")) {
+        if (!filePath.endsWith("pnml")) {
             return false;
         }
 
@@ -37,7 +37,7 @@ public class CmdFileUtils {
         String currentPath = System.getProperty("user.dir") + File.separator;
     
 
-        return ((filePath.endsWith(".decl")) && (new File(filePath).isFile() || new File(currentPath + filePath).isFile()));
+        return ((filePath.endsWith("decl")) && (new File(filePath).isFile() || new File(currentPath + filePath).isFile()));
     }
 
     public static boolean logFileExists(String filePath) {
@@ -45,7 +45,7 @@ public class CmdFileUtils {
         String currentPath = System.getProperty("user.dir") + File.separator;
     
 
-        return ((filePath.endsWith(".xes")) && (new File(filePath).isFile() || new File(currentPath + filePath).isFile()));
+        return ((filePath.endsWith("xes")) && (new File(filePath).isFile() || new File(currentPath + filePath).isFile()));
     }
 
 
