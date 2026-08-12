@@ -38,14 +38,14 @@ public class MixedModel {
     public ArrayList<String> allInitialStates;
     public ArrayList<ArrayList<String>> allAcceptingStates;
     public ArrayList<String> allFailureStates;
-	public ArrayList<Automaton> constraintAutomatons;
-	public ArrayList<String> conditionStrings;
-	public ArrayList<ArrayList<String>> allAutomatonStrings;
-	public ArrayList<String> allAutomatonStates;
-	public HashMap<String, Activity> activityObjects;
-	public ArrayList<String> allPetriNetStates;
-	public ArrayList<ArrayList<String>> allPetriNetStatesByDpn;
-	private Map<Pair<Activity, CostEnum>, Integer> costs;
+    public ArrayList<Automaton> constraintAutomatons;
+    public ArrayList<String> conditionStrings;
+    public ArrayList<ArrayList<String>> allAutomatonStrings;
+    public ArrayList<String> allAutomatonStates;
+    public HashMap<String, Activity> activityObjects;
+    public ArrayList<String> allPetriNetStates;
+    public ArrayList<ArrayList<String>> allPetriNetStatesByDpn;
+    private Map<Pair<Activity, CostEnum>, Integer> costs;
 	
     
 
@@ -54,28 +54,30 @@ public class MixedModel {
     }
 
     public MixedModel(List<DataPetriNet> dataPetriNets, DeclareModel declare) {
+      /* Constructor for Mixed Model
+       */
         if (dataPetriNets == null || dataPetriNets.isEmpty()) {
             throw new IllegalArgumentException("At least one DataPetriNet is required.");
         }
         this.dpnModels = new ArrayList<>(dataPetriNets);
         this.declareModel = declare;
-		this.constraintAutomatons = new ArrayList<>();
-		this.dpnConstraintNames = new ArrayList<>();
-		this.allInitialStates = new ArrayList<>();
-		this.allAcceptingStates = new ArrayList<>();
-		this.allFailureStates = new ArrayList<>();
-		this.allAutomatonStrings = new ArrayList<>();
-		this.conditionStrings = new ArrayList<>();
-		this.activities = new HashMap<>();
-		this.allAutomatonStates = new ArrayList<>();
-		this.allPetriNetStates = new ArrayList<>();
-		this.allPetriNetStatesByDpn = new ArrayList<>();
+        this.constraintAutomatons = new ArrayList<>();
+        this.dpnConstraintNames = new ArrayList<>();
+        this.allInitialStates = new ArrayList<>();
+        this.allAcceptingStates = new ArrayList<>();
+        this.allFailureStates = new ArrayList<>();
+        this.allAutomatonStrings = new ArrayList<>();
+        this.conditionStrings = new ArrayList<>();
+        this.activities = new HashMap<>();
+        this.allAutomatonStates = new ArrayList<>();
+        this.allPetriNetStates = new ArrayList<>();
+        this.allPetriNetStatesByDpn = new ArrayList<>();
 
-		this.mapAllActivities();
-		this.prepareAutomatonStates();
-		this.parseAutomatonStatesIntoList();
-		this.buildAutomatons();
-		this.activityObjects = this.mapActivityObjects();
+        this.mapAllActivities();
+        this.prepareAutomatonStates();
+        this.parseAutomatonStatesIntoList();
+        this.buildAutomatons();
+        this.activityObjects = this.mapActivityObjects();
     }
 
     private String dpnStatePrefix(int dpnIndex) {
@@ -111,30 +113,33 @@ public class MixedModel {
         HashMap<String, Activity> declareActivities = this.declareModel.getActivities();
 
         for (DataPetriNet dpnModel : this.dpnModels) {
+            HashMap<String,String> mappedLocalActivities = new HashMap<String,String>();
             for (String act : dpnModel.activities) {
                 if (!this.activities.containsKey(act)) {
                     this.activities.put(act, "a" + this.activityCounter);
                     this.activityCounter += 1;
+                    
                 }
+                mappedLocalActivities.put(act, this.activities.get(act));
+                
             }
+            // Updating the mapped activities for the local Petri Net
+            dpnModel.dpnMappedActivities = mappedLocalActivities;
         }
 
+        HashMap<String,String> mappedDECLActivities = new HashMap<String,String>();
         for (String act : declareActivities.keySet()){
+          
             if (!this.activities.containsKey(act)){
                 this.activities.put(act, "a"+this.activityCounter);
                 this.activityCounter += 1;
             }
+            mappedDECLActivities.put(act, this.activities.get(act));
         }
+        this.declareModel.mappedActivities = mappedDECLActivities;
 
     }
 
-    public void mapAllVariables(){
-		// Variables from the DECLARE model are already mapped in the 
-        for (DataPetriNet dpnModel : this.dpnModels) {
-            Collection<DataElement> dpnVars = dpnModel.dataPetriNet.getVariables();
-        }
-
-    }
 
 
     public void parseAutomatonStatesIntoList(){
@@ -288,29 +293,6 @@ public class MixedModel {
 		default:
 		  break;
 	  }
-	  /*
-    switch (c.operator) {
-      case BIGGER_OR_EQUAL:
-        b.append("    (has_maj_c " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
-        b.append("    (= (majority_constraint " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
-        break;
-      case LESS_OR_EQUAL:
-        b.append("    (has_min_c " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
-        b.append("    (= (minority_constraint " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
-        break;
-      case EQUAL:
-        b.append("    (has_eq_c " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
-        b.append("    (= (equality_constraint " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
-        break;
-      case NOT_EQUAL:
-        b.append("    (has_ineq_c " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ")\n");
-        b.append("    (= (inequality_constraint " + c.activity + " " + c.parameterName + " " + t.getActiviationState().name + " " + t.getTargetState().name + ") " + c.value + ")\n");
-        break;
-
-      default:
-        break;
-    }
-	*/
 
     return b;
   }

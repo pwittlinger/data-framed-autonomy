@@ -155,19 +155,22 @@ public class Runner {
       String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
-      String pnName = petriNetString;
-      if (petriNetString.contains("\\")) {
-        String[] s_ = petriNetString.split("\\\\");
-        pnName = s_[s_.length-1];
-      }
-      ioManager.exportActivityMapping(pddlGenerator.activityMapping(), pnName);
 
-        int i = 1;
-    for (String problem : problems) {
-      IOManager.getInstance().exportProblemPDDL(problem, i);
-      i++;
-    }
-    IOManager.getInstance().exportDomainPDDL(domain);
+      for (DataPetriNet dpn : myMixedModel.dpnModels) {
+        ioManager.exportActivityMapping(dpn.activityMapping(), dpn.netName);
+      }
+
+      ioManager.exportActivityMapping(myMixedModel.declareModel.activityMapping(), "DECLARE");
+
+
+
+
+      int i = 1;
+      for (String problem : problems) {
+        IOManager.getInstance().exportProblemPDDL(problem, i);
+        i++;
+      }
+    //IOManager.getInstance().exportDomainPDDL(domain);
     }
 
         

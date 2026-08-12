@@ -25,11 +25,6 @@ import java.util.stream.Collectors;
 
 public class PDDLGenerator {
 
-  private static final int CHANGE_DEFAULT_COST = 1;
-  private static final int ADD_DEFAULT_COST = 2;
-  private static final int SET_DEFAULT_COST = 1;
-  private static final int DELETE_DEFAULT_COST = 2;
-
   private final Map<Pair<Activity, CostEnum>, Integer> costs;
   
   // NOTE Define action costs above ^^^
@@ -190,6 +185,7 @@ public class PDDLGenerator {
     StringBuilder b = new StringBuilder();
     b.append("    ; Action costs\n");
 
+    /*/
     for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
       switch (cost.getKey().getValue()) {
         case CHANGE:
@@ -206,6 +202,7 @@ public class PDDLGenerator {
           break;
       }
     }
+      */
     b.append("\n");
 
     return b;

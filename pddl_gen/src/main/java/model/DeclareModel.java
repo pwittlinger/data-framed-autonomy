@@ -10,6 +10,7 @@ public class DeclareModel {
   private Map<Pair<Activity, CostEnum>, Integer> costs;
   public ArrayList<String> params;
   private Map<String, Attribute> attr;
+  public HashMap<String, String> mappedActivities;
   
   public DeclareModel(Map<String, ArrayList<String[]>> parsedLines) {
     this.activities = addActivities(parsedLines.get("activityLines")); // ok
@@ -376,5 +377,14 @@ public class DeclareModel {
     return sb.toString();
 
   }
+
+  	public String activityMapping() {
+		StringBuilder s = new StringBuilder();
+		for (String act :this.mappedActivities.keySet()) {
+			s.append(act + ":"+this.mappedActivities.get(act)+"\n");
+		}
+
+		return s.toString(); //
+	}
   
 }
