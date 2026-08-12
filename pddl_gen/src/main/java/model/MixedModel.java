@@ -366,10 +366,10 @@ public class MixedModel {
       for (int i = 1; i < costs.length; i++) {
         costsArray[i-1] = Integer.valueOf(costs[i]);
       }
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.CHANGE), costsArray[0]);
+      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.CHANGE), costsArray[0]);
       this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.ADD), costsArray[1]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
+      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
+      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
     }
 
     // TODO Implement handling of missing activities

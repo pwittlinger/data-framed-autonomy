@@ -327,7 +327,7 @@ public class DeclareModel {
         }
       }
 
-      if (a.getType().equals("integer")) {
+      if (!a.getType().equals("enum")) {
         hp = hp.stream()
           .map(d -> Math.floor(d))
           .toList(); 
