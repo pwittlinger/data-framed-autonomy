@@ -17,9 +17,6 @@ for folder in pddl_gen/src/main/resources/output/pddl/*/; do
     stats_file=results/${last_part}_stats.txt
 	for val in $(seq 1 $num_of_traces); do
 	
-
-
-      #(wsl -e time -v java -Xmx8g -jar "${gen_path}/src/main/resources/output/enhsp3.jar" -o ${gen_path}/src/main/resources/output/domain_with_failureSmall.pddl -f ${gen_path}/src/main/resources/output/pddl/${folder}/problem${val}.pddl -planner opt-blind) 2>&1 | tee -a $results_file
 	  #(wsl -e time -v java -Xmx8g -jar "${gen_path}/src/main/resources/output/enhsp3.jar" -o ${gen_path}/src/main/resources/output/domain_framed_autonomy_process_reset.pddl -f ${folder}/problem${val}.pddl -planner opt-blind) 2>&1 | tee -a $results_file
 	  (wsl -e time -v java -Xmx10g -jar "${gen_path}/src/main/resources/output/enhsp3.jar" -o ${gen_path}/src/main/resources/output/domain_framed_autonomy_process_reset_time.pddl -f ${folder}/problem1.pddl -planner opt-blind) 2>&1 | tee -a $results_file
 

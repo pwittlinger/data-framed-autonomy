@@ -10,6 +10,7 @@ public class DeclareModel {
   private Map<Pair<Activity, CostEnum>, Integer> costs;
   public ArrayList<String> params;
   private Map<String, Attribute> attr;
+  public HashMap<String, String> mappedActivities;
   
   public DeclareModel(Map<String, ArrayList<String[]>> parsedLines) {
     this.activities = addActivities(parsedLines.get("activityLines")); // ok
@@ -156,7 +157,22 @@ public class DeclareModel {
     ArrayList<DeclareConstraint> newConstraints = new ArrayList<>();
     addUnaryConstraints(newConstraints, unaryConstraints);
     addBinaryConstraints(newConstraints, binaryConstraints);
+    assignUniqueConstraintNames(newConstraints);
     return newConstraints;
+  }
+
+  // Constraints sharing the same template/activation/target would otherwise collide on
+  // getConstraintName(), e.g. when the same Response[A,B] is declared twice (possibly across
+  // merged DECLARE files). Suffix every repeat after the first with its occurrence index.
+  private void assignUniqueConstraintNames(ArrayList<DeclareConstraint> constraints) {
+    Map<String, Integer> occurrences = new HashMap<>();
+    for (DeclareConstraint constraint : constraints) {
+      String baseName = constraint.getConstraintName();
+      int occurrence = occurrences.merge(baseName, 1, Integer::sum);
+      if (occurrence > 1) {
+        constraint.setDuplicateIndex(occurrence);
+      }
+    }
   }
   
   private void addUnaryConstraints(ArrayList<DeclareConstraint> constraints, ArrayList<String[]> unaryConstraints) {
@@ -182,7 +198,9 @@ public class DeclareModel {
     String activity = constraintTokens[1];
     if (template != null && activities.get(activity) != null) {
       String activationCondition = constraintTokens[2] == null? null : constraintTokens[2];
-      return new DeclareConstraint(template, activity, activationCondition, null,null);
+      DeclareConstraint constraint = new DeclareConstraint(template, activity, activationCondition, null, null);
+      constraint.assignTimeConditions(constraintTokens[3]);
+      return constraint;
     }
     return null;
   }
@@ -209,7 +227,9 @@ public class DeclareModel {
           targetCondition = null;
         }
         */
-        return new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
+        DeclareConstraint constraint = new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
+        constraint.assignTimeConditions(constraintTokens[5]);
+        return constraint;
       }
     }
     return null;
@@ -264,6 +284,9 @@ public class DeclareModel {
     // assuming the min and max value is already given
     for (DeclareConstraint dc : this.declareConstraints) {
       List<Condition> conditionsList = dc.getActivationConditions();
+      if (conditionsList == null) {
+        continue;
+      }
       // If the constraint has an AND relation there can be multiple parameters and values
       for (Condition cond : conditionsList) {
           String localAttrib = cond.parameterName;
@@ -304,7 +327,7 @@ public class DeclareModel {
         }
       }
 
-      if (a.getType().equals("integer")) {
+      if (!a.getType().equals("enum")) {
         hp = hp.stream()
           .map(d -> Math.floor(d))
           .toList(); 
@@ -354,5 +377,14 @@ public class DeclareModel {
     return sb.toString();
 
   }
+
+  	public String activityMapping() {
+		StringBuilder s = new StringBuilder();
+		for (String act :this.mappedActivities.keySet()) {
+			s.append(act + ":"+this.mappedActivities.get(act)+"\n");
+		}
+
+		return s.toString(); //
+	}
   
 }
