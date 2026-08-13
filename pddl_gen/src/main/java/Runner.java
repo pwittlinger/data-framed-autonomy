@@ -150,10 +150,13 @@ public class Runner {
       String[] petriNetPaths = petriNetString.split(",");
       ArrayList<DataPetriNet> petriNets = ioManager.readDataPetriNets(petriNetPaths);
       MixedModel myMixedModel = new MixedModel(petriNets, model);
+      
 
       if (!ioManager.costModelExists(costsString) || (!hasCost)) {
         ioManager.exportCostModel(costsString, myMixedModel.activities.keySet());
       }
+
+      myMixedModel.checkCostFileFormat(costsString);
 
       myMixedModel.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
 

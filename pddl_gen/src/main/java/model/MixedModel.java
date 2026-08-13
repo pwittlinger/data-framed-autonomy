@@ -49,7 +49,8 @@ public class MixedModel {
 	public Map<Pair<Activity, String>, Integer> resourceMap;
 	public Map<String, Integer> constraintViolation;
 	public Set<String> allResources;
-	
+	public boolean isJsonCostFile = false;
+
     
 
     public MixedModel(DataPetriNet dataPetriNet, DeclareModel declare) {
@@ -348,6 +349,10 @@ public class MixedModel {
     return this.costs;
   }
 
+  public void checkCostFileFormat(String costsFileName) {
+    this.isJsonCostFile = costsFileName != null && costsFileName.contains(".json");
+  }
+
   public void assignCosts(List<String[]> costsList) {
     //Activity a;
 	String sa;
@@ -401,4 +406,5 @@ public class MixedModel {
     // TODO Implement handling of missing activities
     // Set<Activity> undefinedActivities = new HashSet<>();
   }
+}
 }

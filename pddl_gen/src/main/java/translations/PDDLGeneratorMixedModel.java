@@ -99,7 +99,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     s.append(this.buildActionCosts());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
-    //s.append(this.buildTimeStamps(timeStamps));
+    if (!this.mixedModel.isJsonCostFile) {
+      s.append(this.buildTimeStamps(timeStamps));
+    }
 
     if (!this.mixedModel.allResources.isEmpty()) {
       s.append(this.buildResourceAlloc());
@@ -202,7 +204,11 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     b.append("  (:init\n\n");
     b.append("    ; Initialize plan cost. Some planners might need this explicitly\n");
     b.append("    (= (total_cost) 0)\n\n");
-    //b.append("    (= (current_timestamp) 0)\n\n");
+
+    if (!this.mixedModel.isJsonCostFile) {
+      b.append("    (= (current_timestamp) 0)\n\n");
+    }
+    
     b.append("    ;; SUBSTITUTION VARIABLES\n");
 
     for (Map.Entry<String, Integer> entry : variables.entrySet()) {
@@ -376,31 +382,30 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
   	    	  b.append("    (associated " + g.name + " " + aName + ")\n");
         }
 
-        /*
-        for(String cString : clocks) {
-          if (cString.contains("sDEC")) {
-            b.append(cString);
+
+        if (!this.mixedModel.isJsonCostFile) {
+          for(String cString : clocks) {
+            if (cString.contains("sDEC")) {
+              b.append(cString);
+            }
+          }
+
+          boolean setClock = false;
+
+          for (Transition transition : aut.getTransitions()) {
+            if ((transition.getMinTimeCondition() > -1.0) && (transition.getMaxTimeCondition() > 0.0)) {
+              setClock = true;
+              b.append("    (= (min_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMinTimeCondition() + ")\n");
+              b.append("    (= (max_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMaxTimeCondition() + ")\n");
+            }
+
+          }
+
+          if (setClock == true) {
+            b.append("    (= (start_clock " + aName + ") 0)\n");
           }
         }
 
-        boolean setClock = false;
-
-        for (Transition transition : aut.getTransitions()) {
-          if ((transition.getMinTimeCondition() > -1.0) && (transition.getMaxTimeCondition() > 0.0)) {
-            setClock = true;
-            b.append("    (= (min_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMinTimeCondition() + ")\n");
-            b.append("    (= (max_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMaxTimeCondition() + ")\n");
-          }
-        
-        }
-
-        if (setClock == true) {
-          b.append("    (= (start_clock " + aName + ") 0)\n");
-        }
-        */
-          //if (aut.getConstraint().getActivationTimeConditions() != null) {
-           // b.append("    (has_time_conditions " + aName + " activation " + aut.getConstraint().getActivationTimeConditions()[0] + " " + aut.getConstraint().getActivationTimeConditions()[1] + ")\n");
-          //}
       }
 
     b.append("\n");
