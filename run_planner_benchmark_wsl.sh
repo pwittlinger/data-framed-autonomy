@@ -15,7 +15,7 @@ for folder in output/pddl/*/; do
     stats_file=results/${last_part}_stats.txt
 	for val in $(seq 1 $num_of_traces); do
 	
-	(/usr/bin/time -v java -Xmx10g -jar "enhsp.jar" -o domains/domain_framed_autonomy_process_reset_time.pddl -f ${folder}/problem1.pddl -planner opt-blind) 2>&1 | tee -a $results_file
+	(wsl -e time -v java -Xmx10g -jar "enhsp.jar" -o domains/domain_framed_autonomy_process_reset_time.pddl -f ${folder}/problem1.pddl -planner opt-blind) 2>&1 | tee -a $results_file
 
     done
     java -jar java_helpers/StatsExtractor.jar $results_file $stats_file $num_of_traces

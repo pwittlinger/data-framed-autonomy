@@ -2,16 +2,17 @@ import os
 import sys
 import subprocess
 import time
-import pm4py
 
 root_path = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-cost_model = "cost_model.txt"
+#cost_model = "cost_model.txt"
 variable_values = "variable_values.txt"
 
 input_path = os.path.join(root_path, "pddl_gen", "src", "main", "resources", "input")
-output_path = os.path.join(root_path, "pddl_gen", "src", "main", "resources", "output", "pddl")
-jar_path = os.path.join(root_path, "pddl_gen", "target", "pddl_gen-1.0-SNAPSHOT-launcher.jar")
+#output_path = os.path.join(root_path, "pddl_gen", "src", "main", "resources", "output", "pddl")
+output_path = os.path.join(root_path, "output", "pddl")
+#jar_path = os.path.join(root_path, "pddl_gen", "target", "pddl_gen-1.0-SNAPSHOT-launcher.jar")
+jar_path = "pddl_gen-1.0-SNAPSHOT-launcher.jar"
 
 
 
@@ -29,20 +30,6 @@ if __name__ == "__main__":
 
     pns = dict()
     logs = []
-
-    # Create all the cost models for each transition:
-    # change: 1
-    # addition: 2 
-    # add_param: 1
-    # delete: 2
-    # 
-    if "cost_models" not in os.listdir(input_path):
-        os.mkdir(os.path.join(input_path, "cost_models"))    
-        for pn in pn_f:
-            pm = pm4py.read_pnml(os.path.join(pn_path, pn))
-            pnname = pn[:-5]
-            with open(os.path.join(input_path, "cost_models", f"cost_model-{pnname}.txt"), "w+") as f:
-                f.write("\n".join([t.label+" 1 2 1 2" for t in pm[0].transitions]))
 
     for p_ in pn_f:
         pname = p_[:-5]
@@ -116,7 +103,11 @@ if __name__ == "__main__":
                 cost_model = f"cost_models/cost_model-{pname}.txt"
                 
                 # Run the jar file to create the PDDL instances
-                subprocess.call(['java', '-jar', jar_path, decl_loc, pn_loc, l, variable_values, var_sub_loc, cost_model])
+                #subprocess.call(['java', '-jar', jar_path, "-d", decl_loc, "-p" ,pn_loc, "-l",l,"--varAssign", variable_values, "--varSub",var_sub_loc, "--cost",cost_model])
+
+                subprocess.call(['java', '-jar', jar_path, "-d", os.path.join(input_path, decl_loc), "-p" , os.path.join(input_path, pn_loc),
+                                  "-l",os.path.join(input_path, l),"--varAssign", os.path.join(input_path, variable_values), "--varSub",os.path.join(input_path, var_sub_loc),
+                                    "--cost",os.path.join(input_path, cost_model)])
 
                 pddl_files = os.listdir(output_path)
 
