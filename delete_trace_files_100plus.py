@@ -1,5 +1,11 @@
 import os
-inpath = r"C:\Users\paulw\Desktop\data-framed-autonomy\numeric-PDDL_generator\pddl_gen\src\main\resources\output\pddl"
+import sys
+root_path = os.path.dirname(os.path.abspath(sys.argv[0]))
+
+inpath = os.path.join(root_path, "pddl_gen", "src", "main", "resources", "output", "pddl")
+
+# Run the file from root directory of the project.
+# Removes all instances greater than 100 from the problem folders.
 
 if __name__=="__main__":
         

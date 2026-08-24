@@ -4,15 +4,15 @@ import subprocess
 import time
 import pm4py
 
+root_path = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-input_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\src\main\resources\input"
-output_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\src\main\resources\output\pddl"
 cost_model = "cost_model.txt"
 variable_values = "variable_values.txt"
-jar_path = r"C:\Users\paulw\Desktop\dfa\data-framed-autonomy\pddl_gen\target\pddl_gen-1.0-SNAPSHOT-launcher.jar"
 
+input_path = os.path.join(root_path, "pddl_gen", "src", "main", "resources", "input")
+output_path = os.path.join(root_path, "pddl_gen", "src", "main", "resources", "output", "pddl")
+jar_path = os.path.join(root_path, "pddl_gen", "target", "pddl_gen-1.0-SNAPSHOT-launcher.jar")
 
-#cmd = r'java -jar '
 
 
 if __name__ == "__main__":
@@ -78,8 +78,6 @@ if __name__ == "__main__":
 
 
             all_logs = [
-                #log_loc,
-
                 f"logs/{pname}-prefix-conforming-0.xes",
                 f"logs/{pname}-prefix-conforming-1.xes",
                 f"logs/{pname}-prefix-conforming-3.xes",
@@ -94,15 +92,12 @@ if __name__ == "__main__":
 
 
             for l in all_logs:
-                #new_folder_name = f.replace("_parsed.decl", "").replace("_", "-d")
+
                 f2 = f
-                #if "BasePN" in f:
-                #    f2 = f[f.find("_"):]
-                
                 # Lazy checking if the log name contains a path
                 if (len(l.split("/"))>1):
                     new_folder_name = l.split("/")[1]
-                    #new_folder_name = (new_folder_name+"-d"+(f.replace("_parsed.decl", "").replace("_", "-d").split("-d")[1])).replace(".xes", "")
+                    
                     new_folder_name = (new_folder_name.replace(".xes", "")+"-"+(f2.replace("_parsed.decl", "").replace(".xes", "")))
                 else:
                     new_folder_name = f.replace("_parsed.decl", "").replace("_", "-d")
