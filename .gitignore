@@ -2,7 +2,6 @@
 **/*.jar
 
 ENHSP-Public/
-GiacomoENHSP/
 
 **/output/pddl/*
 **/output/libs/*
@@ -16,3 +15,5 @@ GiacomoENHSP/
 bin/src/main/resources/input/cost_models/*
 bin/src/main/resources/input/logs/*
 bin/*
+!java_helpers/StatsExtractor.jar
+!pddl_gen-1.0-SNAPSHOT-launcher.jar
