@@ -94,7 +94,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     StringBuilder s = new StringBuilder();
     s.append(PDDLGeneratorMixedModel.HEADER_STRING);
-    s.append(this.buildObjectsString(attributes, assignments));
+    s.append(this.buildObjectsString(attributes, assignments, substitutions));
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     s.append(this.buildActionCosts());
@@ -128,13 +128,15 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       assignments.put(event, event.getAttributeAssignments());
     }
 
-    if (this.finalTraceState == null) {
+    // Empty (prefix-) trace: the loop never sets the final trace state, so the start state t0 is also the final one.
+    // Checked on the trace rather than on null because the generator is reused across traces.
+    if (events.isEmpty()) {
       this.finalTraceState = new State("t0");
     }
     return assignments;
   }
 
-  private StringBuilder buildObjectsString(Map<Event, Map<Attribute, String>> attributeAssignments, Map<String, Integer> variables) {
+  private StringBuilder buildObjectsString(Map<Event, Map<Attribute, String>> attributeAssignments, Map<String, Integer> variables, Set<VariableSubstitution> substitutions) {
     StringBuilder b = new StringBuilder();
     b.append("  (:objects\n");
 
@@ -169,7 +171,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       .map(x -> x.getName())
       .collect(Collectors.toSet());
     */
-    ArrayList<String> attributes = this.mixedModel.declareModel.params;
+    Set<String> attributes = collectParameterNames(this.mixedModel.declareModel.params, substitutions);
     b.append("    ");
     attributes.forEach(x -> b.append(x + " "));
     if (attributes.size() > 0) {
@@ -307,7 +309,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         if (!this.mixedModel.declareModel.params.contains(attName)) {
           continue;
         }
-        value = value.replaceAll("[a-zA-Z]", ""); // Remove chars, use as if numbers (in case of enum types)
+        value = this.encodeTraceValue(attName, value);
 
         //b.append("    (has_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ")\n");
         //b.append("    (= (trace_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ") " + value + ")\n");

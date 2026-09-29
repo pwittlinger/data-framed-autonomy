@@ -19,6 +19,7 @@ public class DeclareModel {
     Map<String, Attribute> attributes = bindAttributes(parsedLines.get("bindingLines")); 
     initializeAttributes(parsedLines.get("intAttributeLines"), parsedLines.get("floatAttributeLines"), parsedLines.get("enumAttributeLines"), attributes);
     this.declareConstraints = addConstraints(parsedLines.get("binaryConstraintLines"), parsedLines.get("unaryConstraintLines"));
+    encodeEnumConditionValues(attributes);
     initializeNumericAttributeVariableValues(attributes);
     this.attr = attributes;
   }
@@ -339,6 +340,56 @@ public class DeclareModel {
     }
 
   }  
+
+  /**
+   * Enum literals in conditions (e.g. "is c2") are encoded with the value's index in the attribute's
+   * value list, the same numbering generateVariableValues() writes to variable_values.txt.
+   */
+  private void encodeEnumConditionValues(Map<String, Attribute> attributesMap) {
+    for (DeclareConstraint dc : this.declareConstraints) {
+      for (List<Condition> conditionsList : Arrays.asList(dc.getActivationConditions(), dc.getTargetConditions())) {
+        if (conditionsList == null) {
+          continue;
+        }
+        for (Condition cond : conditionsList) {
+          Attribute attribute = attributesMap.get(cond.parameterName);
+          if (attribute == null || !"enum".equals(attribute.getType())) {
+            continue;
+          }
+          Double encoded = attribute.variableValueMap.get(cond.rawValue);
+          if (encoded == null) {
+            throw new Error("Value " + cond.rawValue + " in constraint " + dc.getConstraintName() + " is not declared for attribute " + cond.parameterName);
+          }
+          cond.value = encoded.intValue();
+        }
+      }
+    }
+  }
+
+  /**
+   * Takes the enum encoding from the variable values file, so a custom file takes priority over the
+   * declaration order. Values missing from the file keep their declaration index.
+   */
+  public void applyVariableValues(Map<String, Integer> variableValues) {
+    for (Attribute attribute : this.attr.values()) {
+      if (!"enum".equals(attribute.getType())) {
+        continue;
+      }
+      for (Map.Entry<String, Double> entry : attribute.variableValueMap.entrySet()) {
+        Integer value = variableValues.get(entry.getKey());
+        if (value == null) {
+          System.out.println("Value " + entry.getKey() + " of attribute " + attribute.getName() + " not found in variable values, using declaration order");
+          continue;
+        }
+        entry.setValue(value.doubleValue());
+      }
+    }
+    encodeEnumConditionValues(this.attr);
+  }
+
+  public Attribute getAttribute(String name) {
+    return this.attr.get(name);
+  }
 
   public String generateVariableSubstitutions(){
     StringBuilder sb = new StringBuilder();

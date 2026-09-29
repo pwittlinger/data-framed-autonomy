@@ -226,10 +226,10 @@ public class Automaton {
         }
         
 
-        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
-        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
-        //this.transitions.add( new Transition(s2, s4, constraint.getTarget(), constraint.getTargetConditions()) );
-        //this.transitions.add( new Transition(s3, s4, constraint.getActivation(), constraint.getActivationConditions()) );
+        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
+        this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
+        this.transitions.add( new Transition(s2, s4, constraint.getTarget(), constraint.getTargetConditions()) );
+        this.transitions.add( new Transition(s3, s4, constraint.getActivation(), constraint.getActivationConditions()) );
         break;
 
       case Precedence:

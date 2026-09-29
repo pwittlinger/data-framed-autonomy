@@ -59,9 +59,11 @@ public class DeclareConstraint {
         default -> null;
       };
 
-      stuff[2] = stuff[2].replaceAll("[a-zA-Z]", "");
+      // Enum literals (e.g. "c2") are encoded later by DeclareModel, once the attribute's value list is known.
+      String digits = stuff[2].replaceAll("[a-zA-Z]", "");
 
-      Condition c = new Condition(activityName, stuff[0], o, Integer.valueOf(stuff[2]));
+      Condition c = new Condition(activityName, stuff[0], o, digits.isEmpty() ? null : Integer.valueOf(digits));
+      c.rawValue = stuff[2];
       conditions.add(c);
     }
 

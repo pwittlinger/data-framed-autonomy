@@ -120,6 +120,9 @@ public class Runner {
     variableAssignments = ioManager.readVariableAssignments(variablesString);
     substitutions = ioManager.readVariablesSubstitutions(substitutionsString);
 
+    // Must happen before the generators build their automata, which copy the encoded condition values.
+    model.applyVariableValues(variableAssignments);
+
     System.out.println("Model: " + model);    
 
     if (!hasPetri) {

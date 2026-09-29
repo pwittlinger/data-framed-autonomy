@@ -6,6 +6,7 @@ public class Condition {
   public String parameterName;
   public OperatorType operator;
   public Integer value;
+  public String rawValue; // Value as written in the model, e.g. "c2" for enums
 
   public Condition(String activityName, String parameterName, OperatorType operator, Integer value) {
     this.activity = activityName;
