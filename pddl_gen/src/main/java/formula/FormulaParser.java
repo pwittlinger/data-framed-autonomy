@@ -23,9 +23,10 @@ import formula.Formula.Var;
 import formula.Formula.Xor;
 
 /**
- * Recursive-descent parser for boolean formulae over MP-DECLARE data conditions.
+ * Parser for the data conditions we write in the .decl files, but with any boolean formula allowed
+ * (not just "and"). It's a plain recursive descent parser: one method per precedence level.
  *
- * Grammar (keywords are case-insensitive), from loosest to tightest binding:
+ * Grammar (keywords are case-insensitive), from the loosest to the tightest binding:
  * <pre>
  *   iff      := implies (("iff" | "&lt;-&gt;") implies)*
  *   implies  := disj (("implies" | "-&gt;") implies)?          right-associative
@@ -39,10 +40,12 @@ import formula.Formula.Xor;
  *   cmp      := "&gt;" | "&gt;=" | "&lt;" | "&lt;=" | "=" | "==" | "!=" | "&lt;&gt;"
  *   list     := "(" value ("," value)* ")" | value ("," value)*
  * </pre>
- * Infix nand/nor are binary and left-associative ({@code a nand b nand c} is {@code (a nand b) nand c}),
- * since NAND is not associative; prefer the function form {@code nand(a, b, c)} for n-ary use.
- * A bare list after {@code in} stops at the first token that is not a value, so inside {@code nand(...)}
- * write lists in parentheses: {@code A.cat in (c1, c2)}.
+ * Two things to keep in mind:
+ * - infix nand/nor only take two operands and group to the left ({@code a nand b nand c} is
+ *   {@code (a nand b) nand c}), because nand isn't associative. If you want more operands use
+ *   {@code nand(a, b, c)}.
+ * - a list after {@code in} without parentheses stops at the first thing that isn't a value, so inside
+ *   {@code nand(...)} better write {@code A.cat in (c1, c2)}.
  */
 public class FormulaParser {
 
@@ -59,7 +62,7 @@ public class FormulaParser {
   private static final Map<String, String> OPERATOR_ALIASES = Map.of("==", "=", "<>", "!=");
 
   private record Token(String kind, String text, int position) {
-    /** Lower-cased text for identifiers (to match keywords), null otherwise. */
+    /** Lowercase text for words, so "AND" and "and" are the same keyword. Null for everything else. */
     String word() {
       return kind.equals("ident") ? text.toLowerCase(Locale.ROOT) : null;
     }
@@ -193,7 +196,7 @@ public class FormulaParser {
 
   private Formula parseConj() {
     Formula left = parseUnary();
-    // After a complete operand, "nand" can only be the infix operator (even if followed by "(")
+    // If we already have a left operand, "nand" has to be the infix one, even when a "(" comes after it
     while (atKeyword("and", "nand") || atOp("&", "&&")) {
       boolean isNand = atKeyword("nand");
       advance();
@@ -296,7 +299,7 @@ public class FormulaParser {
   }
 
   private List<Object> parseList() {
-    // Sorted and deduplicated so that equal sets compare equal (the order of a set of values carries no meaning)
+    // Sorted and without duplicates, so "in c2, c1" and "in c1, c2" end up being the same atom
     TreeSet<Object> values = new TreeSet<>(Comparator.comparing(String::valueOf));
     if (atOp("(")) {
       advance();

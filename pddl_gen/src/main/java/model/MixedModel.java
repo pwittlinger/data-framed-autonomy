@@ -26,6 +26,7 @@ import Automaton.*;
 import org.processmining.ltl2automaton.plugins.automaton.State;
 
 import model.DataPetriNet;
+import translations.NandGuardEncoder;
 import model.Attribute;
 
 
@@ -46,6 +47,8 @@ public class MixedModel {
     public ArrayList<String> allPetriNetStates;
     public ArrayList<ArrayList<String>> allPetriNetStatesByDpn;
     private Map<Pair<Activity, CostEnum>, Integer> costs;
+    // Guards that need nand clauses (anything that isn't a plain AND of comparisons)
+    public final NandGuardEncoder nandGuards = new NandGuardEncoder();
 	public Map<Pair<Activity, String>, Integer> resourceMap;
 	public Map<String, Integer> constraintViolation;
 	public Set<String> allResources;
@@ -267,6 +270,8 @@ public class MixedModel {
 			};
           }
 
+        } else if (t.getNandClauses() != null) {
+          this.conditionStrings.add(this.nandGuards.encode(t, mappedActivity));
         }
       }
 

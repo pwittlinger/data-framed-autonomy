@@ -1,12 +1,15 @@
 package formula;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import formula.Formula.And;
+import formula.Formula.Comparison;
 import formula.Formula.Const;
 import formula.Formula.Iff;
 import formula.Formula.Implies;
@@ -17,12 +20,12 @@ import formula.Formula.Not;
 import formula.Formula.Or;
 import formula.Formula.Xor;
 
-/** Rendering and evaluation of {@link Formula} trees. */
+/** Small helpers to print, evaluate and walk through formulas. */
 public final class Formulas {
 
   private Formulas() {}
 
-  /** Fully parenthesised rendering that {@link FormulaParser} reads back. */
+  /** Prints the formula with parentheses everywhere, so the parser can always read it back. */
   public static String render(Formula f) {
     if (f instanceof Literal || f instanceof Const) {
       return f.toString();
@@ -56,68 +59,96 @@ public final class Formulas {
     return operands.stream().map(Formulas::render).collect(Collectors.joining(separator));
   }
 
-  /** Evaluates {@code f} treating each atom as an independent boolean variable ({@code env} maps {@link Literal#key()} to its value). */
+  /**
+   * Evaluates f with every atom treated as its own boolean (env maps {@link Literal#key()} to the value
+   * of the positive version of the atom). This is what the tests use for the truth tables.
+   */
   public static boolean evaluate(Formula f, Map<String, Boolean> env) {
+    return evaluate(f, literal -> env.get(literal.key()) == literal.positive());
+  }
+
+  /** Evaluates f, asking atomHolds whether each atom is true (e.g. by looking at the real event values). */
+  public static boolean evaluate(Formula f, Predicate<Literal> atomHolds) {
     if (f instanceof Literal literal) {
-      return env.get(literal.key()) == literal.positive();
+      return atomHolds.test(literal);
     }
     if (f instanceof Const constant) {
       return constant.value();
     }
     if (f instanceof Not not) {
-      return !evaluate(not.operand(), env);
+      return !evaluate(not.operand(), atomHolds);
     }
     if (f instanceof And and) {
-      return and.operands().stream().allMatch(o -> evaluate(o, env));
+      return and.operands().stream().allMatch(o -> evaluate(o, atomHolds));
     }
     if (f instanceof Or or) {
-      return or.operands().stream().anyMatch(o -> evaluate(o, env));
+      return or.operands().stream().anyMatch(o -> evaluate(o, atomHolds));
     }
     if (f instanceof Nand nand) {
-      return !nand.operands().stream().allMatch(o -> evaluate(o, env));
+      return !nand.operands().stream().allMatch(o -> evaluate(o, atomHolds));
     }
     if (f instanceof Nor nor) {
-      return !nor.operands().stream().anyMatch(o -> evaluate(o, env));
+      return !nor.operands().stream().anyMatch(o -> evaluate(o, atomHolds));
     }
     if (f instanceof Xor xor) {
-      return evaluate(xor.left(), env) != evaluate(xor.right(), env);
+      return evaluate(xor.left(), atomHolds) != evaluate(xor.right(), atomHolds);
     }
     if (f instanceof Implies implies) {
-      return !evaluate(implies.left(), env) || evaluate(implies.right(), env);
+      return !evaluate(implies.left(), atomHolds) || evaluate(implies.right(), atomHolds);
     }
     Iff iff = (Iff) f;
-    return evaluate(iff.left(), env) == evaluate(iff.right(), env);
+    return evaluate(iff.left(), atomHolds) == evaluate(iff.right(), atomHolds);
   }
 
-  /** Keys of all the boolean variables (atoms) occurring in {@code f}. */
+  /** Keys of all the atoms in f. */
   public static Set<String> literalKeys(Formula f) {
     Set<String> keys = new HashSet<>();
-    collectKeys(f, keys);
+    for (Literal literal : literals(f)) {
+      keys.add(literal.key());
+    }
     return keys;
   }
 
-  private static void collectKeys(Formula f, Set<String> keys) {
+  /** All the comparisons in f, in the order they show up. */
+  public static List<Comparison> comparisons(Formula f) {
+    List<Comparison> comparisons = new ArrayList<>();
+    for (Literal literal : literals(f)) {
+      if (literal instanceof Comparison comparison) {
+        comparisons.add(comparison);
+      }
+    }
+    return comparisons;
+  }
+
+  /** All the atoms in f, in the order they show up. */
+  public static List<Literal> literals(Formula f) {
+    List<Literal> literals = new ArrayList<>();
+    collectLiterals(f, literals);
+    return literals;
+  }
+
+  private static void collectLiterals(Formula f, List<Literal> literals) {
     if (f instanceof Literal literal) {
-      keys.add(literal.key());
+      literals.add(literal);
     } else if (f instanceof Not not) {
-      collectKeys(not.operand(), keys);
+      collectLiterals(not.operand(), literals);
     } else if (f instanceof And and) {
-      and.operands().forEach(o -> collectKeys(o, keys));
+      and.operands().forEach(o -> collectLiterals(o, literals));
     } else if (f instanceof Or or) {
-      or.operands().forEach(o -> collectKeys(o, keys));
+      or.operands().forEach(o -> collectLiterals(o, literals));
     } else if (f instanceof Nand nand) {
-      nand.operands().forEach(o -> collectKeys(o, keys));
+      nand.operands().forEach(o -> collectLiterals(o, literals));
     } else if (f instanceof Nor nor) {
-      nor.operands().forEach(o -> collectKeys(o, keys));
+      nor.operands().forEach(o -> collectLiterals(o, literals));
     } else if (f instanceof Xor xor) {
-      collectKeys(xor.left(), keys);
-      collectKeys(xor.right(), keys);
+      collectLiterals(xor.left(), literals);
+      collectLiterals(xor.right(), literals);
     } else if (f instanceof Implies implies) {
-      collectKeys(implies.left(), keys);
-      collectKeys(implies.right(), keys);
+      collectLiterals(implies.left(), literals);
+      collectLiterals(implies.right(), literals);
     } else if (f instanceof Iff iff) {
-      collectKeys(iff.left(), keys);
-      collectKeys(iff.right(), keys);
+      collectLiterals(iff.left(), literals);
+      collectLiterals(iff.right(), literals);
     }
   }
 }
