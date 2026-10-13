@@ -7,6 +7,7 @@ import java.util.Set;
 import Automaton.VariableSubstitution;
 import translations.IOManager;
 import translations.NandGuardEncoder;
+import time.TimeWindowPreprocessor;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
 import utils.CmdArgsUtil;
@@ -125,6 +126,11 @@ public class Runner {
 
     // Must happen before the generators build their automata, which copy the encoded condition values.
     model.applyVariableValues(variableAssignments);
+
+    // Optional: tighten / drop the time windows before the automata get built
+    if (cmds.hasOption("stp")) {
+      System.out.print(TimeWindowPreprocessor.describe(TimeWindowPreprocessor.apply(model.getDeclareConstraints())));
+    }
 
     System.out.println("Model: " + model);    
 

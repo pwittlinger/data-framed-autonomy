@@ -184,14 +184,19 @@ public class PDDLGenerator {
     b.append("- activity\n");
 
     // ATTRIBUTES
+    // A model without data has no parameters and values, and an empty "- parameter_name" line breaks ENHSP
     Set<String> attributes = collectParameterNames(this.params, substitutions);
-    b.append("    ");
-    attributes.forEach(x -> b.append(x + " "));
-    b.append("- parameter_name\n");
+    if (!attributes.isEmpty()) {
+      b.append("    ");
+      attributes.forEach(x -> b.append(x + " "));
+      b.append("- parameter_name\n");
+    }
 
-    b.append("    ");
-    variables.keySet().forEach(x -> b.append(x + " "));
-    b.append("- value_name\n");
+    if (!variables.isEmpty()) {
+      b.append("    ");
+      variables.keySet().forEach(x -> b.append(x + " "));
+      b.append("- value_name\n");
+    }
 
     b.append("    ");
     this.constraints.forEach(x -> b.append(x.getConstraintName() + " "));
