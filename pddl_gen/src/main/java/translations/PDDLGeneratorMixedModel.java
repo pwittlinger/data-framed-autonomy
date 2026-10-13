@@ -233,31 +233,32 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     StringBuilder b = new StringBuilder();
     b.append("    ; Action costs\n");
 
-    this.constraints.forEach(x -> b.append("    (= (violation_cost " + x.getConstraintName() + ") 1)\n"));
+    this.constraints.forEach(x -> b.append("    (= (violation_cost " + x.getConstraintName() + ") " + this.mixedModel.constraintViolation.get(x.getConstraintName()) + ")\n"));
     for (String dpnConstraint : this.mixedModel.dpnConstraintNames) {
-      b.append("    (= (violation_cost " + dpnConstraint + ") 1)\n");
+      b.append("    (= (violation_cost " + dpnConstraint + ") " + this.mixedModel.constraintViolation.get(dpnConstraint) + ")\n");
     }
 
-    b.append(this.buildResourceCosts());
-
-    /*
-    for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
+    // Only runs when no resource allocation is given
+    if (this.mixedModel.allResources.isEmpty() && !this.costs.isEmpty()) {
+          for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
       switch (cost.getKey().getValue()) {
-        case CHANGE:
-          b.append("    (= (change_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
-          break;
         case ADD:
           b.append("    (= (add_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
           break;
         case SET:
           b.append("    (= (set_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
           break;
-        case DELETE:
-          b.append("    (= (delete_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
-          break;
       }
     }
-    */
+    }
+
+    // This already has a check for empty resource allocation in the definition.
+    // Not a pretty check, but it works.
+    b.append(this.buildResourceCosts());
+
+    
+
+    
     b.append("\n");
 
     return b;

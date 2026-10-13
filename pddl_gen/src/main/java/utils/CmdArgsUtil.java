@@ -30,6 +30,12 @@ public class CmdArgsUtil {
         Option costParam = new Option("c", "cost", true, "Path to cost model file (contains cost for each activity in the process frame)");
         options.addOption(costParam);
 
+        Option violationCost = new Option(null, "violation_cost", true, "Violation cost of every constraint (default 1)");
+        options.addOption(violationCost);
+
+        Option violationCostFile = new Option(null, "violation_cost_file", true, "Path to the violation cost file (one line per constraint: '<decl file>|<constraint> <cost>' or '<pnml file> <cost>'), overrides --violation_cost for the listed constraints");
+        options.addOption(violationCostFile);
+
         Option varAssignment = new Option("a", "varAssign",true,  "Path to the variable mapping (which activity in frame is associated with which variable value)");
         options.addOption(varAssignment);
 

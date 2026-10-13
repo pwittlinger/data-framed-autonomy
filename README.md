@@ -30,6 +30,25 @@ Optional Inputs:
  - -p,--petri <arg>       Path to Petri-net model(s), comma-separated for
                         multiple
  - -s,--varSub <arg>      Path to the variable substitution
+ - --violation_cost <arg>  Violation cost of every constraint (default 1)
+ - --violation_cost_file <arg>  Path to the violation cost file, which sets
+                        the violation cost of individual constraints
+
+The violation cost options only take effect together with a Petri net (-p). The violation cost file has one line per constraint. A DECLARE constraint is identified by the file name of its DECLARE model and its name in the PDDL files (template, then activation, then target activity). For Precedence-type templates the activation is the second activity in the .decl file, so `Precedence[ActivityF, ActivityD]` is `Precedence_ActivityD_ActivityF`. A Petri net is identified by its file name:
+
+```
+<DECL_FILE_NAME>|<CONSTRAINT_IDENTIFIER> <violation_cost>
+<PNML_FILE_NAME> <violation_cost>
+```
+
+```
+BasePN-0And_3_timed_data_parsed.decl|Response_ActivityG_ActivityP 4
+BasePN-0And_3_timed_data_parsed.decl|Precedence_ActivityD_ActivityF 70
+BasePN-0And_3_timed_data_parsed.decl|Not_Response_ActivityM_ActivityO 50
+BasePN-0And.pnml 5
+```
+
+Costs are whole numbers of at least 0. Constraints that are not listed keep the value of --violation_cost (or 1). If a DECLARE file contains the same constraint more than once, its name sets the cost of every copy, while the numbered name from the PDDL (e.g. `Response_ActivityG_ActivityP_2`) sets the cost of one copy only.
 
  Example:
 

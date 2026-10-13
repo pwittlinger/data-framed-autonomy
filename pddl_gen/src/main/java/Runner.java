@@ -54,6 +54,8 @@ public class Runner {
     boolean hasVarSub = cmds.hasOption("varSub");
     boolean hasCost = cmds.hasOption("cost");
     boolean newOutput = cmds.hasOption("output");
+    boolean hasViolationCost = cmds.hasOption("violation_cost");
+    boolean hasViolationCostFile = cmds.hasOption("violation_cost_file");
 
     if (hasPetri) {
         petriNetString = cmds.getOptionValue("petri");
@@ -83,6 +85,20 @@ public class Runner {
     }
     else {
       costsString = "cost_model.txt";
+    }
+
+    // Default violation cost of every constraint, the violation cost file overrides it per constraint
+    int violationCost = 1;
+    if (hasViolationCost) {
+      violationCost = MixedModel.parseViolationCost(cmds.getOptionValue("violation_cost"), "--violation_cost");
+    }
+
+    String violationCostsString = null;
+    if (hasViolationCostFile) {
+      violationCostsString = cmds.getOptionValue("violation_cost_file");
+      if (!CmdFileUtils.violationCostFileExists(violationCostsString)) {
+        throw new Exception("Error in accessing violation cost file: " + violationCostsString);
+      }
     }
 
 
@@ -132,7 +148,12 @@ public class Runner {
       /*Check if cost model exists and otherwise use standard cost model*/
       if (!ioManager.costModelExists(costsString) || (!hasCost)) {
         ioManager.exportCostModel(costsString, model.activities.keySet());
-      }      
+      }
+
+      // The DECLARE-only problems contain no violation_cost fluents
+      if (hasViolationCost || hasViolationCostFile) {
+        System.out.println("--violation_cost and --violation_cost_file only apply together with a Petri net (-p), ignoring them");
+      }
 
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       LogFile log = ioManager.readDeclareLog(traceString, model);
@@ -162,6 +183,8 @@ public class Runner {
       myMixedModel.checkCostFileFormat(costsString);
 
       myMixedModel.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
+
+      myMixedModel.assignViolationCosts(violationCost, hasViolationCostFile ? ioManager.readViolationCosts(violationCostsString) : new ArrayList<>());
 
       LogFile log = ioManager.readLog(traceString, myMixedModel); // OKAY!
       

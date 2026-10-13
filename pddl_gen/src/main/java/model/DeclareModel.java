@@ -73,7 +73,6 @@ public class DeclareModel {
    */
   public void assignCosts(List<String[]> costsList) {
     Activity a;
-    Integer[] costsArray = new Integer[4];
 
     this.costs = new HashMap<>();
     Set<Activity> seenActivities = new HashSet<>();
@@ -84,13 +83,9 @@ public class DeclareModel {
         throw new Error("Activity not found! What I parsed: " + costs[0]);
       }
       seenActivities.add(a);
-      for (int i = 1; i < costs.length; i++) {
-        costsArray[i-1] = Integer.valueOf(costs[i]);
+      for (Map.Entry<CostEnum, Integer> cost : CostEnum.parseCostLine(costs).entrySet()) {
+        this.costs.put(new Pair<Activity, CostEnum>(a, cost.getKey()), cost.getValue());
       }
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.CHANGE), costsArray[0]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.ADD), costsArray[1]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
     }
 
     // TODO Implement handling of missing activities
@@ -202,6 +197,7 @@ public class DeclareModel {
       String activationCondition = constraintTokens[2] == null? null : constraintTokens[2];
       DeclareConstraint constraint = new DeclareConstraint(template, activity, activationCondition, null, null);
       constraint.assignTimeConditions(constraintTokens[3]);
+      constraint.setSourceFile(constraintTokens[4]);
       return constraint;
     }
     return null;
@@ -231,6 +227,7 @@ public class DeclareModel {
         */
         DeclareConstraint constraint = new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
         constraint.assignTimeConditions(constraintTokens[5]);
+        constraint.setSourceFile(constraintTokens[6]);
         return constraint;
       }
     }

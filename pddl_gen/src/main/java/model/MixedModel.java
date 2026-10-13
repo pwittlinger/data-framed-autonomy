@@ -7,11 +7,13 @@ import model.CostEnum;
 import model.DeclareConstraint;
 import model.DeclareModel;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -349,6 +351,81 @@ public class MixedModel {
     return this.costs;
   }
 
+  /**
+   * Gives every DECLARE and Petri net constraint the default violation cost, then applies the
+   * lines of the violation cost file in order (a later line overrides an earlier one).
+   * @param violationCostsList {identifier, cost} pairs, identifier "<decl file>|<constraint>" or "<pnml file>"
+   */
+  public void assignViolationCosts(int defaultCost, List<String[]> violationCostsList) {
+    this.constraintViolation = new LinkedHashMap<>();
+    for (DeclareConstraint dc : this.declareModel.getDeclareConstraints()) {
+      this.constraintViolation.put(dc.getConstraintName(), defaultCost);
+    }
+    for (String dpnConstraint : this.dpnConstraintNames) {
+      this.constraintViolation.put(dpnConstraint, defaultCost);
+    }
+
+    for (String[] entry : violationCostsList) {
+      int cost = parseViolationCost(entry[1], entry[0]);
+      for (String constraintName : resolveViolationCostTarget(entry[0])) {
+        this.constraintViolation.put(constraintName, cost);
+      }
+    }
+  }
+
+  public static int parseViolationCost(String value, String source) {
+    int cost;
+    try {
+      cost = Integer.parseInt(value);
+    } catch (NumberFormatException e) {
+      cost = -1;
+    }
+    if (cost < 0) {
+      throw new Error(source + " needs a whole, non-negative violation cost, found: " + value);
+    }
+    return cost;
+  }
+
+  // "<pnml file>" matches the Petri net read from that file. "<decl file>|<constraint>" matches the constraints of
+  // that file by name, with or without the _2, _3, ... suffix that repeated constraints get in the PDDL.
+  private List<String> resolveViolationCostTarget(String identifier) {
+    List<String> constraintNames = new ArrayList<>();
+    int separator = identifier.indexOf('|');
+
+    if (separator < 0) {
+      String fileName = new File(identifier).getName();
+      for (int i = 0; i < this.dpnModels.size(); i++) {
+        if (this.dpnModels.get(i).netName.equals(fileName)) {
+          constraintNames.add(this.dpnConstraintNames.get(i));
+        }
+      }
+      if (constraintNames.isEmpty()) {
+        throw new Error("Petri net " + fileName + " from the violation cost file is not one of the input Petri nets");
+      }
+      return constraintNames;
+    }
+
+    String fileName = new File(identifier.substring(0, separator).strip()).getName();
+    String constraint = identifier.substring(separator + 1).strip();
+    List<DeclareConstraint> fileConstraints = this.declareModel.getDeclareConstraints().stream()
+      .filter(dc -> fileName.equals(dc.getSourceFile()))
+      .toList();
+    if (fileConstraints.isEmpty()) {
+      throw new Error("DECLARE file " + fileName + " from the violation cost file is not one of the input DECLARE models, or none of its constraints were loaded");
+    }
+
+    for (DeclareConstraint dc : fileConstraints) {
+      if (constraint.equals(dc.getConstraintName()) || constraint.equals(dc.getBaseConstraintName())) {
+        constraintNames.add(dc.getConstraintName());
+      }
+    }
+    if (constraintNames.isEmpty()) {
+      throw new Error("Constraint " + constraint + " not found in " + fileName + ", its constraints are: "
+        + fileConstraints.stream().map(DeclareConstraint::getConstraintName).toList());
+    }
+    return constraintNames;
+  }
+
   public void checkCostFileFormat(String costsFileName) {
     this.isJsonCostFile = costsFileName != null && costsFileName.contains(".json");
   }
@@ -360,8 +437,10 @@ public class MixedModel {
 	String resource;
 
 
-	if (costsList.get(0).length == 3) {
-		
+	// Rows of the JSON resource file are "<task> <resource> <duration>". A text cost model row "<activity> <add> <set>"
+	// has the same length, so the file type decides which one we have, not the row length.
+	if (this.isJsonCostFile) {
+
     	Set<Activity> seenActivities = new HashSet<>();
 		this.resourceMap = new HashMap<>();
 
@@ -382,8 +461,6 @@ public class MixedModel {
 
 	
 
-    Integer[] costsArray = new Integer[4];
-
     this.costs = new HashMap<>();
     Set<Activity> seenActivities = new HashSet<>();
 
@@ -394,13 +471,9 @@ public class MixedModel {
       }
 	  a = new Activity(sa);
       seenActivities.add(a);
-      for (int i = 1; i < costs.length; i++) {
-        costsArray[i-1] = Integer.valueOf(costs[i]);
+      for (Map.Entry<CostEnum, Integer> cost : CostEnum.parseCostLine(costs).entrySet()) {
+        this.costs.put(new Pair<Activity, CostEnum>(a, cost.getKey()), cost.getValue());
       }
-      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.CHANGE), costsArray[0]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.ADD), costsArray[1]);
-      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
-      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
     }
 
     // TODO Implement handling of missing activities
