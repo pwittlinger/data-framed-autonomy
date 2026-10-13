@@ -172,16 +172,18 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       .collect(Collectors.toSet());
     */
     Set<String> attributes = collectParameterNames(this.mixedModel.declareModel.params, substitutions);
-    b.append("    ");
-    attributes.forEach(x -> b.append(x + " "));
+    // A model without data has no parameters and values, and an empty "- value_name" line breaks ENHSP
     if (attributes.size() > 0) {
-      b.append("- parameter_name\n"); 
+      b.append("    ");
+      attributes.forEach(x -> b.append(x + " "));
+      b.append("- parameter_name\n");
     }
-    
 
-    b.append("    ");
-    variables.keySet().forEach(x -> b.append(x + " "));
-    b.append("- value_name\n");
+    if (!variables.isEmpty()) {
+      b.append("    ");
+      variables.keySet().forEach(x -> b.append(x + " "));
+      b.append("- value_name\n");
+    }
 
     b.append("    ");
     this.constraints.forEach(x -> b.append(x.getConstraintName() + " "));

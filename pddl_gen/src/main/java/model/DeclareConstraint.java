@@ -18,6 +18,8 @@ public class DeclareConstraint {
   private double activation_min_t_condidition, activation_max_t_condition, target_min_t_condidition, target_max_t_condition;
   private ArrayList<String> clockConditions;
   private int duplicateIndex = 0;
+  // Set by the STP preprocessing when the other windows already imply this one
+  private boolean targetWindowDropped = false;
 
   public DeclareConstraint(DeclareTemplate template, String activationActivity, String activationCondition, String targetActivity, String targetCondition) {
     this.template = template;
@@ -141,6 +143,15 @@ public class DeclareConstraint {
     this.activation_max_t_condition = max;
   }
 
+  // True if the .decl file gives a target window (otherwise the getter falls back to [0, 100])
+  public boolean hasExplicitTargetWindow() {
+    return !this.targetWindowDropped && !(this.target_min_t_condidition == 0 && this.target_max_t_condition == 0);
+  }
+
+  public void dropTargetTimeConditions() {
+    this.targetWindowDropped = true;
+  }
+
   public void setTargetTimeConditions(double min, double max) {
     this.target_min_t_condidition = min;
     this.target_max_t_condition = max;
@@ -155,6 +166,9 @@ public class DeclareConstraint {
   }
 
   public double[] getTargetTimeConditions() {
+    if (this.targetWindowDropped) {
+      return null; // no window at all, so the automaton doesn't need a clock for it
+    }
     if (this.target_min_t_condidition == 0 && this.target_max_t_condition == 0) {
       //return null;
       return new double[] {0, 100};

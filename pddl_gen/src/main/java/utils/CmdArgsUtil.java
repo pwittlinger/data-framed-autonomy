@@ -39,6 +39,9 @@ public class CmdArgsUtil {
         Option multiInstance = new Option("i","multiinstance",false,  "Flatten the Eventlog into a single PDDL file");
         options.addOption(multiInstance);
 
+        Option stp = new Option("t", "stp", false, "Preprocess the time windows with the STP minimal network: tighten them and drop the ones the others already imply (assumes every activity happens once)");
+        options.addOption(stp);
+
         Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
         options.addOption(outputPath);
 
