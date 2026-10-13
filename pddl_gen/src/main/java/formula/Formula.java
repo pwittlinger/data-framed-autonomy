@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Syntax tree of a boolean formula over MP-DECLARE data conditions.
+ * The tree we get after parsing a data condition.
  *
- * Atoms are data conditions ({@code A.amount > 10}, {@code T.cat is c1}, {@code A.cat in (c1, c2)})
- * or plain propositional variables ({@code p}). Every atom can be negated without a {@link Not} node:
- * comparisons flip their operator, propositional variables carry a polarity.
+ * Atoms are either data conditions ({@code A.amount > 10}, {@code T.cat is c1}, {@code A.cat in (c1, c2)})
+ * or plain variables ({@code p}), which we only really use for testing. The nice thing about the atoms is
+ * that we can negate them without wrapping them in a {@link Not}: a comparison just flips its operator,
+ * a variable flips its sign.
  */
 public sealed interface Formula permits Formula.Literal, Formula.Const, Formula.Not, Formula.And, Formula.Or,
     Formula.Nand, Formula.Nor, Formula.Xor, Formula.Implies, Formula.Iff {
 
-  // Each operator mapped to its complement
+  // Every operator with its opposite
   Map<String, String> NEGATED_OPERATOR = Map.of(
       ">", "<=", "<=", ">",
       ">=", "<", "<", ">=",
@@ -21,20 +22,20 @@ public sealed interface Formula permits Formula.Literal, Formula.Const, Formula.
       "is", "is not", "is not", "is",
       "in", "not in", "not in", "in");
 
-  // The "positive" operator of each complementary pair, used to identify an atom and its negation as the same variable
+  // One operator per pair, we use it so that an atom and its negation end up with the same key
   List<String> POSITIVE_OPERATORS = List.of(">", ">=", "=", "is", "in");
 
-  /** A formula that can be negated in place (no NOT node needed). */
+  /** Something we can negate in place, so either a comparison or a variable. */
   sealed interface Literal extends Formula permits Comparison, Var {
     Literal negate();
 
-    /** Identifies the underlying boolean variable: a literal and its negation share the key. */
+    /** Same key for an atom and its negation (A.x > 10 and A.x <= 10 are the same variable, just flipped). */
     String key();
 
     boolean positive();
   }
 
-  /** {@code <scope>.<attribute> <operator> <value>}, e.g. {@code A.amount >= 10}. The value is a List for (not) in. */
+  /** A data condition like {@code A.amount >= 10}. For (not) in the value is a list. */
   record Comparison(String scope, String attribute, String operator, Object value) implements Literal {
     public Comparison {
       if (!NEGATED_OPERATOR.containsKey(operator)) {
@@ -67,7 +68,7 @@ public sealed interface Formula permits Formula.Literal, Formula.Const, Formula.
     }
   }
 
-  /** Propositional variable with a polarity ({@code p} or {@code not p}). */
+  /** A plain variable, {@code p} or {@code not p}. */
   record Var(String name, boolean positive) implements Literal {
     public Var(String name) {
       this(name, true);

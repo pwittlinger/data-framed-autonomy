@@ -189,6 +189,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       b.append(dpnConstraint + " ");
     }
     b.append("- constraint\n");
+    b.append(this.mixedModel.nandGuards.objectDeclarations());
 
     if (this.mixedModel.allResources.size() > 0) {
       b.append("    ");

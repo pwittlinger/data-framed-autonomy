@@ -117,6 +117,23 @@
   </dependencies>
 
   <build>
+    <resources>
+      <!-- lib/ only holds the ProM jars for install-file, no need to put them inside our jar -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>lib/**</exclude>
+        </excludes>
+      </resource>
+      <!-- The domains go in the jar too, the generator copies the clauses one next to the problems -->
+      <resource>
+        <directory>../domains</directory>
+        <targetPath>domains</targetPath>
+        <includes>
+          <include>*.pddl</include>
+        </includes>
+      </resource>
+    </resources>
 
     <plugins>
       <plugin>

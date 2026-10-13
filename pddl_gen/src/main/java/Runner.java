@@ -1,9 +1,12 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
 import Automaton.VariableSubstitution;
 import translations.IOManager;
+import translations.NandGuardEncoder;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
 import utils.CmdArgsUtil;
@@ -125,6 +128,9 @@ public class Runner {
 
     System.out.println("Model: " + model);    
 
+    // Set to true when some data condition needs nand clauses, then the problems need the clauses domain
+    boolean usesNandGuards;
+
     if (!hasPetri) {
       //Only DECLARE model present
       // Using the pre-existing implementation for the 
@@ -146,6 +152,7 @@ public class Runner {
         i++;
       }
       //IOManager.getInstance().exportDomainPDDL(domain);
+      usesNandGuards = pddlGenerator.usesNandGuards();
       }
 
     else {
@@ -188,9 +195,19 @@ public class Runner {
       i++;
     }
     //IOManager.getInstance().exportDomainPDDL(domain);
+    usesNandGuards = myMixedModel.nandGuards.isUsed();
     }
 
-        
+    // The problems only work with the domain that knows about the nand clauses, so we put it next to them.
+    // If they don't need it we remove an old copy, so nobody picks up the wrong domain by mistake.
+    Path pddlFolder = Path.of(ioManager.getPddlFolder());
+    if (usesNandGuards) {
+      Path domain = NandGuardEncoder.exportClausesDomain(pddlFolder);
+      System.out.println("Some data conditions use or/not, the problems need the domain " + domain);
+    } else {
+      Files.deleteIfExists(pddlFolder.resolve(NandGuardEncoder.CLAUSES_DOMAIN));
+    }
+
     ioManager.exportModel(model);
    
   }
