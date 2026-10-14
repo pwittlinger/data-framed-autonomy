@@ -131,7 +131,7 @@
 
       )
     :effect (and 
-      (increase (total_cost) 0)
+      (increase (total_cost) (add_cost ?a))
       (after_add)
       (complete_sync ?a)
   ))
@@ -195,7 +195,7 @@
 
       :effect (and 
       
-      (increase (total_cost) 0)
+      (increase (total_cost) (set_cost ?a))
 
       (forall (?s1 ?s2 - automaton_state) 
         (when (and
@@ -658,7 +658,7 @@
           )
       :effect (and 
 
-      (increase (total_cost) 1000)
+      (increase (total_cost) (violation_cost ?c))
       
       (forall (?s1 ?s2 - automaton_state)
         (when (and

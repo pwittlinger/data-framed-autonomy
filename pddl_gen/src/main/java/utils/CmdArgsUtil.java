@@ -36,6 +36,9 @@ public class CmdArgsUtil {
         Option violationCostFile = new Option(null, "violation_cost_file", true, "Path to the violation cost file (one line per constraint: '<decl file>|<constraint> <cost>' or '<pnml file> <cost>'), overrides --violation_cost for the listed constraints");
         options.addOption(violationCostFile);
 
+        Option recovery = new Option(null, "recovery", true, "Recovery strategy for violated constraints: Reset (default), No-Recovery, Discard or Skip");
+        options.addOption(recovery);
+
         Option varAssignment = new Option("a", "varAssign",true,  "Path to the variable mapping (which activity in frame is associated with which variable value)");
         options.addOption(varAssignment);
 

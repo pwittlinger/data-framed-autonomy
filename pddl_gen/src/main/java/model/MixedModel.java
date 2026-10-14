@@ -40,6 +40,7 @@ public class MixedModel {
     public ArrayList<String> allInitialStates;
     public ArrayList<ArrayList<String>> allAcceptingStates;
     public ArrayList<String> allFailureStates;
+    public ArrayList<ArrayList<String>> allFailureStatesByAutomaton; // Same order as allAcceptingStates
     public ArrayList<Automaton> constraintAutomatons;
     public ArrayList<String> conditionStrings;
     public ArrayList<ArrayList<String>> allAutomatonStrings;
@@ -72,6 +73,7 @@ public class MixedModel {
         this.allInitialStates = new ArrayList<>();
         this.allAcceptingStates = new ArrayList<>();
         this.allFailureStates = new ArrayList<>();
+        this.allFailureStatesByAutomaton = new ArrayList<>();
         this.allAutomatonStrings = new ArrayList<>();
         this.conditionStrings = new ArrayList<>();
         this.activities = new HashMap<>();
@@ -168,6 +170,7 @@ public class MixedModel {
             }
 
             ArrayList<String> dpnAccepting = new ArrayList<>();
+            ArrayList<String> dpnFailure = new ArrayList<>();
 
             for (State st : dpnModel.executableAutomaton.states()) {
                 String stateName = statePrefix + st.toString();
@@ -176,12 +179,14 @@ public class MixedModel {
                 }
                 if (dpnModel.isNonAcceptingTrap(st)) {
                     this.allFailureStates.add(stateName);
+                    dpnFailure.add(stateName);
                 }
                 this.allAutomatonStates.add(stateName);
                 this.allPetriNetStates.add(stateName);
                 dpnStates.add(stateName);
             }
             this.allAcceptingStates.add(dpnAccepting);
+            this.allFailureStatesByAutomaton.add(dpnFailure);
             this.allPetriNetStatesByDpn.add(dpnStates);
 
             for (State stt : dpnModel.executableAutomaton.states()) {
@@ -208,23 +213,26 @@ public class MixedModel {
   	      // Automaton might have more than one goal state. In that case, we'll put the goal states with an "or" between them.
   	      List<StateEC> allStates = aut.getStatesEC();
 		  ArrayList<String> declareAccepting = new ArrayList<>();
-  	      
+		  ArrayList<String> declareFailure = new ArrayList<>();
+
   	      for (StateEC g : allStates) {
   	    	  if (g.isInitial) {
   	    		  this.allInitialStates.add(g.name);
   	    	  }
   	    	  if (g.isGoal) {
-  	    		//this.allAcceptingStates.add(g.name);  
+  	    		//this.allAcceptingStates.add(g.name);
 				declareAccepting.add(g.name);
 
   	    	  }
   	    	  if (g.isFailure) {
   	    		  this.allFailureStates.add(g.name);
+  	    		  declareFailure.add(g.name);
   	    	  }
 			  this.allAutomatonStates.add(g.name);
-  	    	  
+
   	      }
 		  this.allAcceptingStates.add(declareAccepting);
+		  this.allFailureStatesByAutomaton.add(declareFailure);
         }
     }
 

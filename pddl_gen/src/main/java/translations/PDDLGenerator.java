@@ -6,6 +6,7 @@ import model.Condition;
 import model.CostEnum;
 import model.DeclareConstraint;
 import model.DeclareModel;
+import model.RecoveryStrategy;
 
 import org.deckfour.xes.extension.std.XConceptExtension;
 import Automaton.Automaton;
@@ -32,6 +33,7 @@ public class PDDLGenerator {
   private final ArrayList<DeclareConstraint> constraints;
   private final ArrayList<String> params;
   protected final DeclareModel declareModel;
+  protected final RecoveryStrategy recovery;
   private ArrayList<Automaton> constraintAutomatons;
   private List<List<State>> goalAutomatonStates;
   private State finalTraceState;
@@ -46,7 +48,7 @@ public class PDDLGenerator {
     ")\n" +
     "\n";
   
-  public PDDLGenerator(DeclareModel model) throws Exception {
+  public PDDLGenerator(DeclareModel model, RecoveryStrategy recovery) throws Exception {
 
     // Get set costs, or use default ones
     Map<Pair<Activity, CostEnum>, Integer> costs = model.getCosts();
@@ -60,6 +62,7 @@ public class PDDLGenerator {
     this.constraints = model.getDeclareConstraints();
     this.params = model.params;
     this.declareModel = model;
+    this.recovery = recovery;
     this.constraintAutomatons = new ArrayList<>();
     this.goalAutomatonStates = new ArrayList<>();
     this.prepareAutomatonStates();
@@ -73,11 +76,17 @@ public class PDDLGenerator {
       
       // Automaton might have more than one goal state. In that case, we'll put the goal states with an "or" between them.
       List<State> goalStates = newAutomaton.getStates().stream()
-                                  .filter(x -> x.isGoal)
+                                  .filter(this::isAccepting)
                                   .toList();
 
       this.goalAutomatonStates.add(goalStates);
     }
+  }
+
+  // With the Discard strategy a violated constraint is ignored, so its failure states are accepting too.
+  // They keep their failure_state fact, so reaching them is still recognised as a violation.
+  private boolean isAccepting(State state) {
+    return state.isGoal || (state.isFailure && this.recovery.acceptsFailureStates());
   }
 
   public String defineProblem(ArrayList<Event> listOfEvents, Map<String, Integer> assignments, Set<VariableSubstitution> substitutions, ArrayList<Double> timeStamps) {
@@ -313,7 +322,7 @@ public class PDDLGenerator {
         if (state.isFailure) {
           b.append("    (failure_state " + state.name + ")\n");
         }
-        if (state.isGoal) {
+        if (this.isAccepting(state)) {
           b.append("    (goal_state " + state.name + ")\n");
         }
       }

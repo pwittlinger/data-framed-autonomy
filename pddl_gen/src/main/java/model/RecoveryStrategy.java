@@ -1,0 +1,43 @@
+package model;
+
+import java.util.Arrays;
+
+/**
+ * What happens once a constraint is permanently violated (its automaton reaches a failure state).
+ * Of these, only Discard changes the generated problem files. Reset, No-Recovery and Skip
+ * write the same final states and are told apart by the domain.
+ */
+public enum RecoveryStrategy {
+  // The violated constraint is reset to its initial state, so it can be monitored again.
+  RESET("Reset"),
+  // Failure states are non-accepting and cannot be left, a violation makes the problem unsolvable.
+  NO_RECOVERY("No-Recovery"),
+  // The constraint is ignored once violated: its failure states become accepting.
+  DISCARD("Discard"),
+  // Events that would violate the constraint are skipped for it, it returns to the state before the violation.
+  SKIP("Skip");
+
+  private final String optionName;
+
+  RecoveryStrategy(String optionName) {
+    this.optionName = optionName;
+  }
+
+  public String getOptionName() {
+    return optionName;
+  }
+
+  public boolean acceptsFailureStates() {
+    return this == DISCARD;
+  }
+
+  public static RecoveryStrategy fromOptionName(String optionName) {
+    for (RecoveryStrategy strategy : values()) {
+      if (strategy.optionName.equalsIgnoreCase(optionName.strip())) {
+        return strategy;
+      }
+    }
+    throw new Error("Unknown recovery strategy " + optionName + ", expected one of "
+      + Arrays.stream(values()).map(RecoveryStrategy::getOptionName).toList());
+  }
+}

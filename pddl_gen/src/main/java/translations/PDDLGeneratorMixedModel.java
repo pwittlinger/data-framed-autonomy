@@ -7,6 +7,7 @@ import model.CostEnum;
 import model.DeclareConstraint;
 import model.DeclareModel;
 import model.MixedModel;
+import model.RecoveryStrategy;
 
 
 import org.deckfour.xes.extension.std.XConceptExtension;
@@ -49,9 +50,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     ")\n" +
     "\n";
   
-  public PDDLGeneratorMixedModel(MixedModel model) throws Exception {
+  public PDDLGeneratorMixedModel(MixedModel model, RecoveryStrategy recovery) throws Exception {
 
-    super(model.declareModel);
+    super(model.declareModel, recovery);
     // Get set costs, or use default ones
     //Map<CostEnum, Integer> costs = model.declareModel.getCosts();
     Map<Pair<Activity, CostEnum>, Integer> costs = model.getCosts();
@@ -341,8 +342,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     }
 
     b.append("\n");
-    
-    for ( ArrayList<String> acceptingStates : this.mixedModel.allAcceptingStates) {
+
+    for (int i = 0; i < this.mixedModel.allAcceptingStates.size(); i++) {
+          List<String> acceptingStates = this.acceptingStates(i);
           if (acceptingStates.size() == 1) {
             b.append("    (goal_state " + acceptingStates.get(0) + ")\n");
           } else { // In case two or more
@@ -438,7 +440,8 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     b.append("    (cur_t_state " + this.finalTraceState.name + ")\n");
 
-    for ( ArrayList<String> acceptingStates : this.mixedModel.allAcceptingStates) {
+    for (int i = 0; i < this.mixedModel.allAcceptingStates.size(); i++) {
+      List<String> acceptingStates = this.acceptingStates(i);
       if (acceptingStates.size() == 1) {
         b.append("    (cur_s_state " + acceptingStates.get(0) + ")\n");
       } else { // In case two or more
@@ -461,6 +464,21 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     return b;
   }
 
+
+  // Accepting states of the i-th automaton (Petri nets first, then DECLARE constraints). With the Discard strategy
+  // a violated constraint is ignored, so its failure states are accepting too. They keep their failure_state fact,
+  // so reaching them is still recognised as a violation.
+  private List<String> acceptingStates(int automatonIndex) {
+    List<String> acceptingStates = new ArrayList<>(this.mixedModel.allAcceptingStates.get(automatonIndex));
+    if (this.recovery.acceptsFailureStates()) {
+      for (String failureState : this.mixedModel.allFailureStatesByAutomaton.get(automatonIndex)) {
+        if (!acceptingStates.contains(failureState)) {
+          acceptingStates.add(failureState);
+        }
+      }
+    }
+    return acceptingStates;
+  }
 
    public String activityMapping() {
     StringBuilder s = new StringBuilder();

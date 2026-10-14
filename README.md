@@ -33,6 +33,8 @@ Optional Inputs:
  - --violation_cost <arg>  Violation cost of every constraint (default 1)
  - --violation_cost_file <arg>  Path to the violation cost file, which sets
                         the violation cost of individual constraints
+ - --recovery <arg>       Recovery strategy for violated constraints:
+                        Reset (default), No-Recovery, Discard or Skip
 
 The violation cost options only take effect together with a Petri net (-p). The violation cost file has one line per constraint. A DECLARE constraint is identified by the file name of its DECLARE model and its name in the PDDL files (template, then activation, then target activity). For Precedence-type templates the activation is the second activity in the .decl file, so `Precedence[ActivityF, ActivityD]` is `Precedence_ActivityD_ActivityF`. A Petri net is identified by its file name:
 
@@ -49,6 +51,15 @@ BasePN-0And.pnml 5
 ```
 
 Costs are whole numbers of at least 0. Constraints that are not listed keep the value of --violation_cost (or 1). If a DECLARE file contains the same constraint more than once, its name sets the cost of every copy, while the numbered name from the PDDL (e.g. `Response_ActivityG_ActivityP_2`) sets the cost of one copy only.
+
+The recovery strategy decides what happens once a constraint is permanently violated, i.e. its automaton reaches a failure state:
+
+- Reset (default): the constraint is reset to its initial state and can be violated again later.
+- No-Recovery: the failure state is non-accepting and cannot be left, so a violation makes the problem unsolvable.
+- Discard: the constraint is ignored after its violation, so its failure states also become accepting.
+- Skip: events that would violate the constraint are skipped for it, it stays in the state before the violation.
+
+In the problem files only Discard differs: its failure states are additionally declared as `goal_state` and added to the goal condition (they remain `failure_state`). Reset, No-Recovery and Skip produce the same problem files and are told apart by the domain file.
 
  Example:
 

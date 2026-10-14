@@ -14,6 +14,7 @@ import log.LogFile;
 import model.DataPetriNet;
 import model.DeclareModel;
 import model.MixedModel;
+import model.RecoveryStrategy;
 import org.apache.commons.cli.*;
 
 public class Runner {
@@ -101,6 +102,11 @@ public class Runner {
       }
     }
 
+    RecoveryStrategy recovery = RecoveryStrategy.RESET;
+    if (cmds.hasOption("recovery")) {
+      recovery = RecoveryStrategy.fromOptionName(cmds.getOptionValue("recovery"));
+    }
+
 
     // Read model and logs to find ltl formula
     IOManager ioManager = IOManager.getInstance();
@@ -157,7 +163,7 @@ public class Runner {
 
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       LogFile log = ioManager.readDeclareLog(traceString, model);
-      PDDLGenerator pddlGenerator = new PDDLGenerator(model);
+      PDDLGenerator pddlGenerator = new PDDLGenerator(model, recovery);
       //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
@@ -188,7 +194,7 @@ public class Runner {
 
       LogFile log = ioManager.readLog(traceString, myMixedModel); // OKAY!
       
-      PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel);
+      PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel, recovery);
 
       //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
