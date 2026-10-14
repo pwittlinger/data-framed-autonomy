@@ -1,13 +1,12 @@
-; Same as domain_framed_autonomy_process_reset_time.pddl, plus support for data conditions that
-; aren't just an AND of comparisons (or, not, ->, ...). The generator turns those conditions into an
-; AND of nand clauses (see NandGuardEncoder in pddl_gen) and writes this domain next to the problems
-; when a model needs it. Everything below that isn't marked with ;; NAND is unchanged.
+; NAND: data conditions that aren't just an AND of comparisons (or, not, ->, ...). The generator turns
+; them into an AND of nand clauses (see NandGuardEncoder in pddl_gen).
 (define (domain trace-alignment)
 
   (:requirements :strips :typing :equality :adl :fluents :action-costs :time)
 
   (:types activity automaton_state trace_state parameter_name value_name constraint
-          guard_clause guard_atom) ;; NAND: the two new types
+          guard_clause guard_atom ;; NAND: the two new types
+         )
 
   ; ; Constants for prob
   ; (:constants

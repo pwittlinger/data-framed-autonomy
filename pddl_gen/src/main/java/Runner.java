@@ -6,6 +6,7 @@ import java.util.Set;
 
 import Automaton.VariableSubstitution;
 import translations.IOManager;
+import translations.MultiInstanceMerger;
 import translations.NandGuardEncoder;
 import time.TimeWindowPreprocessor;
 import translations.PDDLGenerator;
@@ -136,6 +137,8 @@ public class Runner {
 
     // Set to true when some data condition needs nand clauses, then the problems need the clauses domain
     boolean usesNandGuards;
+    // The problems of all the traces, for -i (one problem with every trace as its own instance)
+    ArrayList<String> problems;
 
     if (!hasPetri) {
       //Only DECLARE model present
@@ -150,7 +153,7 @@ public class Runner {
       LogFile log = ioManager.readDeclareLog(traceString, model);
       PDDLGenerator pddlGenerator = new PDDLGenerator(model);
       //String domain = pddlGenerator.defineDomain();
-      ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
+      problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
       int i = 1;
       for (String problem : problems) {
@@ -181,7 +184,7 @@ public class Runner {
       PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel);
 
       //String domain = pddlGenerator.defineDomain();
-      ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
+      problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
 
       for (DataPetriNet dpn : myMixedModel.dpnModels) {
@@ -212,6 +215,13 @@ public class Runner {
       System.out.println("Some data conditions use or/not, the problems need the domain " + domain);
     } else {
       Files.deleteIfExists(pddlFolder.resolve(NandGuardEncoder.CLAUSES_DOMAIN));
+    }
+
+    // -i: also one problem with all the traces as separate instances, with its own domain variant
+    if (cmds.hasOption("multiinstance")) {
+      Files.writeString(pddlFolder.resolve(MultiInstanceMerger.PROBLEM_FILE), MultiInstanceMerger.merge(problems));
+      Path domain = MultiInstanceMerger.exportDomain(pddlFolder, usesNandGuards);
+      System.out.println("All " + problems.size() + " traces in " + pddlFolder.resolve(MultiInstanceMerger.PROBLEM_FILE) + ", domain " + domain);
     }
 
     ioManager.exportModel(model);

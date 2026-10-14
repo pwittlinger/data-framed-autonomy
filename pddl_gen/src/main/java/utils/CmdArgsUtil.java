@@ -36,7 +36,7 @@ public class CmdArgsUtil {
         Option varSubs = new Option("s", "varSub",true, "Path to the variable substitution");
         options.addOption(varSubs);
 
-        Option multiInstance = new Option("i","multiinstance",false,  "Flatten the Eventlog into a single PDDL file");
+        Option multiInstance = new Option("i","multiinstance",false,  "Also write one problem with all the traces as separate instances (problem_multi.pddl, with the _multi domain)");
         options.addOption(multiInstance);
 
         Option stp = new Option("t", "stp", false, "Preprocess the time windows with the STP minimal network: tighten them and drop the ones the others already imply (assumes every activity happens once)");
