@@ -12,18 +12,25 @@ import time.SimpleTemporalNetwork.Constraint;
 import time.SimpleTemporalNetwork.Interval;
 
 /**
- * Preprocessing of the time windows with the STP minimal network (option --stp of the generator).
+ * Looks at the time windows with the STP minimal network (options --stp and --stp-apply of the generator).
  *
  * Only the target windows of the "response" templates go in the STP, because those are the ones that
  * really constrain the trace: Response[A, B] with B in [2, 5]h means every A needs a B 2 to 5 hours
  * later. (A window on the activation is more like part of the activation condition, it says when the
- * constraint kicks in, not when something has to happen.) Every activity is one time point, so this
- * assumes each activity happens once. That's an approximation, which is why it's opt-in.
+ * constraint kicks in, not when something has to happen.) Every activity is one time point.
  *
- * With the minimal network we can then:
- * - warn if the windows contradict each other (no trace can satisfy all of them)
- * - tighten every window to what the other windows already imply
- * - drop the windows the others already imply, so the PDDL has fewer clocks and time facts
+ * What it can tell:
+ * - the windows contradict each other, so every trace will need at least one reset
+ * - how much a window could be tightened, and which windows the others already imply
+ *
+ * Why --stp only reports by default (checked on small models):
+ * - one time point per activity is wrong when an activity shows up more than once. With Response[A, B]
+ *   and Response[C, B] the STP thinks the B after A and the B after C are the same B, and "derives" a
+ *   window between A and C that a valid trace can break.
+ * - even when an implication is right, it only holds for traces that satisfy everything. The planner
+ *   can violate constraints (reset, cost 1000), so dropping an "implied" window removes a violation
+ *   the original model would have counted, and the optimal cost changes.
+ * So --stp-apply (tighten and drop) gives a lighter PDDL but not the same answers.
  */
 public class TimeWindowPreprocessor {
 
@@ -83,17 +90,22 @@ public class TimeWindowPreprocessor {
     return report;
   }
 
-  public static String describe(Report report) {
-    StringBuilder b = new StringBuilder("STP preprocessing of the time windows:\n");
+  public static String describe(Report report, boolean applied) {
+    StringBuilder b = new StringBuilder(applied ? "STP preprocessing of the time windows (applied):\n"
+        : "STP check of the time windows (nothing changed):\n");
     if (!report.consistent()) {
       b.append("  the target windows contradict each other, so no trace can satisfy all of them (left unchanged)\n");
       return b.toString();
     }
-    b.append("  " + report.windowsBefore() + " target windows, " + report.tightened().size() + " tightened, "
-        + report.redundant().size() + " dropped because the others already imply them\n");
-    report.tightened().forEach((dc, interval) ->
-        b.append("  tightened " + dc.getConstraintName() + " to [" + interval.lo() + ", " + interval.hi() + "]\n"));
-    report.redundant().forEach(dc -> b.append("  dropped the window of " + dc.getConstraintName() + "\n"));
+    // A window that goes away anyway isn't "tightened" too
+    List<DeclareConstraint> tightened = report.tightened().keySet().stream().filter(dc -> !report.redundant().contains(dc)).toList();
+    b.append("  " + report.windowsBefore() + " target windows, " + tightened.size() + " can be tightened, "
+        + report.redundant().size() + " are implied by the others\n");
+    for (DeclareConstraint dc : tightened) {
+      Interval interval = report.tightened().get(dc);
+      b.append("  " + dc.getConstraintName() + " can be tightened to [" + interval.lo() + ", " + interval.hi() + "]\n");
+    }
+    report.redundant().forEach(dc -> b.append("  " + dc.getConstraintName() + " is implied by the others\n"));
     return b.toString();
   }
 }
