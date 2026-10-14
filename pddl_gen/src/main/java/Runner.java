@@ -129,8 +129,12 @@ public class Runner {
     model.applyVariableValues(variableAssignments);
 
     // Optional: tighten / drop the time windows before the automata get built
-    if (cmds.hasOption("stp")) {
-      System.out.print(TimeWindowPreprocessor.describe(TimeWindowPreprocessor.apply(model.getDeclareConstraints())));
+    // --stp only looks at the windows. --stp-apply also changes them, but since the planner can violate
+    // constraints that changes the optimal cost (a dropped window can't be violated anymore), see the help
+    if (cmds.hasOption("stp-apply")) {
+      System.out.print(TimeWindowPreprocessor.describe(TimeWindowPreprocessor.apply(model.getDeclareConstraints()), true));
+    } else if (cmds.hasOption("stp")) {
+      System.out.print(TimeWindowPreprocessor.describe(TimeWindowPreprocessor.analyse(model.getDeclareConstraints()), false));
     }
 
     System.out.println("Model: " + model);    
