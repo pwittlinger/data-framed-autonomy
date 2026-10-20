@@ -5,6 +5,7 @@ import Automaton.Pair;
 import formula.Formula;
 import formula.Formula.Comparison;
 import formula.Formulas;
+import values.ValueIntervalPreprocessor;
 
 public class DeclareModel {
   
@@ -378,7 +379,16 @@ public class DeclareModel {
   }
 
   public String generateVariableSubstitutions(){
+    return generateVariableSubstitutions(false);
+  }
+
+  /**
+   * oneValuePerRegion: give every activity only one value for each region its conditions tell apart,
+   * instead of all the critical values of the attribute (--intervals, see values.ValueIntervalPreprocessor)
+   */
+  public String generateVariableSubstitutions(boolean oneValuePerRegion){
     StringBuilder sb = new StringBuilder();
+    Map<String, Set<Comparison>> comparisons = ValueIntervalPreprocessor.comparisons(this.declareConstraints);
 
     for (Activity act : this.activities.values()) {
       // Default case if the activity has no attributes
@@ -387,7 +397,9 @@ public class DeclareModel {
       }
 
       for (Attribute attr : act.getAttributes()) {
-        Set<String> attributeValues = attr.variableValueMap.keySet();
+        Collection<String> attributeValues = oneValuePerRegion
+            ? ValueIntervalPreprocessor.candidates(act, attr, comparisons)
+            : attr.variableValueMap.keySet();
 
         for (String attrValName : attributeValues) {
           sb.append(attrValName + " "+ act.getName() + " " + attr.getName()+"\n");

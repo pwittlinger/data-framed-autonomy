@@ -9,6 +9,7 @@ import translations.IOManager;
 import translations.MultiInstanceMerger;
 import translations.NandGuardEncoder;
 import time.TimeWindowPreprocessor;
+import values.ValueIntervalPreprocessor;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
 import utils.CmdArgsUtil;
@@ -118,7 +119,7 @@ public class Runner {
     }
 
     if (!ioManager.variableSubstitutionExists(substitutionsString) || (!hasVarSub)) {
-      String varSubstitutionString = model.generateVariableSubstitutions();
+      String varSubstitutionString = model.generateVariableSubstitutions(cmds.hasOption("intervals"));
       ioManager.exportVariableSubstitution(substitutionsString, varSubstitutionString);
     }
 
@@ -135,6 +136,11 @@ public class Runner {
       System.out.print(TimeWindowPreprocessor.describe(TimeWindowPreprocessor.apply(model.getDeclareConstraints()), true));
     } else if (cmds.hasOption("stp")) {
       System.out.print(TimeWindowPreprocessor.describe(TimeWindowPreprocessor.analyse(model.getDeclareConstraints()), false));
+    }
+    // Optional: the same idea on the data values. This one is exact, the conditions get equivalent ones
+    if (cmds.hasOption("intervals")) {
+      System.out.print(ValueIntervalPreprocessor.describe(ValueIntervalPreprocessor.apply(
+          model.getDeclareConstraints(), model.getActivities(), substitutions, variableAssignments)));
     }
 
     System.out.println("Model: " + model);    

@@ -76,6 +76,12 @@ public class DeclareConstraint {
     this.targetGuard = Guard.encodeValues(this.parsedTargetGuard, attributes, getConstraintName());
   }
 
+  // Replaces the (encoded) guards with equivalent ones, see values.ValueIntervalPreprocessor
+  public void setGuards(Formula activationGuard, Formula targetGuard) {
+    this.activationGuard = activationGuard;
+    this.targetGuard = targetGuard;
+  }
+
   public String getActivation() {
     return this.activationActivity;
   }

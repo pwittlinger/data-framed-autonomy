@@ -45,6 +45,9 @@ public class CmdArgsUtil {
         Option stpApply = new Option(null, "stp-apply", false, "Also tighten the windows and drop the implied ones. Careful: the planner can violate constraints, and then the result changes (fewer violations counted), so don't use it for experiments");
         options.addOption(stpApply);
 
+        Option intervals = new Option(null, "intervals", false, "Minimal intervals on the data values: simplifies the conditions and gives the planner one value per region the conditions tell apart (exact, the plans cost the same)");
+        options.addOption(intervals);
+
         Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
         options.addOption(outputPath);
 
