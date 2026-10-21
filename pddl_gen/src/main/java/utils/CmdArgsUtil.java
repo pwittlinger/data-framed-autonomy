@@ -33,7 +33,7 @@ public class CmdArgsUtil {
         Option violationCost = new Option(null, "violation_cost", true, "Violation cost of every constraint (default 1)");
         options.addOption(violationCost);
 
-        Option violationCostFile = new Option(null, "violation_cost_file", true, "Path to the violation cost file (one line per constraint: '<decl file>|<constraint> <cost>' or '<pnml file> <cost>'), overrides --violation_cost for the listed constraints");
+        Option violationCostFile = new Option(null, "violation_cost_file", true, "Path to the violation cost file (one line per constraint: '<decl file>|<constraint> <cost>' or '<pnml file> <cost>'), overrides --violation_cost for the listed constraints. A cost of x marks a hard constraint, to which no recovery strategy applies");
         options.addOption(violationCostFile);
 
         Option recovery = new Option(null, "recovery", true, "Recovery strategy for violated constraints: Reset (default), No-Recovery, Discard or Skip");
@@ -50,6 +50,9 @@ public class CmdArgsUtil {
 
         Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
         options.addOption(outputPath);
+
+        Option waitingCost = new Option("w", "waiting_cost", true, "Waiting cost of per time unit, a positive number (default 10)");
+        options.addOption(waitingCost);
 
 
 		CommandLineParser parser = new org.apache.commons.cli.DefaultParser();

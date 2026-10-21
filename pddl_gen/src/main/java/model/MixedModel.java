@@ -51,8 +51,12 @@ public class MixedModel {
     private Map<Pair<Activity, CostEnum>, Integer> costs;
 	public Map<Pair<Activity, String>, Integer> resourceMap;
 	public Map<String, Integer> constraintViolation;
+	public Set<String> hardConstraints; // Marked x in the violation cost file, no recovery strategy applies to them
+	private Map<String, String> stateConstraints; // Automaton state -> name of the constraint it belongs to
 	public Set<String> allResources;
 	public boolean isJsonCostFile = false;
+
+	private static final String HARD_CONSTRAINT_MARKER = "x";
 
     
 
@@ -80,6 +84,8 @@ public class MixedModel {
         this.allAutomatonStates = new ArrayList<>();
         this.allPetriNetStates = new ArrayList<>();
         this.allPetriNetStatesByDpn = new ArrayList<>();		
+        this.hardConstraints = new HashSet<>();
+        this.stateConstraints = new HashMap<>();
         this.allResources = new HashSet<String>();
 
 
@@ -158,7 +164,8 @@ public class MixedModel {
         int dpnIndex = 1;
         for (DataPetriNet dpnModel : this.dpnModels) {
             String statePrefix = dpnStatePrefix(dpnIndex);
-            this.dpnConstraintNames.add(dpnConstraintName(dpnIndex));
+            String dpnConstraint = dpnConstraintName(dpnIndex);
+            this.dpnConstraintNames.add(dpnConstraint);
             ArrayList<String> dpnStates = new ArrayList<>();
 
             dpnModel.executableAutomaton.ini();
@@ -183,6 +190,7 @@ public class MixedModel {
                 }
                 this.allAutomatonStates.add(stateName);
                 this.allPetriNetStates.add(stateName);
+                this.stateConstraints.put(stateName, dpnConstraint);
                 dpnStates.add(stateName);
             }
             this.allAcceptingStates.add(dpnAccepting);
@@ -212,6 +220,7 @@ public class MixedModel {
         for (Automaton aut : this.constraintAutomatons) {
   	      // Automaton might have more than one goal state. In that case, we'll put the goal states with an "or" between them.
   	      List<StateEC> allStates = aut.getStatesEC();
+		  String constraintName = aut.getConstraint().getConstraintName();
 		  ArrayList<String> declareAccepting = new ArrayList<>();
 		  ArrayList<String> declareFailure = new ArrayList<>();
 
@@ -229,6 +238,7 @@ public class MixedModel {
   	    		  declareFailure.add(g.name);
   	    	  }
 			  this.allAutomatonStates.add(g.name);
+			  this.stateConstraints.put(g.name, constraintName);
 
   	      }
 		  this.allAcceptingStates.add(declareAccepting);
@@ -362,10 +372,12 @@ public class MixedModel {
   /**
    * Gives every DECLARE and Petri net constraint the default violation cost, then applies the
    * lines of the violation cost file in order (a later line overrides an earlier one).
+   * A cost of x marks the constraint as hard: no recovery strategy applies to it, so its violation is permanent.
    * @param violationCostsList {identifier, cost} pairs, identifier "<decl file>|<constraint>" or "<pnml file>"
    */
   public void assignViolationCosts(int defaultCost, List<String[]> violationCostsList) {
     this.constraintViolation = new LinkedHashMap<>();
+    this.hardConstraints.clear();
     for (DeclareConstraint dc : this.declareModel.getDeclareConstraints()) {
       this.constraintViolation.put(dc.getConstraintName(), defaultCost);
     }
@@ -374,11 +386,23 @@ public class MixedModel {
     }
 
     for (String[] entry : violationCostsList) {
+      List<String> constraintNames = resolveViolationCostTarget(entry[0]);
+      if (entry[1].equalsIgnoreCase(HARD_CONSTRAINT_MARKER)) {
+        // Keeps its cost: the domain's recovery actions still refer to the violation_cost of every constraint
+        this.hardConstraints.addAll(constraintNames);
+        continue;
+      }
       int cost = parseViolationCost(entry[1], entry[0]);
-      for (String constraintName : resolveViolationCostTarget(entry[0])) {
+      for (String constraintName : constraintNames) {
+        this.hardConstraints.remove(constraintName);
         this.constraintViolation.put(constraintName, cost);
       }
     }
+  }
+
+  // True if the automaton state belongs to a constraint marked as hard in the violation cost file
+  public boolean isHardConstraintState(String state) {
+    return this.hardConstraints.contains(this.stateConstraints.get(state));
   }
 
   public static int parseViolationCost(String value, String source) {

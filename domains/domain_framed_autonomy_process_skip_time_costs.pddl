@@ -38,6 +38,7 @@
     (goal_state ?s - automaton_state)
     (final_t_state ?t - trace_state)
     (violated ?c - constraint)
+    (is_hard ?c - constraint)
     (initial_state ?s1 - automaton_state) 
     
     (associated ?s1 - automaton_state ?c - constraint)
@@ -71,6 +72,7 @@
 
   (:functions
     (total_cost)
+    (waiting_cost)
 
     ; There exists a value connected to the activity that occures between the two trace states.
     (trace_parameter ?a - activity ?pn - parameter_name ?t1 - trace_state ?t2 - trace_state)
@@ -131,7 +133,7 @@
 
       )
     :effect (and 
-      (increase (total_cost) (add_cost ?a))
+      (increase (total_cost) (/(add_cost ?a) waiting_cost))
       (after_add)
       (complete_sync ?a)
   ))
@@ -195,7 +197,7 @@
 
       :effect (and 
       
-      (increase (total_cost) (set_cost ?a))
+      (increase (total_cost) (/(set_cost ?a) waiting_cost))
 
       (forall (?s1 ?s2 - automaton_state) 
         (when (and
@@ -384,7 +386,7 @@
           ;(cur_s_state ?s2)
           ;(failure)
           ;(violated ?c)
-          (increase (total_cost) (violation_cost ?c))
+          (increase (total_cost) (/(violation_cost ?c) waiting_cost))
         ))
       )
 
@@ -572,7 +574,7 @@
           ;(cur_s_state ?s2)
           ;(failure)
           ;(violated ?c)
-          (increase (total_cost) (violation_cost ?c))
+          (increase (total_cost) (/(violation_cost ?c) waiting_cost))
         ))
       )
 
@@ -614,7 +616,7 @@
   )
 
   
-  (:action skip-unused
+  (:action skip
       :parameters (?t1 - trace_state ?a - activity ?t2 - trace_state)
       :precondition (and 
       (= current_timestamp (timestamp ?t1 ?t2))

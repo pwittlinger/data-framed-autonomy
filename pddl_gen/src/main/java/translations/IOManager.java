@@ -504,7 +504,7 @@ public class IOManager {
   //Section: Reading violation costs
   /**
    * Reads the violation cost file, one line per constraint:
-   * "<decl file>|<constraint> <cost>" or "<pnml file> <cost>".
+   * "<decl file>|<constraint> <cost>" or "<pnml file> <cost>", the cost being a number or x for a hard constraint.
    * @return {identifier, cost} per non-empty line, the identifier being everything before the cost
    */
   public ArrayList<String[]> readViolationCosts(String violationCostsFileName) {

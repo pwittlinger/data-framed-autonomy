@@ -19,6 +19,8 @@ import Automaton.VariableSubstitution;
 import Automaton.Pair;
 import log.Event;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,14 +47,20 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     "(define (problem prob-trace)\n" + 
     "  (:domain trace-alignment)\n" + 
     "\n";
-  private static final String FOOTER_STRING = 
+  private static final String FOOTER_STRING =
     "  (:metric minimize (total_cost))\n" +
     ")\n" +
     "\n";
-  
-  public PDDLGeneratorMixedModel(MixedModel model, RecoveryStrategy recovery) throws Exception {
+
+  // Waiting one time unit costs 10, as the domain's waiting process advances the timestamp by 0.1 per step
+  public static final BigDecimal DEFAULT_WAITING_COST = BigDecimal.TEN;
+  // Written as waiting_cost: the domain divides the other action costs by it, so waiting costs --waiting_cost per time unit
+  private final BigDecimal waitingCostFactor;
+
+  public PDDLGeneratorMixedModel(MixedModel model, RecoveryStrategy recovery, BigDecimal waitingCost) throws Exception {
 
     super(model.declareModel, recovery);
+    this.waitingCostFactor = waitingCost.divide(DEFAULT_WAITING_COST, MathContext.DECIMAL64).stripTrailingZeros();
     // Get set costs, or use default ones
     //Map<CostEnum, Integer> costs = model.declareModel.getCosts();
     Map<Pair<Activity, CostEnum>, Integer> costs = model.getCosts();
@@ -72,6 +80,20 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     //this.goalAutomatonStates = new ArrayList<>();
     //this.prepareAutomatonStates();
   }
+  // BigDecimal keeps the scaled value exact (0.7 / 10 = 0.07, not 0.06999999999999999) and rejects NaN and Infinity
+  public static BigDecimal parseWaitingCost(String value) {
+    BigDecimal cost;
+    try {
+      cost = new BigDecimal(value.strip());
+    } catch (NumberFormatException e) {
+      cost = BigDecimal.ONE.negate();
+    }
+    if (cost.signum() <= 0) {
+      throw new Error("--waiting_cost needs a positive number (e.g. 0.5), found: " + value);
+    }
+    return cost;
+  }
+
   private void prepareAutomatonStates() {
     int index = 1;
     for (DeclareConstraint constraint : this.constraints) {
@@ -99,6 +121,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     s.append(this.buildActionCosts());
+    s.append(this.buildHardConstraints());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
     if (!this.mixedModel.isJsonCostFile) {
       s.append(this.buildTimeStamps(timeStamps));
@@ -209,7 +232,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     b.append("    (= (total_cost) 0)\n\n");
 
     if (!this.mixedModel.isJsonCostFile) {
-      b.append("    (= (current_timestamp) 0)\n\n");
+      b.append("    (= (current_timestamp) 0)\n");
+      // Plain notation, toString would print small or large values in scientific notation (e.g. 1E-5)
+      b.append("    (= (waiting_cost) " + this.waitingCostFactor.toPlainString() + ")\n\n");
     }
     
     b.append("    ;; SUBSTITUTION VARIABLES\n");
@@ -264,6 +289,26 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     return b;
   }
+
+  // Marks the constraints set to x in the violation cost file. Nothing is written if there are none.
+  private StringBuilder buildHardConstraints() {
+    StringBuilder b = new StringBuilder();
+    List<String> constraintNames = new ArrayList<>();
+    this.constraints.forEach(x -> constraintNames.add(x.getConstraintName()));
+    constraintNames.addAll(this.mixedModel.dpnConstraintNames);
+
+    for (String constraintName : constraintNames) {
+      if (this.mixedModel.hardConstraints.contains(constraintName)) {
+        b.append("    (is_hard " + constraintName + ")\n");
+      }
+    }
+    if (b.length() > 0) {
+      b.insert(0, "    ;; HARD CONSTRAINTS\n");
+      b.append("\n");
+    }
+    return b;
+  }
+
   private StringBuilder buildTraceDeclaration(List<Event> events, Map<Event, Map<Attribute, String>> assignments) {
     StringBuilder b = new StringBuilder();
     b.append("    ;; TRACE DECLARATION\n");
@@ -331,14 +376,19 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     for (String s : this.mixedModel.allInitialStates) {
       b.append("    (cur_s_state " + s + ")\n");
-      b.append("    (initial_state " + s + ")\n");
+      // A hard constraint is never reset: without initial_state the reset action has no state to move it back to
+      if (!this.mixedModel.isHardConstraintState(s)) {
+        b.append("    (initial_state " + s + ")\n");
+      }
       b.append("\n");
     }
 
     b.append("\n");
 
     for (String s : this.mixedModel.allFailureStates) {
-      b.append("    (failure_state " + s + ")\n");
+      if (this.isDeclaredFailureState(s)) {
+        b.append("    (failure_state " + s + ")\n");
+      }
     }
 
     b.append("\n");
@@ -467,17 +517,25 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
   // Accepting states of the i-th automaton (Petri nets first, then DECLARE constraints). With the Discard strategy
   // a violated constraint is ignored, so its failure states are accepting too. They keep their failure_state fact,
-  // so reaching them is still recognised as a violation.
+  // so reaching them is still recognised as a violation. A hard constraint is not discarded, its failure states
+  // stay non-accepting.
   private List<String> acceptingStates(int automatonIndex) {
     List<String> acceptingStates = new ArrayList<>(this.mixedModel.allAcceptingStates.get(automatonIndex));
     if (this.recovery.acceptsFailureStates()) {
       for (String failureState : this.mixedModel.allFailureStatesByAutomaton.get(automatonIndex)) {
-        if (!acceptingStates.contains(failureState)) {
+        if (!acceptingStates.contains(failureState) && !this.mixedModel.isHardConstraintState(failureState)) {
           acceptingStates.add(failureState);
         }
       }
     }
     return acceptingStates;
+  }
+
+  // The Skip domain does not move an automaton into a failure_state, it skips the event for that constraint.
+  // A hard constraint is not skipped, so its failure states are written as ordinary states: the automaton moves
+  // into them and, as they are non-accepting and cannot be left, the violation makes the problem unsolvable.
+  private boolean isDeclaredFailureState(String state) {
+    return !(this.recovery.skipsFailureStates() && this.mixedModel.isHardConstraintState(state));
   }
 
    public String activityMapping() {

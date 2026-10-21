@@ -33,10 +33,13 @@ Optional Inputs:
  - --violation_cost <arg>  Violation cost of every constraint (default 1)
  - --violation_cost_file <arg>  Path to the violation cost file, which sets
                         the violation cost of individual constraints
+                        or marks them as hard (x)
  - --recovery <arg>       Recovery strategy for violated constraints:
                         Reset (default), No-Recovery, Discard or Skip
+ - -w,--waiting_cost <arg>  Waiting cost per time unit, a positive number
+                        (default 10)
 
-The violation cost options only take effect together with a Petri net (-p). The violation cost file has one line per constraint. A DECLARE constraint is identified by the file name of its DECLARE model and its name in the PDDL files (template, then activation, then target activity). For Precedence-type templates the activation is the second activity in the .decl file, so `Precedence[ActivityF, ActivityD]` is `Precedence_ActivityD_ActivityF`. A Petri net is identified by its file name:
+The violation cost and waiting cost options only take effect together with a Petri net (-p). As the waiting process advances the timestamp by 0.1 per step, waiting one time unit costs 10. A different waiting cost is applied by scaling all other action costs instead: the problem files get the factor `--waiting_cost / 10` as `waiting_cost`, by which the domain divides the other costs. `--waiting_cost 1` is written as `(= (waiting_cost) 0.1)`, the default as `(= (waiting_cost) 1)`. The cost values in the problem files themselves are not scaled. The violation cost file has one line per constraint. A DECLARE constraint is identified by the file name of its DECLARE model and its name in the PDDL files (template, then activation, then target activity). For Precedence-type templates the activation is the second activity in the .decl file, so `Precedence[ActivityF, ActivityD]` is `Precedence_ActivityD_ActivityF`. A Petri net is identified by its file name:
 
 ```
 <DECL_FILE_NAME>|<CONSTRAINT_IDENTIFIER> <violation_cost>
@@ -44,13 +47,15 @@ The violation cost options only take effect together with a Petri net (-p). The 
 ```
 
 ```
-BasePN-0And_3_timed_data_parsed.decl|Response_ActivityG_ActivityP 4
+BasePN-0And_3_timed_data_parsed.decl|Response_ActivityG_ActivityP x
 BasePN-0And_3_timed_data_parsed.decl|Precedence_ActivityD_ActivityF 70
 BasePN-0And_3_timed_data_parsed.decl|Not_Response_ActivityM_ActivityO 50
 BasePN-0And.pnml 5
 ```
 
 Costs are whole numbers of at least 0. Constraints that are not listed keep the value of --violation_cost (or 1). If a DECLARE file contains the same constraint more than once, its name sets the cost of every copy, while the numbered name from the PDDL (e.g. `Response_ActivityG_ActivityP_2`) sets the cost of one copy only.
+
+A cost of `x` (or `X`) marks the constraint as hard: the recovery strategy does not apply to it, as if it had the strategy No-Recovery. Its failure states stay non-accepting and cannot be left, so violating it makes the problem unsolvable, while all other constraints still follow --recovery. Petri nets can be marked as hard in the same way. A hard constraint keeps its violation cost (from --violation_cost, or an earlier line), which is never charged.
 
 The recovery strategy decides what happens once a constraint is permanently violated, i.e. its automaton reaches a failure state:
 
@@ -60,6 +65,12 @@ The recovery strategy decides what happens once a constraint is permanently viol
 - Skip: events that would violate the constraint are skipped for it, it stays in the state before the violation.
 
 In the problem files only Discard differs: its failure states are additionally declared as `goal_state` and added to the goal condition (they remain `failure_state`). Reset, No-Recovery and Skip produce the same problem files and are told apart by the domain file.
+
+Hard constraints are handled in the problem files only, the domain files stay the same:
+
+- The states of a hard constraint get no `initial_state`, so the reset action has no state to move it back to.
+- With Discard, the failure states of a hard constraint are not added to the accepting states.
+- With Skip, the failure states of a hard constraint are not declared as `failure_state`, because the Skip domain does not move an automaton into a `failure_state`. The automaton then moves into the failure state as into any other state and stays there, as it is non-accepting and has no outgoing arcs.
 
  Example:
 

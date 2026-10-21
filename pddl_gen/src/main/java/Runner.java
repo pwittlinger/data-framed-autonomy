@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -57,6 +58,7 @@ public class Runner {
     boolean newOutput = cmds.hasOption("output");
     boolean hasViolationCost = cmds.hasOption("violation_cost");
     boolean hasViolationCostFile = cmds.hasOption("violation_cost_file");
+    boolean hasWaitingCost = cmds.hasOption("waiting_cost");
 
     if (hasPetri) {
         petriNetString = cmds.getOptionValue("petri");
@@ -100,6 +102,12 @@ public class Runner {
       if (!CmdFileUtils.violationCostFileExists(violationCostsString)) {
         throw new Exception("Error in accessing violation cost file: " + violationCostsString);
       }
+    }
+
+    // Cost of waiting one time unit, the problem files get it relative to the default as waiting_cost
+    BigDecimal waitingCost = PDDLGeneratorMixedModel.DEFAULT_WAITING_COST;
+    if (hasWaitingCost) {
+      waitingCost = PDDLGeneratorMixedModel.parseWaitingCost(cmds.getOptionValue("waiting_cost"));
     }
 
     RecoveryStrategy recovery = RecoveryStrategy.RESET;
@@ -160,6 +168,9 @@ public class Runner {
       if (hasViolationCost || hasViolationCostFile) {
         System.out.println("--violation_cost and --violation_cost_file only apply together with a Petri net (-p), ignoring them");
       }
+      if (hasWaitingCost) {
+        System.out.println("--waiting_cost only applies together with a Petri net (-p), ignoring it");
+      }
 
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       LogFile log = ioManager.readDeclareLog(traceString, model);
@@ -194,7 +205,7 @@ public class Runner {
 
       LogFile log = ioManager.readLog(traceString, myMixedModel); // OKAY!
       
-      PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel, recovery);
+      PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel, recovery, waitingCost);
 
       //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);

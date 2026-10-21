@@ -6,6 +6,8 @@ import java.util.Arrays;
  * What happens once a constraint is permanently violated (its automaton reaches a failure state).
  * Of these, only Discard changes the generated problem files. Reset, No-Recovery and Skip
  * write the same final states and are told apart by the domain.
+ * Hard constraints (x in the violation cost file) are never recovered, whatever the strategy;
+ * for Skip their failure states are therefore written differently (see skipsFailureStates).
  */
 public enum RecoveryStrategy {
   // The violated constraint is reset to its initial state, so it can be monitored again.
@@ -29,6 +31,11 @@ public enum RecoveryStrategy {
 
   public boolean acceptsFailureStates() {
     return this == DISCARD;
+  }
+
+  // The Skip domain never moves an automaton into a failure_state, it only charges the violation cost.
+  public boolean skipsFailureStates() {
+    return this == SKIP;
   }
 
   public static RecoveryStrategy fromOptionName(String optionName) {
