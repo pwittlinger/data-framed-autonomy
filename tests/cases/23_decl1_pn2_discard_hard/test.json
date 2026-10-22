@@ -1,0 +1,16 @@
+{
+  "protocol_row": 23,
+  "declare": [
+    "BasePN-0And_7_timed_data_parsed.decl"
+  ],
+  "petri_nets": [
+    "BasePN-0And.pnml",
+    "BasePN-1And.pnml"
+  ],
+  "log": "BasePN-0And-prefix-non-conforming-3.xes",
+  "recovery": "Discard",
+  "hard_constraints": true,
+  "violation_cost_file": "violation_costs.txt",
+  "domain": "domain_framed_autonomy_process_discard_time_costs.pddl",
+  "extra_args": []
+}

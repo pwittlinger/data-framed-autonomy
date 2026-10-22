@@ -93,7 +93,7 @@ public class Runner {
     // Default violation cost of every constraint, the violation cost file overrides it per constraint
     int violationCost = 1;
     if (hasViolationCost) {
-      violationCost = MixedModel.parseViolationCost(cmds.getOptionValue("violation_cost"), "--violation_cost");
+      violationCost = DeclareModel.parseViolationCost(cmds.getOptionValue("violation_cost"), "--violation_cost");
     }
 
     String violationCostsString = null;
@@ -105,9 +105,9 @@ public class Runner {
     }
 
     // Cost of waiting one time unit, the problem files get it relative to the default as waiting_cost
-    BigDecimal waitingCost = PDDLGeneratorMixedModel.DEFAULT_WAITING_COST;
+    BigDecimal waitingCost = PDDLGenerator.DEFAULT_WAITING_COST;
     if (hasWaitingCost) {
-      waitingCost = PDDLGeneratorMixedModel.parseWaitingCost(cmds.getOptionValue("waiting_cost"));
+      waitingCost = PDDLGenerator.parseWaitingCost(cmds.getOptionValue("waiting_cost"));
     }
 
     RecoveryStrategy recovery = RecoveryStrategy.RESET;
@@ -164,17 +164,10 @@ public class Runner {
         ioManager.exportCostModel(costsString, model.activities.keySet());
       }
 
-      // The DECLARE-only problems contain no violation_cost fluents
-      if (hasViolationCost || hasViolationCostFile) {
-        System.out.println("--violation_cost and --violation_cost_file only apply together with a Petri net (-p), ignoring them");
-      }
-      if (hasWaitingCost) {
-        System.out.println("--waiting_cost only applies together with a Petri net (-p), ignoring it");
-      }
-
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
+      model.assignViolationCosts(violationCost, hasViolationCostFile ? ioManager.readViolationCosts(violationCostsString) : new ArrayList<>());
       LogFile log = ioManager.readDeclareLog(traceString, model);
-      PDDLGenerator pddlGenerator = new PDDLGenerator(model, recovery);
+      PDDLGenerator pddlGenerator = new PDDLGenerator(model, recovery, waitingCost);
       //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 

@@ -56,8 +56,6 @@ public class MixedModel {
 	public Set<String> allResources;
 	public boolean isJsonCostFile = false;
 
-	private static final String HARD_CONSTRAINT_MARKER = "x";
-
     
 
     public MixedModel(DataPetriNet dataPetriNet, DeclareModel declare) {
@@ -385,19 +383,7 @@ public class MixedModel {
       this.constraintViolation.put(dpnConstraint, defaultCost);
     }
 
-    for (String[] entry : violationCostsList) {
-      List<String> constraintNames = resolveViolationCostTarget(entry[0]);
-      if (entry[1].equalsIgnoreCase(HARD_CONSTRAINT_MARKER)) {
-        // Keeps its cost: the domain's recovery actions still refer to the violation_cost of every constraint
-        this.hardConstraints.addAll(constraintNames);
-        continue;
-      }
-      int cost = parseViolationCost(entry[1], entry[0]);
-      for (String constraintName : constraintNames) {
-        this.hardConstraints.remove(constraintName);
-        this.constraintViolation.put(constraintName, cost);
-      }
-    }
+    DeclareModel.applyViolationCosts(violationCostsList, this::resolveViolationCostTarget, this.constraintViolation, this.hardConstraints);
   }
 
   // True if the automaton state belongs to a constraint marked as hard in the violation cost file
@@ -405,55 +391,21 @@ public class MixedModel {
     return this.hardConstraints.contains(this.stateConstraints.get(state));
   }
 
-  public static int parseViolationCost(String value, String source) {
-    int cost;
-    try {
-      cost = Integer.parseInt(value);
-    } catch (NumberFormatException e) {
-      cost = -1;
-    }
-    if (cost < 0) {
-      throw new Error(source + " needs a whole, non-negative violation cost, found: " + value);
-    }
-    return cost;
-  }
-
-  // "<pnml file>" matches the Petri net read from that file. "<decl file>|<constraint>" matches the constraints of
-  // that file by name, with or without the _2, _3, ... suffix that repeated constraints get in the PDDL.
+  // "<pnml file>" matches the Petri net read from that file, "<decl file>|<constraint>" is resolved by the DECLARE model.
   private List<String> resolveViolationCostTarget(String identifier) {
+    if (identifier.indexOf('|') >= 0) {
+      return this.declareModel.resolveViolationCostTarget(identifier);
+    }
+
     List<String> constraintNames = new ArrayList<>();
-    int separator = identifier.indexOf('|');
-
-    if (separator < 0) {
-      String fileName = new File(identifier).getName();
-      for (int i = 0; i < this.dpnModels.size(); i++) {
-        if (this.dpnModels.get(i).netName.equals(fileName)) {
-          constraintNames.add(this.dpnConstraintNames.get(i));
-        }
-      }
-      if (constraintNames.isEmpty()) {
-        throw new Error("Petri net " + fileName + " from the violation cost file is not one of the input Petri nets");
-      }
-      return constraintNames;
-    }
-
-    String fileName = new File(identifier.substring(0, separator).strip()).getName();
-    String constraint = identifier.substring(separator + 1).strip();
-    List<DeclareConstraint> fileConstraints = this.declareModel.getDeclareConstraints().stream()
-      .filter(dc -> fileName.equals(dc.getSourceFile()))
-      .toList();
-    if (fileConstraints.isEmpty()) {
-      throw new Error("DECLARE file " + fileName + " from the violation cost file is not one of the input DECLARE models, or none of its constraints were loaded");
-    }
-
-    for (DeclareConstraint dc : fileConstraints) {
-      if (constraint.equals(dc.getConstraintName()) || constraint.equals(dc.getBaseConstraintName())) {
-        constraintNames.add(dc.getConstraintName());
+    String fileName = new File(identifier).getName();
+    for (int i = 0; i < this.dpnModels.size(); i++) {
+      if (this.dpnModels.get(i).netName.equals(fileName)) {
+        constraintNames.add(this.dpnConstraintNames.get(i));
       }
     }
     if (constraintNames.isEmpty()) {
-      throw new Error("Constraint " + constraint + " not found in " + fileName + ", its constraints are: "
-        + fileConstraints.stream().map(DeclareConstraint::getConstraintName).toList());
+      throw new Error("Petri net " + fileName + " from the violation cost file is not one of the input Petri nets");
     }
     return constraintNames;
   }

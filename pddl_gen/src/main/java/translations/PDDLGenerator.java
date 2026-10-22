@@ -16,6 +16,8 @@ import Automaton.Transition;
 import Automaton.VariableSubstitution;
 import log.Event;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,12 +45,17 @@ public class PDDLGenerator {
     "(define (problem prob-trace)\n" + 
     "  (:domain trace-alignment)\n" + 
     "\n";
-  private static final String FOOTER_STRING = 
+  private static final String FOOTER_STRING =
     "  (:metric minimize (total_cost))\n" +
     ")\n" +
     "\n";
-  
-  public PDDLGenerator(DeclareModel model, RecoveryStrategy recovery) throws Exception {
+
+  // Waiting one time unit costs 10, as the domain's waiting process advances the timestamp by 0.1 per step
+  public static final BigDecimal DEFAULT_WAITING_COST = BigDecimal.TEN;
+  // Written as waiting_cost: the domain divides the other action costs by it, so waiting costs --waiting_cost per time unit
+  protected final BigDecimal waitingCostFactor;
+
+  public PDDLGenerator(DeclareModel model, RecoveryStrategy recovery, BigDecimal waitingCost) throws Exception {
 
     // Get set costs, or use default ones
     Map<Pair<Activity, CostEnum>, Integer> costs = model.getCosts();
@@ -63,20 +70,37 @@ public class PDDLGenerator {
     this.params = model.params;
     this.declareModel = model;
     this.recovery = recovery;
+    this.waitingCostFactor = waitingCost.divide(DEFAULT_WAITING_COST, MathContext.DECIMAL64).stripTrailingZeros();
     this.constraintAutomatons = new ArrayList<>();
     this.goalAutomatonStates = new ArrayList<>();
     this.prepareAutomatonStates();
   }
+
+  // BigDecimal keeps the scaled value exact (0.7 / 10 = 0.07, not 0.06999999999999999) and rejects NaN and Infinity
+  public static BigDecimal parseWaitingCost(String value) {
+    BigDecimal cost;
+    try {
+      cost = new BigDecimal(value.strip());
+    } catch (NumberFormatException e) {
+      cost = BigDecimal.ONE.negate();
+    }
+    if (cost.signum() <= 0) {
+      throw new Error("--waiting_cost needs a positive number (e.g. 0.5), found: " + value);
+    }
+    return cost;
+  }
+
   private void prepareAutomatonStates() {
     int index = 1;
     for (DeclareConstraint constraint : this.constraints) {
       String prefix = "s" + index++ + "_";
       Automaton newAutomaton = new Automaton(activities.keySet(), prefix, constraint);
       this.constraintAutomatons.add(newAutomaton);
-      
+      boolean hard = this.isHard(constraint.getConstraintName());
+
       // Automaton might have more than one goal state. In that case, we'll put the goal states with an "or" between them.
       List<State> goalStates = newAutomaton.getStates().stream()
-                                  .filter(this::isAccepting)
+                                  .filter(x -> this.isAccepting(x, hard))
                                   .toList();
 
       this.goalAutomatonStates.add(goalStates);
@@ -85,8 +109,14 @@ public class PDDLGenerator {
 
   // With the Discard strategy a violated constraint is ignored, so its failure states are accepting too.
   // They keep their failure_state fact, so reaching them is still recognised as a violation.
-  private boolean isAccepting(State state) {
-    return state.isGoal || (state.isFailure && this.recovery.acceptsFailureStates());
+  // A hard constraint is not discarded, its failure states stay non-accepting.
+  private boolean isAccepting(State state, boolean hard) {
+    return state.isGoal || (state.isFailure && this.recovery.acceptsFailureStates() && !hard);
+  }
+
+  // Marked x in the violation cost file (DECLARE-only problems)
+  private boolean isHard(String constraintName) {
+    return this.declareModel.hardConstraints.contains(constraintName);
   }
 
   public String defineProblem(ArrayList<Event> listOfEvents, Map<String, Integer> assignments, Set<VariableSubstitution> substitutions, ArrayList<Double> timeStamps) {
@@ -99,7 +129,9 @@ public class PDDLGenerator {
     s.append(this.buildObjectsString(attributes, assignments, substitutions));
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
-    //s.append(this.buildActionCosts());
+    s.append(this.buildActionCosts());
+    List<String> constraintNames = this.constraints.stream().map(DeclareConstraint::getConstraintName).toList();
+    s.append(buildHardConstraints(constraintNames, this.declareModel.hardConstraints));
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
     s.append(this.buildTimeStamps(timeStamps));
     s.append(this.buildAutomatons(finalAutomatonStates));
@@ -201,7 +233,9 @@ public class PDDLGenerator {
     b.append("  (:init\n\n");
     b.append("    ; Initialize plan cost. Some planners might need this explicitly\n");
     b.append("    (= (total_cost) 0)\n\n");
-    b.append("    (= (current_timestamp) 0)\n\n");
+    b.append("    (= (current_timestamp) 0)\n");
+    // Plain notation, toString would print small or large values in scientific notation (e.g. 1E-5)
+    b.append("    (= (waiting_cost) " + this.waitingCostFactor.toPlainString() + ")\n\n");
     b.append("    ;; SUBSTITUTION VARIABLES\n");
 
     for (Map.Entry<String, Integer> entry : variables.entrySet()) {
@@ -219,7 +253,8 @@ public class PDDLGenerator {
     StringBuilder b = new StringBuilder();
     b.append("    ; Action costs\n");
 
-    /*/
+    this.constraints.forEach(x -> b.append("    (= (violation_cost " + x.getConstraintName() + ") " + this.declareModel.constraintViolation.get(x.getConstraintName()) + ")\n"));
+
     for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
       switch (cost.getKey().getValue()) {
         case ADD:
@@ -230,9 +265,23 @@ public class PDDLGenerator {
           break;
       }
     }
-      */
     b.append("\n");
 
+    return b;
+  }
+
+  // Marks the constraints set to x in the violation cost file. Nothing is written if there are none.
+  protected static StringBuilder buildHardConstraints(List<String> constraintNames, Set<String> hardConstraints) {
+    StringBuilder b = new StringBuilder();
+    for (String constraintName : constraintNames) {
+      if (hardConstraints.contains(constraintName)) {
+        b.append("    (is_hard " + constraintName + ")\n");
+      }
+    }
+    if (b.length() > 0) {
+      b.insert(0, "    ;; HARD CONSTRAINTS\n");
+      b.append("\n");
+    }
     return b;
   }
   public StringBuilder buildTimeStamps(ArrayList<Double> timeStamps) {
@@ -311,18 +360,25 @@ public class PDDLGenerator {
     for (Automaton aut : this.constraintAutomatons) {
 
       String constraintName = aut.getConstraint().getConstraintName();
+      boolean hard = this.isHard(constraintName);
 
       for (State state : aut.getStates()) {
         b.append("    (associated " + state.name + " " + constraintName + ")\n");
 
         if (state.isInitial) {
           b.append("    (cur_s_state " + state.name + ")\n");
-          b.append("    (initial_state " + state.name + ")\n");
+          // A hard constraint is never reset: without initial_state the reset action has no state to move it back to
+          if (!hard) {
+            b.append("    (initial_state " + state.name + ")\n");
+          }
         }
-        if (state.isFailure) {
+        // The Skip domain does not move an automaton into a failure_state, it skips the event for that constraint.
+        // A hard constraint is not skipped, so its failure states are written as ordinary states: the automaton moves
+        // into them and, as they are non-accepting and cannot be left, the violation makes the problem unsolvable.
+        if (state.isFailure && !(hard && this.recovery.skipsFailureStates())) {
           b.append("    (failure_state " + state.name + ")\n");
         }
-        if (this.isAccepting(state)) {
+        if (this.isAccepting(state, hard)) {
           b.append("    (goal_state " + state.name + ")\n");
         }
       }

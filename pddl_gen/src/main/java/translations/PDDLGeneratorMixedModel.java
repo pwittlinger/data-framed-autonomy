@@ -20,7 +20,6 @@ import Automaton.Pair;
 import log.Event;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,15 +51,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     ")\n" +
     "\n";
 
-  // Waiting one time unit costs 10, as the domain's waiting process advances the timestamp by 0.1 per step
-  public static final BigDecimal DEFAULT_WAITING_COST = BigDecimal.TEN;
-  // Written as waiting_cost: the domain divides the other action costs by it, so waiting costs --waiting_cost per time unit
-  private final BigDecimal waitingCostFactor;
-
   public PDDLGeneratorMixedModel(MixedModel model, RecoveryStrategy recovery, BigDecimal waitingCost) throws Exception {
 
-    super(model.declareModel, recovery);
-    this.waitingCostFactor = waitingCost.divide(DEFAULT_WAITING_COST, MathContext.DECIMAL64).stripTrailingZeros();
+    super(model.declareModel, recovery, waitingCost);
     // Get set costs, or use default ones
     //Map<CostEnum, Integer> costs = model.declareModel.getCosts();
     Map<Pair<Activity, CostEnum>, Integer> costs = model.getCosts();
@@ -80,20 +73,6 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     //this.goalAutomatonStates = new ArrayList<>();
     //this.prepareAutomatonStates();
   }
-  // BigDecimal keeps the scaled value exact (0.7 / 10 = 0.07, not 0.06999999999999999) and rejects NaN and Infinity
-  public static BigDecimal parseWaitingCost(String value) {
-    BigDecimal cost;
-    try {
-      cost = new BigDecimal(value.strip());
-    } catch (NumberFormatException e) {
-      cost = BigDecimal.ONE.negate();
-    }
-    if (cost.signum() <= 0) {
-      throw new Error("--waiting_cost needs a positive number (e.g. 0.5), found: " + value);
-    }
-    return cost;
-  }
-
   private void prepareAutomatonStates() {
     int index = 1;
     for (DeclareConstraint constraint : this.constraints) {
@@ -290,23 +269,12 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     return b;
   }
 
-  // Marks the constraints set to x in the violation cost file. Nothing is written if there are none.
+  // Marks the constraints set to x in the violation cost file, Petri nets included
   private StringBuilder buildHardConstraints() {
-    StringBuilder b = new StringBuilder();
     List<String> constraintNames = new ArrayList<>();
     this.constraints.forEach(x -> constraintNames.add(x.getConstraintName()));
     constraintNames.addAll(this.mixedModel.dpnConstraintNames);
-
-    for (String constraintName : constraintNames) {
-      if (this.mixedModel.hardConstraints.contains(constraintName)) {
-        b.append("    (is_hard " + constraintName + ")\n");
-      }
-    }
-    if (b.length() > 0) {
-      b.insert(0, "    ;; HARD CONSTRAINTS\n");
-      b.append("\n");
-    }
-    return b;
+    return buildHardConstraints(constraintNames, this.mixedModel.hardConstraints);
   }
 
   private StringBuilder buildTraceDeclaration(List<Event> events, Map<Event, Map<Attribute, String>> assignments) {
