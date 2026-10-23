@@ -221,7 +221,7 @@ public class Runner {
     // If they don't need it we remove an old copy, so nobody picks up the wrong domain by mistake.
     Path pddlFolder = Path.of(ioManager.getPddlFolder());
     if (usesNandGuards) {
-      Path domain = NandGuardEncoder.exportClausesDomain(pddlFolder);
+      Path domain = NandGuardEncoder.exportClausesDomain(pddlFolder, !hasPetri);
       System.out.println("Some data conditions use or/not, the problems need the domain " + domain);
     } else {
       Files.deleteIfExists(pddlFolder.resolve(NandGuardEncoder.CLAUSES_DOMAIN));
@@ -230,7 +230,7 @@ public class Runner {
     // -i: also one problem with all the traces as separate instances, with its own domain variant
     if (cmds.hasOption("multiinstance")) {
       Files.writeString(pddlFolder.resolve(MultiInstanceMerger.PROBLEM_FILE), MultiInstanceMerger.merge(problems));
-      Path domain = MultiInstanceMerger.exportDomain(pddlFolder, usesNandGuards);
+      Path domain = MultiInstanceMerger.exportDomain(pddlFolder, usesNandGuards, !hasPetri);
       System.out.println("All " + problems.size() + " traces in " + pddlFolder.resolve(MultiInstanceMerger.PROBLEM_FILE) + ", domain " + domain);
     }
 
