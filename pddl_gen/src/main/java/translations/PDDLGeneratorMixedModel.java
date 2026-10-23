@@ -472,6 +472,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       }
     }
 
+    if (this.recovery.getOptionName().toLowerCase().contains("discard")) {
+      b.append("    (not (update-cost))\n");
+    }
   
     b.append("    (not (failure))\n" +
             //"    (not (after_change))\n" + //

@@ -622,15 +622,31 @@
       ))
 
       (forall (?c - constraint ?s3 - automaton_state) 
+        (and
+        
         (imply (and
           (not (is_hard ?c))
           (associated ?s3 ?c)
           ;(cur_s_state ?s3)
           (failure_state ?s3)
-          (violated ?c)
+          ;(violated ?c)
         )
          ;(violated ?c)
          (cur_s_state ?s3)
+        )
+
+        (imply 
+         (and
+          (is_hard ?c)
+          (associated ?s3 ?c)
+          ;(cur_s_state ?s3)
+          (failure_state ?s3)      
+         )
+        
+         (not (cur_s_state ?s3))
+         
+        )
+
         )
       )
       )
