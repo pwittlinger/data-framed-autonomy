@@ -172,7 +172,7 @@ public final class MultiInstanceMerger {
   }
 
   /** Copies the multi domain (with or without the nand clauses) from the jar into the folder. */
-  public static Path exportDomain(Path folder, boolean clauses) throws IOException {
+  public static Path exportDomain(Path folder, boolean clauses, boolean declareOnly) throws IOException {
     String name = clauses ? CLAUSES_MULTI_DOMAIN : MULTI_DOMAIN;
     try (InputStream in = MultiInstanceMerger.class.getResourceAsStream("/domains/" + name)) {
       if (in == null) {
@@ -180,7 +180,8 @@ public final class MultiInstanceMerger {
       }
       Files.createDirectories(folder);
       Path target = folder.resolve(name);
-      Files.writeString(target, new String(in.readAllBytes(), StandardCharsets.UTF_8));
+      String domain = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+      Files.writeString(target, declareOnly ? NandGuardEncoder.allowDeclareReplay(domain) : domain);
       return target;
     }
   }

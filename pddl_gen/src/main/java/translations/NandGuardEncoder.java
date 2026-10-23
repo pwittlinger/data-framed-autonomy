@@ -104,15 +104,35 @@ public class NandGuardEncoder {
   }
 
   /** Copies the clauses domain (packaged in the jar) into the given folder. */
-  public static Path exportClausesDomain(Path folder) throws IOException {
+  public static Path exportClausesDomain(Path folder, boolean declareOnly) throws IOException {
     Path target = folder.resolve(CLAUSES_DOMAIN);
     try (InputStream in = NandGuardEncoder.class.getResourceAsStream("/domains/" + CLAUSES_DOMAIN)) {
       if (in == null) {
         throw new IOException("The clauses domain is missing from the jar (/domains/" + CLAUSES_DOMAIN + ")");
       }
       Files.createDirectories(folder);
-      Files.writeString(target, new String(in.readAllBytes(), StandardCharsets.UTF_8));
+      String domain = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+      Files.writeString(target, declareOnly ? allowDeclareReplay(domain) : domain);
     }
     return target;
+  }
+
+  /**
+   * DECLARE automata start in goal states. Requiring a non-goal state in validate-payload therefore
+   * prevents a DECLARE-only problem from replaying its first event. Mixed models keep the guard because
+   * their Petri-net automata provide the non-goal state expected by the original domain.
+   */
+  static String allowDeclareReplay(String domain) throws IOException {
+    String actionMarker = "(:action validate-payload";
+    String effectMarker = ":effect";
+    String guard = "(not (goal_state ?s1))";
+    int action = domain.indexOf(actionMarker);
+    int effect = action < 0 ? -1 : domain.indexOf(effectMarker, action);
+    int position = action < 0 ? -1 : domain.indexOf(guard, action);
+    if (position < 0 || effect < 0 || position > effect) {
+      throw new IOException("Could not find the goal-state guard in validate-payload");
+    }
+    return domain.substring(0, position) + "; DECLARE-only: goal states may replay events\n            ; " + guard
+        + domain.substring(position + guard.length());
   }
 }
