@@ -173,7 +173,7 @@ public class DataPetriNet {
 		markingToAutomatonState.put(marking, automatonState);
 	}
 
-
+	/*
 	//For building a DOT string of the automaton
 	public String createAutomatonVisualizationString(Automaton aut, boolean alternativeLayout) {
 		//Adopted from org.processmining.ltl2automaton.plugins.automaton.DOTExporter, but significantly modified
@@ -260,6 +260,7 @@ public class DataPetriNet {
 
 
 	}
+	*/
 	//A helper method for building the DOT string
 	public boolean isNonAcceptingTrap(State s) {
 		if (!s.isAccepting() && s.getOutputSize()==1) {

@@ -23,7 +23,7 @@ public class CmdArgsUtil {
         Option petriParam = new Option("p", "petri", true, "Path to Petri-net model(s), comma-separated for multiple");
         options.addOption(petriParam);
 
-		Option logParam = new Option("o", "log", true, "Input event log path");
+		Option logParam = new Option("l", "log", true, "Input event log path");
 		logParam.setRequired(true);
 		options.addOption(logParam);
 
@@ -33,11 +33,14 @@ public class CmdArgsUtil {
         Option varAssignment = new Option("a", "varAssign",true,  "Path to the variable mapping (which activity in frame is associated with which variable value)");
         options.addOption(varAssignment);
 
-        Option varSubs = new Option("s", "varSub",true,  "Path to the variable substitution");
+        Option varSubs = new Option("s", "varSub",true, "Path to the variable substitution");
         options.addOption(varSubs);
 
         Option multiInstance = new Option("i","multiinstance",false,  "Flatten the Eventlog into a single PDDL file");
         options.addOption(multiInstance);
+
+        Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
+        options.addOption(outputPath);
 
 
 		CommandLineParser parser = new org.apache.commons.cli.DefaultParser();

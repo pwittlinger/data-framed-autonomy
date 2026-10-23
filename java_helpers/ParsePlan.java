@@ -30,8 +30,11 @@ public class ParsePlan {
 	
 	static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	//static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}\\.[\\d]{0,5}:\\s\\(add_action\\sa[\\d]+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}\\.[\\d]{0,5}:\\s\\(add_move_automata\\sa[\\d]+\\))");
-	static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
-	static Pattern paramPattern = Pattern.compile("\\(add_parameter.*\\)\\n");
+	//static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+	static Pattern actionPlanPattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action[\\s_]a[\\d]+([\\s_][a-zA-Z]+[\\d])?+\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata[\\s_]a[\\d]+([\\s_][a-zA-Z]+[\\d])?\\))");
+	//static Pattern actionPlanWithResourcePattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action\\sa[\\d]+\\s[a-zA-Z]+[\\d]*\\))\\n(?:(?!add_action).|\\n)*([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+    static Pattern actionPlanWithResourcePattern = Pattern.compile("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_action[\\s_]a[\\d]+[\\s_][a-zA-Z]+[\\d]*\\))");
+    static Pattern paramPattern = Pattern.compile("\\(add_parameter.*\\)\\n");
 	static Pattern nPlansPattern = Pattern.compile("Found\\sPlan");
 	
 	private static String logHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" + 
@@ -75,8 +78,8 @@ public class ParsePlan {
 		// decl model 
 		// mapping File
 		// Input plan
-		// output file
-		
+		// output file	
+        
 		if (args.length != 4) {
 			System.out.println(args+"\n");
 		      throw new Error("Pass the following arguments:\n"+
@@ -90,6 +93,14 @@ public class ParsePlan {
 		String activityMappingFile = args[1];
 		String inputPlanFile = args[2];
 		outputFile = args[3];
+
+        if (!declModelFile.endsWith(".decl")) {
+            throw new Error("DECLARE model needs to be in .DECL format!");
+        }
+
+        if (!outputFile.endsWith(".xes")) {
+            throw new Error("Output File needs to be in .XES format!");
+        }
 		
 		// 1. Read the Activity Mapping File to decode the action names
 		activityMap = readActivityMapping(activityMappingFile);
@@ -156,7 +167,8 @@ public class ParsePlan {
 		
 		ArrayList<String> actionPlan = new ArrayList<String>();
 
-		String[] splitPlan = inputPlan.split("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+		//String[] splitPlan = inputPlan.split("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata\\sa[\\d]+\\))");
+		String[] splitPlan = inputPlan.split("([\\d]{1,5}(\\.[\\d]{0,5})?:\\s\\(add_move_automata[\\s_]a[\\d]+([\\s_][a-zA-Z]+[\\d])?\\))");
 		for (int i = 0;i<splitPlan.length;i++) {
 			if (splitPlan[i].contains("add_action")) {
 		    	actionPlan.add(splitPlan[i]);
@@ -206,18 +218,42 @@ public class ParsePlan {
 		//1. The first assumption is that the addition and synchronization of the event happen at the same instance
 		//2. The activity name is identical across all actions
 		
-		int start = currentEvent.indexOf("add_action ") + 11;
+		int start = currentEvent.indexOf("add_action") + 11;
 		int end = currentEvent.indexOf(")", start);
 		
 		if (start >= end) {
 			throw new Exception("Start >= End");
 		}
+
+        //Now I need to handle the possible space with the resource.
+
+		int countOfUnderscore = currentEvent.substring(start, end).split("_").length;
+		String activity;
+		if (countOfUnderscore<2) {
+			activity = currentEvent.substring(start, end).split(" ")[0]; // encoded activity: e.g. a7
+		}
+		else {
+			activity = currentEvent.substring(start, end).split("_")[0]; // encoded activity: e.g. a7
+		}
 		
-		String activity = currentEvent.substring(start, end); // encoded activity: e.g. a7
 		activityName = activityMap.get(activity);
 		
 		// Now get time stamp
 		timeStamp = getTimeStamp(currentEvent);
+
+        Matcher resourceMatcher = actionPlanWithResourcePattern.matcher(currentEvent);
+        String resource;
+
+        if (resourceMatcher.find()) {
+			if (currentEvent.substring(start, end).split("_").length < 2) {
+				resource = currentEvent.substring(start, end).split(" ")[1];
+			}
+			else {
+				resource = currentEvent.substring(start, end).split("_")[1];
+			}
+            
+            payload.put("resource", resource);
+        }
 		
 		// Now get payload
 		// (add_parameter a12 sDEC2_1 categorical c2)
@@ -238,12 +274,43 @@ public class ParsePlan {
 				//3 is parameter
 				//4 is parameter value
 				
-				if (lines.length != 5) {
-					System.out.println("PROBLEM");
+				if (lines.length == 4) {
+					/* 2026-03-16: When I fixed the bug to ensure that ALL automata states need to be checked I removed the automaton state input.
+					 */
+
+					//payload.put(lines[3], lines[4]);
+					//payload.put(lines[2], lines[3]);
+
+					if (lines[2].contains("integer")) {
+						payload.put(lines[2], lines[3].substring(1));
+
+					}
+					else {
+						payload.put(lines[2], lines[3]);
+					}
+
+
+					
 				}
+				else {
+					// Getting into this branch means that the propositionalized version was used.
+					// 
+					lines = line.split("_");
+					// 2026-04-13: Quick and Dirty Fix to remove the "v" infront of the integer value.
+					if (lines[3].contains("integer")) {
+						payload.put(lines[3], lines[4].substring(1));
+
+					}
+					else {
+						payload.put(lines[3], lines[4]);
+					}
+						
+				}
+
+
 				
 				//System.out.println(lines[3] + " " + lines[4]);
-				payload.put(lines[3], lines[4]);	
+					
 			}	
 		}
 		
@@ -418,12 +485,22 @@ public class ParsePlan {
 			//2 is automaton state
 			//3 is parameter
 			//4 is parameter value
+
+			if (lines.length == 4) {
+					/* 2026-03-16: When I fixed the bug to ensure that ALL automata states need to be checked I removed the automaton state input.
+					 */
+
+				var.add(lines[2]);
+					
+				}
+				else {
+					// Getting into this branch means that the propositionalized version was used.
+					// 
+					lines = line.split("_");
+					var.add(lines[3]);
+
+				}	
 			
-			if (lines.length != 5) {
-				System.out.println("PROBLEM");
-			}
-			
-			var.add(lines[3]);
 			
 		}
 		
@@ -443,6 +520,11 @@ private static StringBuilder generateTrace(ArrayList<Event> listOfEvents, int id
 			sb.append(e.getLogEventTag());
 			
 			for (String ep : eventPayload.keySet()) {
+                if (ep.equals("resource")) {
+                    sb.append(e.getResourceVariable(ep, eventPayload.get(ep)));
+                    continue;
+                }
+
 				String vt = variableTypes.get(ep);
 				sb.append(e.getVariableTag(vt, ep, eventPayload.get(ep)));
 				
@@ -490,6 +572,7 @@ private static StringBuilder generateTrace(ArrayList<Event> listOfEvents, int id
 		
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFile), StandardOpenOption.APPEND)) {
 			writer.write(sb.toString());
+			writer.flush();
 		} catch (IOException e) {
 			System.err.println("Unable to write to event log file\n" + e.toString());
 		}

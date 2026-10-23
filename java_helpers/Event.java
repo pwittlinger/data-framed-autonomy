@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 public class Event {
 	
 	static DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-	private static String eventStart = "\t\t<event>\r\n";
+	//private static String eventStart = "\t\t<event>\r\n";
 	private static String eventEnd = "\t\t</event>\r\n";
 	
 	private static String activityStart = "\t\t<event>\r\n" + 
@@ -22,6 +22,9 @@ public class Event {
 	private static String floatAttributeStart = "			<float key=\"";
 	private static String attributeValueStart = "\" value=\"";
 	private static String attributeEnd = "\"/>\r\n";
+
+    private static String resourceStart = "\t\t\t<string key=\"org:resource\" value=\"";
+    private static String resourceEnd = "\"/>\r\n";
 	
 	private String activityName;
 	private LocalDateTime timestamp;
@@ -77,6 +80,10 @@ public class Event {
 	
 	public String getStringVariable(String name, String value) {
 		return strAttributeStart+name+attributeValueStart+value+attributeEnd;
+	}
+
+    public String getResourceVariable(String name, String value) {
+		return resourceStart+value+resourceEnd;
 	}
 	
 	public String getEventEndTag() {

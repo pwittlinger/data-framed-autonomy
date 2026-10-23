@@ -6,6 +6,7 @@ public class Activity {
   
   private final String name;
   private Set<Attribute> attributes;
+  public String mappedName;
   
   public Activity(String name) {
     this.name = name;
@@ -45,5 +46,13 @@ public class Activity {
 
   public Set<Attribute> getAttributes() {
     return this.attributes;
+  }
+
+  public void setMappedName(String name) {
+    this.mappedName = name;
+  }
+
+  public String getMappedName() {
+    return this.mappedName;
   }
 }

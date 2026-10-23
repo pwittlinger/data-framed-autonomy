@@ -18,10 +18,10 @@ import log.Event;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PDDLGenerator {
 
@@ -31,6 +31,7 @@ public class PDDLGenerator {
   private final HashMap<String, Activity> activities;
   private final ArrayList<DeclareConstraint> constraints;
   private final ArrayList<String> params;
+  protected final DeclareModel declareModel;
   private ArrayList<Automaton> constraintAutomatons;
   private List<List<State>> goalAutomatonStates;
   private State finalTraceState;
@@ -58,6 +59,7 @@ public class PDDLGenerator {
     this.activities = model.getActivities();
     this.constraints = model.getDeclareConstraints();
     this.params = model.params;
+    this.declareModel = model;
     this.constraintAutomatons = new ArrayList<>();
     this.goalAutomatonStates = new ArrayList<>();
     this.prepareAutomatonStates();
@@ -85,7 +87,7 @@ public class PDDLGenerator {
 
     StringBuilder s = new StringBuilder();
     s.append(PDDLGenerator.HEADER_STRING);
-    s.append(this.buildObjectsString(attributes, assignments));
+    s.append(this.buildObjectsString(attributes, assignments, substitutions));
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     //s.append(this.buildActionCosts());
@@ -110,10 +112,38 @@ public class PDDLGenerator {
       }
       assignments.put(event, event.getAttributeAssignments());
     }
+
+    // Empty (prefix-) trace: the loop never sets the final trace state, so the start state t0 is also the final one.
+    // Checked on the trace rather than on null because the generator is reused across traces.
+    if (events.isEmpty()) {
+      this.finalTraceState = new State("t0");
+    }
     return assignments;
   }
 
-  private StringBuilder buildObjectsString(Map<Event, Map<Attribute, String>> attributeAssignments, Map<String, Integer> variables) {
+  // Every parameter name used by the model or by a has_substitution_value fact has to be declared as an object,
+  // even if the current trace never carries it, otherwise the planner fails with an undefined object.
+  protected static Set<String> collectParameterNames(List<String> params, Set<VariableSubstitution> substitutions) {
+    Set<String> names = new LinkedHashSet<>(params);
+    substitutions.forEach(x -> names.add(x.categoryName));
+    return names;
+  }
+
+  // Enum trace values are encoded with the value's index in the model, the same numbering that is
+  // written to variable_values.txt and used for the constraint conditions. Numeric values stay as they are.
+  protected String encodeTraceValue(String attributeName, String value) {
+    Attribute attribute = this.declareModel.getAttribute(attributeName);
+    if (attribute == null || !"enum".equals(attribute.getType())) {
+      return value;
+    }
+    Double encoded = attribute.variableValueMap.get(value);
+    if (encoded == null) {
+      throw new Error("Trace value " + value + " is not declared for attribute " + attributeName);
+    }
+    return String.valueOf(encoded.intValue());
+  }
+
+  private StringBuilder buildObjectsString(Map<Event, Map<Attribute, String>> attributeAssignments, Map<String, Integer> variables, Set<VariableSubstitution> substitutions) {
     StringBuilder b = new StringBuilder();
     b.append("  (:objects\n");
 
@@ -139,12 +169,7 @@ public class PDDLGenerator {
     b.append("- activity\n");
 
     // ATTRIBUTES
-    Set<String> attributes = attributeAssignments.values()
-      .stream()
-      .flatMap(x -> x.keySet().stream())
-      .map(x -> x.getName())
-      .filter(this.params::contains)
-      .collect(Collectors.toSet());
+    Set<String> attributes = collectParameterNames(this.params, substitutions);
     b.append("    ");
     attributes.forEach(x -> b.append(x + " "));
     b.append("- parameter_name\n");
@@ -265,8 +290,7 @@ public class PDDLGenerator {
           continue;
         }
 
-        String value = singleAssignment.getValue();
-        value = value.replaceAll("[a-zA-Z]", ""); // Remove chars, use as if numbers (in case of enum types)
+        String value = this.encodeTraceValue(attName, singleAssignment.getValue());
 
         b.append("    (has_parameter " + activity + " " + attName + " " + cur.getName() + " " + nextName + ")\n");
         b.append("    (= (trace_parameter " + activity + " " + attName + " " + cur.getName() + " " + nextName + ") " + value + ")\n");

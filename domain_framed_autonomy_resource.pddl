@@ -1,33 +1,9 @@
 (define (domain trace-alignment)
 
-  (:requirements :strips :typing :equality :adl :fluents :action-costs :time)
+  (:requirements :strips :typing :equality :adl :fluents :action-costs)
 
-  (:types activity automaton_state trace_state parameter_name value_name constraint)
+  (:types activity automaton_state trace_state parameter_name value_name constraint resource)
 
-  ; ; Constants for prob
-  ; (:constants
-  ;   t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 - trace_state
-  ;   s10 s11 s20 s21 s30 s31 s40 s41 s50 s51 s60 s61 s62 s70 s71 s72 s73 s80 s81 s82 - automaton_state
-  ;   A B C D E F G - activity
-  ;   x y z - parameter_name
-  ;   a_x20 a_x40 a_y4 a_y6 a_z0 a_z1 c40 c30 c20 d10 d20 d40 e_x20 e_z0 e_z1 - value_name
-  ; )
-
-  ; ; Constants for prob2
-  ; (:constants
-  ;   t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 - trace_state
-  ;   s10 s11 s20 s21 s30 s31 s40 s41 s50 s51 s52 s60 s61 s62 s70 s71 s80 s81 s100 s101 - automaton_state
-  ;   a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 - activity
-  ;   int cat - parameter_name
-  ;   int5 int10 int15 cat1 cat2 cat3 - value_name
-  ; )
-
-  ;; Majority: >=
-  ;; Minority: <=
-  ;; Interval: [, ]
-  ;; Equality: ==
-  ;; Inequality: !=
-  ;; If you want only > x, do conditions >= x && != x
 
   (:predicates 
     ;; TRACES AND AUTOMATONS
@@ -41,8 +17,7 @@
     (initial_state ?s1 - automaton_state) 
     
     (associated ?s1 - automaton_state ?c - constraint)
-  
-    (clock ?s1 ?s2 - automaton_state)
+    (can_work ?a - activity ?r - resource)
 
     ;; PARAMETER AND CONSTRAINT DECLARATION
     (has_parameter ?a - activity ?pn - parameter_name ?t1 - trace_state ?t2 - trace_state)
@@ -86,13 +61,8 @@
     (added_parameter_aut ?a - activity ?par - parameter_name ?s1 - automaton_state)
     ;; Cost functions
     (violation_cost ?c - constraint)
-    ;; TIME CONDITIONS
-    (timestamp ?t1 ?t2 - trace_state)
-    (min_t_condition ?s1 - automaton_state ?a - activity ?s2 - automaton_state)
-    (max_t_condition ?s1 - automaton_state ?a - activity ?s2 - automaton_state)
-    (start_clock ?c - constraint)
-    (current_timestamp)
-    (wait)
+    (activity_cost ?a - activity ?r - resource)
+
   )
 
 
@@ -101,7 +71,7 @@
   ;; move_in_model_move_automata then moves all automata associated to the action A
   ;; --------------------------------------------------------------------------------------------------
     (:action add_action
-    :parameters (?a - activity)
+    :parameters (?a - activity ?r - resource)
     :precondition (and 
       (not (after_add))
       (not (complete_sync ?a))
@@ -109,6 +79,7 @@
       (not (failure))
       (not (after_add_check))
       (recovery_finished)
+      (can_work ?a ?r)
 
       (not (exists (?c - constraint) 
         (violated ?c)
@@ -118,41 +89,42 @@
       (exists (?s1 - automaton_state ?s2 - automaton_state) 
         (and
         
-        (cur_s_state ?s1)
-        (not (goal_state ?s1))
-        (not (failure_state ?s1))
-        
-        (automaton ?s1 ?a ?s2)
-        (not (failure_state ?s2))
+          (cur_s_state ?s1)
+          (not (goal_state ?s1))
+          (not (failure_state ?s1))
+          
+          (automaton ?s1 ?a ?s2)
+          (not (failure_state ?s2))
         )
         )
 
       )
     :effect (and 
-      (increase (total_cost) 0)
+      (increase (total_cost) (activity_cost ?a ?r))
       (after_add)
       (complete_sync ?a)
   ))
 
   (:action add_parameter
-      :parameters (?a - activity ?s1 - automaton_state ?pn - parameter_name ?vn - value_name)
+      :parameters (?a - activity ?pn - parameter_name ?vn - value_name)
       :precondition (and 
       (complete_sync ?a)
       (after_add)
       (has_substitution_value ?vn ?a ?pn)
-      (cur_s_state ?s1)
-      
-      (not (goal_state ?s1))
 
-      (not (has_added_parameter_aut ?a ?pn ?s1))
+
+      
+      ;(not (after_sync))
+      ;(not (failure))
       (not (after_add_check))
-      ; Only add a parameter if it is necessary
-      ; And if it satisfies at least one guard
-      (exists (?s2 - automaton_state) 
+      ;(not (after_change))
+      (exists (?s1 ?s2 - automaton_state) 
       (and
-    
+        (cur_s_state ?s1)
+        (not (goal_state ?s1))
         (automaton ?s1 ?a ?s2)
         (has_constraint ?a ?pn ?s1 ?s2)
+        (not (has_added_parameter_aut ?a ?pn ?s1))
         (not (failure_state ?s2))
         (or
         (> (variable_value ?vn) (majority_constraint ?a ?pn ?s1 ?s2))
@@ -166,13 +138,44 @@
         
       )
       )
+
+      (not (exists (?s5 ?s6 - automaton_state) 
+      (and
+        (cur_s_state ?s5)
+        (automaton ?s5 ?a ?s6)
+        (has_constraint ?a ?pn ?s5 ?s6)
+        (failure_state ?s6)
+        (or
+        (> (variable_value ?vn) (majority_constraint ?a ?pn ?s5 ?s6))
+        (< (variable_value ?vn) (minority_constraint ?a ?pn ?s5 ?s6))
+
+        (= (variable_value ?vn) (equality_constraint ?a ?pn ?s5 ?s6))
+        (> (variable_value ?vn) (inequality_constraint ?a ?pn ?s5 ?s6))
+        (< (variable_value ?vn) (inequality_constraint ?a ?pn ?s5 ?s6))
+
+        )
+        
+      )))
       )
 
       :effect (and 
 
       (increase (total_cost) 0)
-      (has_added_parameter_aut ?a ?pn ?s1)
-      (assign (added_parameter_aut ?a ?pn ?s1) (variable_value ?vn)))
+      (forall (?s3 ?s4 - automaton_state) 
+        (when (and 
+              (cur_s_state ?s3)
+              (automaton ?s3 ?a ?s4)
+              (has_constraint ?a ?pn ?s3 ?s4)
+              (not (has_added_parameter_aut ?a ?pn ?s3))
+              )
+
+              (and 
+              (has_added_parameter_aut ?a ?pn ?s3)
+              (assign (added_parameter_aut ?a ?pn ?s3) (variable_value ?vn))
+              )
+        )
+      )
+      )
   )
 
   ;; This action validates if the newly added parameter (payload) to the added activity is valid.
@@ -221,29 +224,6 @@
             (invalid ?s1 ?a ?s2))
       )
 
-      (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
-            (when (and
-                (cur_s_state ?s1)
-                (automaton ?s1 ?a ?s2)
-                (not (invalid ?s1 ?a ?s2))
-                (associated ?s1 ?c)
-                (associated ?s2 ?c)
-                (not (failure_state ?s1))
-                ;(not (clock ?s1 ?s2))
-
-                (or
-                ;(> (- (+(current_timestamp)0.1) (start_clock ?c) ) (max_t_condition ?s1 ?a ?s2))
-                ;(< (- (+(current_timestamp)0.1) (start_clock ?c) ) (min_t_condition ?s1 ?a ?s2))
-                (< (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?c) ))
-                (> (current_timestamp) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?c) )) 
-                ;(> (- (current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
-                ;(< (- (current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
-                )
-                ) 
-            
-            (invalid ?s1 ?a ?s2))
-          ) 
-
     )
   )
   ;; After validating all arcs move all corresponding arcs
@@ -275,32 +255,6 @@
         ;(increase (current_timestamp)0.1)
         (not (after_add_check))
 
-         (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
-        (when (and
-          (not (invalid ?s1 ?a ?s2))
-          (automaton ?s1 ?a ?s2)
-          (cur_s_state ?s1)
-          ;(not (failure_state ?s2))
-          (clock ?s1 ?s2)
-          (associated ?s1 ?c)
-          (associated ?s2 ?c)
-
-          ;(<= (- (current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
-          ;(>= (- (current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
-
-          ;(<= (+(current_timestamp)0.1) (+ (max_t_condition ?s1 ?c ?s2) (start_clock ?c)))
-          ;(>= (+(current_timestamp)0.1) (+ (min_t_condition ?s1 ?c ?s2) (start_clock ?c)))
-
-          (<= (current_timestamp) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?c)))
-          (>= (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?c)))
-          
-
-        ) (and
-          ;(assign (start_clock ?c) (+(current_timestamp)0.1))
-          (assign (start_clock ?c) (current_timestamp))
-        ))
-      )
-
       
         ;; Move all automata, starting with the arcs leading to non-fail states
         (forall (?s1 - automaton_state ?s2 - automaton_state)
@@ -316,19 +270,6 @@
             )
           )
         )
-	  
-      ;(forall (?s1 - automaton_state ?s2 - automaton_state)
-      ;  (when (and
-      ;    (not (invalid ?s1 ?a ?s2))
-      ;    (automaton ?s1 ?a ?s2)
-      ;    (cur_s_state ?s1)
-      ;    (failure_state ?s2)
-      ;  ) (and
-      ;    (not (cur_s_state ?s1))
-      ;    (cur_s_state ?s2)
-      ;    (failure)    
-      ;  ))
-      ;)
 
       (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
         (when (and
@@ -385,7 +326,7 @@
         (not (failure))
         (not (complete_sync ?a))
         (not (after_add_check))
-        (= current_timestamp (timestamp ?t1 ?t2))
+        ;(= current_timestamp (timestamp ?t1 ?t2))
         ; has_increased indicates if the waiting time has been increased
         ; only possible when adding, not when synching
         
@@ -397,16 +338,16 @@
         
         (not (recovery_finished))
 
-        (exists (?s1 - automaton_state ?s2 - automaton_state ) 
-          (and
-            (cur_s_state ?s1)
-            (not (failure_state ?s1))
-            (not (goal_state ?s1))
-            (automaton ?s1 ?a ?s2)
-            (not (invalid ?s1 ?a ?s2))
-            ;(not (failure_state ?s2))
-          )
-        )
+        ;(exists (?s1 - automaton_state ?s2 - automaton_state ) 
+        ;  (and
+        ;    (cur_s_state ?s1)
+        ;    (not (failure_state ?s1))
+        ;    (not (goal_state ?s1))
+        ;    (automaton ?s1 ?a ?s2)
+        ;    (not (invalid ?s1 ?a ?s2))
+        ;    ;(not (failure_state ?s2))
+        ;  )
+        ;)
         
         )
       :effect (and 
@@ -438,30 +379,6 @@
             )
           )   
 
-          (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
-            (when (and
-                (cur_s_state ?s1)
-                (automaton ?s1 ?a ?s2)
-                (not (invalid ?s1 ?a ?s2))
-                (associated ?s1 ?c)
-                (associated ?s2 ?c)
-                ;(clock ?s1 ?s2)
-
-                (or
-
-                ;(> (- (current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
-                ;(< (- (current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
-                ;(> (- (timestamp ?t1 ?t2) (start_clock ?c) ) (max_t_condition ?s1 ?a ?s2))
-                ;(< (- (timestamp ?t1 ?t2) (start_clock ?c) ) (min_t_condition ?s1 ?a ?s2))
-                ;(< (+(current_timestamp)0.1) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?c) ))
-                ;(> (+(current_timestamp)0.1) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?c) )) 
-                (< (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?c) ))
-                (> (current_timestamp) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?c) )) 
-                )
-                ) 
-            
-            (invalid ?s1 ?a ?s2))
-          )   
         )
       )
   
@@ -474,22 +391,22 @@
       (not (failure))
       (not (after_add_check))
       (not (complete_sync ?a))
-      (= current_timestamp (timestamp ?t1 ?t2))
+      ;(= current_timestamp (timestamp ?t1 ?t2))
       (after_sync)
 
       (cur_t_state ?t1)
       (trace ?t1 ?a ?t2)     
 
-      (exists (?s1 - automaton_state ?s2 - automaton_state) 
-        (and
-        (cur_s_state ?s1)
-        ;(not (goal_state ?s1))
-        ;(not (failure_state ?s1))
-        (automaton ?s1 ?a ?s2)
-        ;(not (invalid ?s1 ?a ?s2))
-        ;(not (failure_state ?s2))
-        )
-      )
+      ;(exists (?s1 - automaton_state ?s2 - automaton_state) 
+      ;  (and
+      ;  (cur_s_state ?s1)
+      ;  ;(not (goal_state ?s1))
+      ;  ;(not (failure_state ?s1))
+      ;  (automaton ?s1 ?a ?s2)
+      ;  ;(not (invalid ?s1 ?a ?s2))
+      ;  ;(not (failure_state ?s2))
+      ;  )
+      ;)
       
  )
 
@@ -533,32 +450,6 @@
         ))
       )
 
-      ; Handle time conditions
-      (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
-        (when (and
-          (not (invalid ?s1 ?a ?s2))
-          (automaton ?s1 ?a ?s2)
-          (cur_s_state ?s1)
-          (not (failure_state ?s2))
-          (clock ?s1 ?s2)
-          (associated ?s1 ?c)
-          (associated ?s2 ?c)
-
-          ;(<= (-(current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
-          ;(>= (-(current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
-          
-          ;(<= (timestamp ?t1 ?t2) (+ (start_clock ?c) (max_t_condition ?s1 ?c ?s2)))
-          ;(>= (timestamp ?t1 ?t2) (+ (start_clock ?c) (min_t_condition ?s1 ?c ?s2)))
-
-          (<= (current_timestamp) (+ (start_clock ?c) (max_t_condition ?s1 ?a ?s2)))
-          (>= (current_timestamp) (+ (start_clock ?c) (min_t_condition ?s1 ?a ?s2)))
-
-        ) (and
-          (assign (start_clock ?c) (current_timestamp))
-        ))
-      )
-
-
       (forall (?s1 - automaton_state ?s2 - automaton_state) 
         (when (and 
           (invalid ?s1 ?a ?s2)
@@ -592,15 +483,18 @@
       :effect (and 
       ;; Allow the reset at any state
       ;; Possibly relevant to abort early
-        (forall (?s1 - automaton_state) 
-        (when (and
-          (cur_s_state ?s1)
-          (associated ?s1 ?c)
-          (not (goal_state ?s1))
-        ;(failure_state ?s1)
-        ) 
-        (violated ?c))
-        )
+
+        ;(forall (?s1 - automaton_state) 
+        ;(when (and
+        ;  (cur_s_state ?s1)
+        ;  (associated ?s1 ?c)
+        ;  (not (goal_state ?s1))
+        ;;(failure_state ?s1)
+        ;) 
+        ;(violated ?c))
+        ;)
+
+        (violated ?c)
       )
   )
   
@@ -611,13 +505,13 @@
       :precondition (and 
           (violated ?c)
           ;(failure)
-          (not (after_sync))
-          (not (after_add))
-          (not (after_add_check))
+          ;(not (after_sync))
+          ;(not (after_add))
+          ;(not (after_add_check))
           )
       :effect (and 
 
-      (increase (total_cost) 1000)
+      (increase (total_cost) (violation_cost ?c))
       
       (forall (?s1 ?s2 - automaton_state)
         (when (and
@@ -639,75 +533,6 @@
       (not (violated ?c))
       )
   )
-  
-  (:action skip-unused
-      :parameters (?t1 - trace_state ?a - activity ?t2 - trace_state)
-      :precondition (and 
-      (= current_timestamp (timestamp ?t1 ?t2))
-      (cur_t_state ?t1) 
-      (trace ?t1 ?a ?t2)
-      (not (recovery_finished))
-      (not (exists (?s1 - automaton_state ?s2 - automaton_state) 
-        (and
-        
-        (automaton ?s1 ?a ?s2)
-        (not (failure_state ?s2))
-        )
-      ))
-      )
-      :effect (and 
-      (increase (total_cost) 0)
-      (not (cur_t_state ?t1)) 
-      (cur_t_state ?t2)
-      (when (final_t_state ?t2) (recovery_finished))
-      ;(assign (current_timestamp) (timestamp ?t1 ?t2))
-      )
-  )
 
-   
-  (:process waiting
-        :parameters ()
-        :precondition (and
-                (not (after_sync))
-                (not (after_add))
-                (not (failure))
-                
-                (not (after_add_check))
-                (or
-                (exists (?s1 ?s2 - automaton_state ?a - activity ?n - constraint) 
-                    (and
-                        (cur_s_state ?s1)
-                        (associated ?s1 ?n)
-                        (associated ?s2 ?n)
-                        (automaton ?s1 ?a ?s2)
-                        (not (goal_state ?s1))
-                        (not (complete_sync ?a))
-                        (not (invalid ?s1 ?a ?s2))
-                        (not (violated ?n))
-
-                        (< (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?n)))
-                        (< (current_timestamp) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?n)))
-                    )
-                )
-
-                (exists (?t1 ?t2 - trace_state ?a - activity) 
-                    (and
-                    (< current_timestamp (timestamp ?t1 ?t2))
-                    (cur_t_state ?t1)
-                    (trace ?t1 ?a ?t2)
-                    )
-                    )
-                )
-
-            
-            ) ; or specify a real condition
-        :effect (and 
-            ; Increase the current timestamp by the fixed progression rate.
-            ; This also means the timestamp needs to be rounded to the nearest first digit, otherwise this approach won't work
-            ; or rather we need to improve precision (making planning more difficult)
-            (increase (current_timestamp) (* #t 0.1))
-            )
-        
-    )
 )
 

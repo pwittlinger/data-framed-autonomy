@@ -25,6 +25,7 @@ import log.LogFile;
 import model.DataPetriNet;
 import model.DeclareModel;
 import model.MixedModel;
+import utils.JsonParser;
 
 public class IOManager {
   
@@ -77,6 +78,11 @@ public class IOManager {
     if (!pddlDir.exists()) {
       pddlDir.mkdirs();
     }
+  }
+
+  public void overrideOutputPath(String pathToOutputDirectory) {
+    this.outputFolder = pathToOutputDirectory + "output" + File.separator;
+    this.pddlFolder = this.outputFolder + "pddl" + File.separator;
   }
 
   public void setProjectPrefix() {
@@ -356,6 +362,7 @@ public class IOManager {
   public void exportModel(DeclareModel model) {
     try (FileWriter fileWriter = new FileWriter(outputFolder + "model.txt")) {
       fileWriter.write(model.toString());
+      fileWriter.flush();
     } catch (IOException e) {
       System.out.println("Error creating the model file");
     }
@@ -406,6 +413,7 @@ public class IOManager {
   public void exportLog(LogFile log) {
     try (FileWriter fileWriter = new FileWriter(outputFolder + "log.txt")) {
       fileWriter.write(log.toString());
+      fileWriter.flush();
     } catch (IOException e) {
       System.out.println("Error creating the model file");
     }
@@ -414,9 +422,11 @@ public class IOManager {
   
   //Section: Exporting PDDL files
   public void exportProblemPDDL(String pddlContent, int traceNr) {
-    try (FileWriter fileWriter = new FileWriter(pddlFolder + "problem" + traceNr + ".pddl")) {
+    
+    try (FileWriter fileWriter = new FileWriter(this.pddlFolder + "problem" + traceNr + ".pddl")) {
       fileWriter.write(pddlContent);
-    } catch (IOException e) {
+      fileWriter.flush();
+    } catch (Exception e) {
       e.printStackTrace();
       System.out.println("Error creating the problem pddl");
     }
@@ -425,6 +435,7 @@ public class IOManager {
   public void exportDomainPDDL(String pddlContent) {
     try (FileWriter fileWriter = new FileWriter(pddlFolder + "domain.pddl")) {
       fileWriter.write(pddlContent);
+      fileWriter.flush();
     } catch (IOException e) {
       System.out.println("Error creating the domain pddl");
     }
@@ -450,6 +461,7 @@ public class IOManager {
 
     try (FileWriter fileWriter = new FileWriter(this.currentPath + fileName)) {
       fileWriter.write(sb.toString());
+      fileWriter.flush();
     } catch (IOException e) {
       System.out.println("Error exporting variable substitution file");
     }
@@ -462,6 +474,16 @@ public class IOManager {
 
     if (!costModel.isFile()) {
       costModel = new File(currentPath + costsFileName);
+      costsFileName = currentPath + costsFileName;
+    }
+
+    if (costsFileName.contains(".json")) {
+      try {
+        return JsonParser.parseJsonFile(costsFileName);
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
 
     ArrayList<String[]> costsList = new ArrayList<>();
@@ -521,6 +543,7 @@ public class IOManager {
     modelName = findFileNameFromPath(modelName);
     try (FileWriter fileWriter = new FileWriter(outputFolder + "activityMapping_" + modelName + ".txt")) {
       fileWriter.write(activityMapping);
+      fileWriter.flush();
     } catch (IOException e) {
       System.out.println("Error creating the activityMapping file. \n" + e.toString());
     }

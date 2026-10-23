@@ -94,12 +94,19 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     StringBuilder s = new StringBuilder();
     s.append(PDDLGeneratorMixedModel.HEADER_STRING);
-    s.append(this.buildObjectsString(attributes, assignments));
+    s.append(this.buildObjectsString(attributes, assignments, substitutions));
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     s.append(this.buildActionCosts());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
-     s.append(this.buildTimeStamps(timeStamps));
+    if (!this.mixedModel.isJsonCostFile) {
+      s.append(this.buildTimeStamps(timeStamps));
+    }
+
+    if (!this.mixedModel.allResources.isEmpty()) {
+      s.append(this.buildResourceAlloc());
+    }
+    
     s.append(this.buildAutomatons(finalAutomatonStates));
    
 
@@ -121,13 +128,15 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       assignments.put(event, event.getAttributeAssignments());
     }
 
-    if (this.finalTraceState == null) {
+    // Empty (prefix-) trace: the loop never sets the final trace state, so the start state t0 is also the final one.
+    // Checked on the trace rather than on null because the generator is reused across traces.
+    if (events.isEmpty()) {
       this.finalTraceState = new State("t0");
     }
     return assignments;
   }
 
-  private StringBuilder buildObjectsString(Map<Event, Map<Attribute, String>> attributeAssignments, Map<String, Integer> variables) {
+  private StringBuilder buildObjectsString(Map<Event, Map<Attribute, String>> attributeAssignments, Map<String, Integer> variables, Set<VariableSubstitution> substitutions) {
     StringBuilder b = new StringBuilder();
     b.append("  (:objects\n");
 
@@ -162,7 +171,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       .map(x -> x.getName())
       .collect(Collectors.toSet());
     */
-    ArrayList<String> attributes = this.mixedModel.declareModel.params;
+    Set<String> attributes = collectParameterNames(this.mixedModel.declareModel.params, substitutions);
     b.append("    ");
     attributes.forEach(x -> b.append(x + " "));
     if (attributes.size() > 0) {
@@ -181,6 +190,12 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     }
     b.append("- constraint\n");
 
+    if (this.mixedModel.allResources.size() > 0) {
+      b.append("    ");
+      this.mixedModel.allResources.forEach(x -> b.append(x + " "));
+      b.append("- resource\n");
+    }
+
     b.append("  )\n");
     return b;
   }
@@ -191,7 +206,11 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     b.append("  (:init\n\n");
     b.append("    ; Initialize plan cost. Some planners might need this explicitly\n");
     b.append("    (= (total_cost) 0)\n\n");
-    b.append("    (= (current_timestamp) 0)\n\n");
+
+    if (!this.mixedModel.isJsonCostFile) {
+      b.append("    (= (current_timestamp) 0)\n\n");
+    }
+    
     b.append("    ;; SUBSTITUTION VARIABLES\n");
 
     for (Map.Entry<String, Integer> entry : variables.entrySet()) {
@@ -218,6 +237,8 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     for (String dpnConstraint : this.mixedModel.dpnConstraintNames) {
       b.append("    (= (violation_cost " + dpnConstraint + ") 1)\n");
     }
+
+    b.append(this.buildResourceCosts());
 
     /*
     for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
@@ -288,7 +309,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         if (!this.mixedModel.declareModel.params.contains(attName)) {
           continue;
         }
-        value = value.replaceAll("[a-zA-Z]", ""); // Remove chars, use as if numbers (in case of enum types)
+        value = this.encodeTraceValue(attName, value);
 
         //b.append("    (has_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ")\n");
         //b.append("    (= (trace_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ") " + value + ")\n");
@@ -363,29 +384,30 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
   	    	  b.append("    (associated " + g.name + " " + aName + ")\n");
         }
 
-        for(String cString : clocks) {
-          if (cString.contains("sDEC")) {
-            b.append(cString);
+
+        if (!this.mixedModel.isJsonCostFile) {
+          for(String cString : clocks) {
+            if (cString.contains("sDEC")) {
+              b.append(cString);
+            }
+          }
+
+          boolean setClock = false;
+
+          for (Transition transition : aut.getTransitions()) {
+            if ((transition.getMinTimeCondition() > -1.0) && (transition.getMaxTimeCondition() > 0.0)) {
+              setClock = true;
+              b.append("    (= (min_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMinTimeCondition() + ")\n");
+              b.append("    (= (max_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMaxTimeCondition() + ")\n");
+            }
+
+          }
+
+          if (setClock == true) {
+            b.append("    (= (start_clock " + aName + ") 0)\n");
           }
         }
 
-        boolean setClock = false;
-
-        for (Transition transition : aut.getTransitions()) {
-          if ((transition.getMinTimeCondition() > -1.0) && (transition.getMaxTimeCondition() > 0.0)) {
-            setClock = true;
-            b.append("    (= (min_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMinTimeCondition() + ")\n");
-            b.append("    (= (max_t_condition " + transition.getActiviationState().name + " " + this.mixedModel.activities.get(transition.getActivity()) + " " + transition.getTargetState().name + ") " + transition.getMaxTimeCondition() + ")\n");
-          }
-        
-        }
-
-        if (setClock == true) {
-          b.append("    (= (start_clock " + aName + ") 0)\n");
-        }
-          //if (aut.getConstraint().getActivationTimeConditions() != null) {
-           // b.append("    (has_time_conditions " + aName + " activation " + aut.getConstraint().getActivationTimeConditions()[0] + " " + aut.getConstraint().getActivationTimeConditions()[1] + ")\n");
-          //}
       }
 
     b.append("\n");
@@ -460,5 +482,39 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     return b;
   }
+
+  public StringBuilder buildResourceCosts() {
+    StringBuilder b = new StringBuilder();
+
+    if (this.mixedModel.allResources.isEmpty()){
+      return b;
+    }
+
+    for (Pair<Activity, String> a: this.mixedModel.resourceMap.keySet()) {
+        //System.out.println("buildResourceCosts"+this.mixedModel.activities.get(a.getKey().getName()));
+
+        b.append("    (= (activity_cost " + a.getKey().getName() + " " + a.getValue() + ") " + this.mixedModel.resourceMap.get(a)+ ")\n");
+    }
+
+    return b;
+  }
+
+  public StringBuilder buildResourceAlloc() {
+    StringBuilder b = new StringBuilder();
+
+    if (this.mixedModel.allResources.isEmpty()){
+      return b;
+    }
+
+    for (Pair<Activity, String> a: this.mixedModel.resourceMap.keySet()) {
+        //System.out.println("buildResourceCosts"+this.mixedModel.activities.get(a.getKey().getName()));
+
+        b.append("    (can_work " + a.getKey().getName() + " " + a.getValue() + ")\n");
+    }
+
+    return b;
+  }
+
+
 
 }

@@ -6,9 +6,10 @@ import Automaton.VariableSubstitution;
 import translations.IOManager;
 import translations.PDDLGenerator;
 import translations.PDDLGeneratorMixedModel;
-
 import utils.CmdArgsUtil;
+//import utils.CmdArgsUtils;
 import utils.CmdFileUtils;
+import utils.JsonParser;
 import log.LogFile;
 import model.DataPetriNet;
 import model.DeclareModel;
@@ -17,8 +18,10 @@ import org.apache.commons.cli.*;
 
 public class Runner {
 
-  public static void main(String[] args) throws Exception {    
+  public static void main(String[] args) throws Exception {   
+
     findAlignments(args);
+      
   }
   
   public static void findAlignments(String[] args) 
@@ -50,6 +53,7 @@ public class Runner {
     boolean hasVarAssign = cmds.hasOption("varAssign");
     boolean hasVarSub = cmds.hasOption("varSub");
     boolean hasCost = cmds.hasOption("cost");
+    boolean newOutput = cmds.hasOption("output");
 
     if (hasPetri) {
         petriNetString = cmds.getOptionValue("petri");
@@ -88,6 +92,11 @@ public class Runner {
     // In case the jar you run is outside the directory in which the project is; Add directory name as prefix.
     //ioManager.setProjectPrefix("pddl_gen");
     ioManager.setProjectPrefix();
+
+    if (newOutput) {
+      ioManager.overrideOutputPath(cmds.getOptionValue("output"));
+    }
+    ioManager.setProjectPrefix();
     
     DeclareModel model = ioManager.readDeclareModel(declareModelPaths); // OKAY!
     
@@ -111,6 +120,9 @@ public class Runner {
     variableAssignments = ioManager.readVariableAssignments(variablesString);
     substitutions = ioManager.readVariablesSubstitutions(substitutionsString);
 
+    // Must happen before the generators build their automata, which copy the encoded condition values.
+    model.applyVariableValues(variableAssignments);
+
     System.out.println("Model: " + model);    
 
     if (!hasPetri) {
@@ -125,7 +137,7 @@ public class Runner {
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       LogFile log = ioManager.readDeclareLog(traceString, model);
       PDDLGenerator pddlGenerator = new PDDLGenerator(model);
-      String domain = pddlGenerator.defineDomain();
+      //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
       int i = 1;
@@ -133,7 +145,7 @@ public class Runner {
         IOManager.getInstance().exportProblemPDDL(problem, i);
         i++;
       }
-        IOManager.getInstance().exportDomainPDDL(domain);
+      //IOManager.getInstance().exportDomainPDDL(domain);
       }
 
     else {
@@ -141,10 +153,13 @@ public class Runner {
       String[] petriNetPaths = petriNetString.split(",");
       ArrayList<DataPetriNet> petriNets = ioManager.readDataPetriNets(petriNetPaths);
       MixedModel myMixedModel = new MixedModel(petriNets, model);
+      
 
       if (!ioManager.costModelExists(costsString) || (!hasCost)) {
         ioManager.exportCostModel(costsString, myMixedModel.activities.keySet());
       }
+
+      myMixedModel.checkCostFileFormat(costsString);
 
       myMixedModel.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
 
@@ -152,7 +167,7 @@ public class Runner {
       
       PDDLGeneratorMixedModel pddlGenerator = new PDDLGeneratorMixedModel(myMixedModel);
 
-      String domain = pddlGenerator.defineDomain();
+      //String domain = pddlGenerator.defineDomain();
       ArrayList<String> problems = log.generateProblems(pddlGenerator, variableAssignments, substitutions);
 
 
@@ -165,11 +180,13 @@ public class Runner {
 
 
 
-      int i = 1;
-      for (String problem : problems) {
-        IOManager.getInstance().exportProblemPDDL(problem, i);
-        i++;
-      }
+        int i = 1;
+      
+    for (String problem : problems) {
+      //IOManager.getInstance().exportProblemPDDL(problem, i);
+      ioManager.exportProblemPDDL(problem, i);
+      i++;
+    }
     //IOManager.getInstance().exportDomainPDDL(domain);
     }
 
