@@ -7,6 +7,7 @@ import model.CostEnum;
 import model.DeclareConstraint;
 import model.DeclareModel;
 import model.MixedModel;
+import model.RecoveryStrategy;
 
 
 import org.deckfour.xes.extension.std.XConceptExtension;
@@ -18,6 +19,7 @@ import Automaton.VariableSubstitution;
 import Automaton.Pair;
 import log.Event;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,14 +46,14 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     "(define (problem prob-trace)\n" + 
     "  (:domain trace-alignment)\n" + 
     "\n";
-  private static final String FOOTER_STRING = 
+  private static final String FOOTER_STRING =
     "  (:metric minimize (total_cost))\n" +
     ")\n" +
     "\n";
-  
-  public PDDLGeneratorMixedModel(MixedModel model) throws Exception {
 
-    super(model.declareModel);
+  public PDDLGeneratorMixedModel(MixedModel model, RecoveryStrategy recovery, BigDecimal waitingCost) throws Exception {
+
+    super(model.declareModel, recovery, waitingCost);
     // Get set costs, or use default ones
     //Map<CostEnum, Integer> costs = model.declareModel.getCosts();
     Map<Pair<Activity, CostEnum>, Integer> costs = model.getCosts();
@@ -98,6 +100,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     s.append(this.buildSubstitutionValues(assignments, substitutions));
     s.append(this.buildActionCosts());
+    s.append(this.buildHardConstraints());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
     if (!this.mixedModel.isJsonCostFile) {
       s.append(this.buildTimeStamps(timeStamps));
@@ -211,7 +214,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     b.append("    (= (total_cost) 0)\n\n");
 
     if (!this.mixedModel.isJsonCostFile) {
-      b.append("    (= (current_timestamp) 0)\n\n");
+      b.append("    (= (current_timestamp) 0)\n");
+      // Plain notation, toString would print small or large values in scientific notation (e.g. 1E-5)
+      b.append("    (= (waiting_cost) " + this.waitingCostFactor.toPlainString() + ")\n\n");
     }
     
     b.append("    ;; SUBSTITUTION VARIABLES\n");
@@ -236,35 +241,45 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     StringBuilder b = new StringBuilder();
     b.append("    ; Action costs\n");
 
-    this.constraints.forEach(x -> b.append("    (= (violation_cost " + x.getConstraintName() + ") 1)\n"));
+    this.constraints.forEach(x -> b.append("    (= (violation_cost " + x.getConstraintName() + ") " + this.mixedModel.constraintViolation.get(x.getConstraintName()) + ")\n"));
     for (String dpnConstraint : this.mixedModel.dpnConstraintNames) {
-      b.append("    (= (violation_cost " + dpnConstraint + ") 1)\n");
+      b.append("    (= (violation_cost " + dpnConstraint + ") " + this.mixedModel.constraintViolation.get(dpnConstraint) + ")\n");
     }
 
-    b.append(this.buildResourceCosts());
-
-    /*
-    for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
+    // Only runs when no resource allocation is given
+    if (this.mixedModel.allResources.isEmpty() && !this.costs.isEmpty()) {
+          for (Map.Entry<Pair<Activity, CostEnum>, Integer> cost : this.costs.entrySet()) {
       switch (cost.getKey().getValue()) {
-        case CHANGE:
-          b.append("    (= (change_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
-          break;
         case ADD:
           b.append("    (= (add_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
           break;
         case SET:
           b.append("    (= (set_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
           break;
-        case DELETE:
-          b.append("    (= (delete_cost " + cost.getKey().getKey().getName() + ") " + cost.getValue() + ")\n");
-          break;
       }
     }
-    */
+    }
+
+    // This already has a check for empty resource allocation in the definition.
+    // Not a pretty check, but it works.
+    b.append(this.buildResourceCosts());
+
+    
+
+    
     b.append("\n");
 
     return b;
   }
+
+  // Marks the constraints set to x in the violation cost file, Petri nets included
+  private StringBuilder buildHardConstraints() {
+    List<String> constraintNames = new ArrayList<>();
+    this.constraints.forEach(x -> constraintNames.add(x.getConstraintName()));
+    constraintNames.addAll(this.mixedModel.dpnConstraintNames);
+    return buildHardConstraints(constraintNames, this.mixedModel.hardConstraints);
+  }
+
   private StringBuilder buildTraceDeclaration(List<Event> events, Map<Event, Map<Attribute, String>> assignments) {
     StringBuilder b = new StringBuilder();
     b.append("    ;; TRACE DECLARATION\n");
@@ -332,19 +347,25 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     for (String s : this.mixedModel.allInitialStates) {
       b.append("    (cur_s_state " + s + ")\n");
-      b.append("    (initial_state " + s + ")\n");
+      // A hard constraint is never reset: without initial_state the reset action has no state to move it back to
+      if (!this.mixedModel.isHardConstraintState(s)) {
+        b.append("    (initial_state " + s + ")\n");
+      }
       b.append("\n");
     }
 
     b.append("\n");
 
     for (String s : this.mixedModel.allFailureStates) {
-      b.append("    (failure_state " + s + ")\n");
+      if (this.isDeclaredFailureState(s)) {
+        b.append("    (failure_state " + s + ")\n");
+      }
     }
 
     b.append("\n");
-    
-    for ( ArrayList<String> acceptingStates : this.mixedModel.allAcceptingStates) {
+
+    for (int i = 0; i < this.mixedModel.allAcceptingStates.size(); i++) {
+          List<String> acceptingStates = this.acceptingStates(i);
           if (acceptingStates.size() == 1) {
             b.append("    (goal_state " + acceptingStates.get(0) + ")\n");
           } else { // In case two or more
@@ -440,7 +461,8 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
 
     b.append("    (cur_t_state " + this.finalTraceState.name + ")\n");
 
-    for ( ArrayList<String> acceptingStates : this.mixedModel.allAcceptingStates) {
+    for (int i = 0; i < this.mixedModel.allAcceptingStates.size(); i++) {
+      List<String> acceptingStates = this.acceptingStates(i);
       if (acceptingStates.size() == 1) {
         b.append("    (cur_s_state " + acceptingStates.get(0) + ")\n");
       } else { // In case two or more
@@ -453,6 +475,9 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       }
     }
 
+    if (this.recovery.getOptionName().toLowerCase().contains("discard")) {
+      b.append("    (not (update-cost))\n");
+    }
   
     b.append("    (not (failure))\n" +
             //"    (not (after_change))\n" + //
@@ -463,6 +488,29 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     return b;
   }
 
+
+  // Accepting states of the i-th automaton (Petri nets first, then DECLARE constraints). With the Discard strategy
+  // a violated constraint is ignored, so its failure states are accepting too. They keep their failure_state fact,
+  // so reaching them is still recognised as a violation. A hard constraint is not discarded, its failure states
+  // stay non-accepting.
+  private List<String> acceptingStates(int automatonIndex) {
+    List<String> acceptingStates = new ArrayList<>(this.mixedModel.allAcceptingStates.get(automatonIndex));
+    if (this.recovery.acceptsFailureStates()) {
+      for (String failureState : this.mixedModel.allFailureStatesByAutomaton.get(automatonIndex)) {
+        if (!acceptingStates.contains(failureState) && !this.mixedModel.isHardConstraintState(failureState)) {
+          acceptingStates.add(failureState);
+        }
+      }
+    }
+    return acceptingStates;
+  }
+
+  // The Skip domain does not move an automaton into a failure_state, it skips the event for that constraint.
+  // A hard constraint is not skipped, so its failure states are written as ordinary states: the automaton moves
+  // into them and, as they are non-accepting and cannot be left, the violation makes the problem unsolvable.
+  private boolean isDeclaredFailureState(String state) {
+    return !(this.recovery.skipsFailureStates() && this.mixedModel.isHardConstraintState(state));
+  }
 
    public String activityMapping() {
     StringBuilder s = new StringBuilder();

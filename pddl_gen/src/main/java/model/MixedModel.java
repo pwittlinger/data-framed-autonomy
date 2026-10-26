@@ -7,11 +7,13 @@ import model.CostEnum;
 import model.DeclareConstraint;
 import model.DeclareModel;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class MixedModel {
     public ArrayList<String> allInitialStates;
     public ArrayList<ArrayList<String>> allAcceptingStates;
     public ArrayList<String> allFailureStates;
+    public ArrayList<ArrayList<String>> allFailureStatesByAutomaton; // Same order as allAcceptingStates
     public ArrayList<Automaton> constraintAutomatons;
     public ArrayList<String> conditionStrings;
     public ArrayList<ArrayList<String>> allAutomatonStrings;
@@ -51,6 +54,8 @@ public class MixedModel {
     public final NandGuardEncoder nandGuards = new NandGuardEncoder();
 	public Map<Pair<Activity, String>, Integer> resourceMap;
 	public Map<String, Integer> constraintViolation;
+	public Set<String> hardConstraints; // Marked x in the violation cost file, no recovery strategy applies to them
+	private Map<String, String> stateConstraints; // Automaton state -> name of the constraint it belongs to
 	public Set<String> allResources;
 	public boolean isJsonCostFile = false;
 
@@ -73,12 +78,15 @@ public class MixedModel {
         this.allInitialStates = new ArrayList<>();
         this.allAcceptingStates = new ArrayList<>();
         this.allFailureStates = new ArrayList<>();
+        this.allFailureStatesByAutomaton = new ArrayList<>();
         this.allAutomatonStrings = new ArrayList<>();
         this.conditionStrings = new ArrayList<>();
         this.activities = new HashMap<>();
         this.allAutomatonStates = new ArrayList<>();
         this.allPetriNetStates = new ArrayList<>();
         this.allPetriNetStatesByDpn = new ArrayList<>();		
+        this.hardConstraints = new HashSet<>();
+        this.stateConstraints = new HashMap<>();
         this.allResources = new HashSet<String>();
 
 
@@ -157,7 +165,8 @@ public class MixedModel {
         int dpnIndex = 1;
         for (DataPetriNet dpnModel : this.dpnModels) {
             String statePrefix = dpnStatePrefix(dpnIndex);
-            this.dpnConstraintNames.add(dpnConstraintName(dpnIndex));
+            String dpnConstraint = dpnConstraintName(dpnIndex);
+            this.dpnConstraintNames.add(dpnConstraint);
             ArrayList<String> dpnStates = new ArrayList<>();
 
             dpnModel.executableAutomaton.ini();
@@ -169,6 +178,7 @@ public class MixedModel {
             }
 
             ArrayList<String> dpnAccepting = new ArrayList<>();
+            ArrayList<String> dpnFailure = new ArrayList<>();
 
             for (State st : dpnModel.executableAutomaton.states()) {
                 String stateName = statePrefix + st.toString();
@@ -177,12 +187,15 @@ public class MixedModel {
                 }
                 if (dpnModel.isNonAcceptingTrap(st)) {
                     this.allFailureStates.add(stateName);
+                    dpnFailure.add(stateName);
                 }
                 this.allAutomatonStates.add(stateName);
                 this.allPetriNetStates.add(stateName);
+                this.stateConstraints.put(stateName, dpnConstraint);
                 dpnStates.add(stateName);
             }
             this.allAcceptingStates.add(dpnAccepting);
+            this.allFailureStatesByAutomaton.add(dpnFailure);
             this.allPetriNetStatesByDpn.add(dpnStates);
 
             for (State stt : dpnModel.executableAutomaton.states()) {
@@ -208,24 +221,29 @@ public class MixedModel {
         for (Automaton aut : this.constraintAutomatons) {
   	      // Automaton might have more than one goal state. In that case, we'll put the goal states with an "or" between them.
   	      List<StateEC> allStates = aut.getStatesEC();
+		  String constraintName = aut.getConstraint().getConstraintName();
 		  ArrayList<String> declareAccepting = new ArrayList<>();
-  	      
+		  ArrayList<String> declareFailure = new ArrayList<>();
+
   	      for (StateEC g : allStates) {
   	    	  if (g.isInitial) {
   	    		  this.allInitialStates.add(g.name);
   	    	  }
   	    	  if (g.isGoal) {
-  	    		//this.allAcceptingStates.add(g.name);  
+  	    		//this.allAcceptingStates.add(g.name);
 				declareAccepting.add(g.name);
 
   	    	  }
   	    	  if (g.isFailure) {
   	    		  this.allFailureStates.add(g.name);
+  	    		  declareFailure.add(g.name);
   	    	  }
 			  this.allAutomatonStates.add(g.name);
-  	    	  
+			  this.stateConstraints.put(g.name, constraintName);
+
   	      }
 		  this.allAcceptingStates.add(declareAccepting);
+		  this.allFailureStatesByAutomaton.add(declareFailure);
         }
     }
 
@@ -354,6 +372,49 @@ public class MixedModel {
     return this.costs;
   }
 
+  /**
+   * Gives every DECLARE and Petri net constraint the default violation cost, then applies the
+   * lines of the violation cost file in order (a later line overrides an earlier one).
+   * A cost of x marks the constraint as hard: no recovery strategy applies to it, so its violation is permanent.
+   * @param violationCostsList {identifier, cost} pairs, identifier "<decl file>|<constraint>" or "<pnml file>"
+   */
+  public void assignViolationCosts(int defaultCost, List<String[]> violationCostsList) {
+    this.constraintViolation = new LinkedHashMap<>();
+    this.hardConstraints.clear();
+    for (DeclareConstraint dc : this.declareModel.getDeclareConstraints()) {
+      this.constraintViolation.put(dc.getConstraintName(), defaultCost);
+    }
+    for (String dpnConstraint : this.dpnConstraintNames) {
+      this.constraintViolation.put(dpnConstraint, defaultCost);
+    }
+
+    DeclareModel.applyViolationCosts(violationCostsList, this::resolveViolationCostTarget, this.constraintViolation, this.hardConstraints);
+  }
+
+  // True if the automaton state belongs to a constraint marked as hard in the violation cost file
+  public boolean isHardConstraintState(String state) {
+    return this.hardConstraints.contains(this.stateConstraints.get(state));
+  }
+
+  // "<pnml file>" matches the Petri net read from that file, "<decl file>|<constraint>" is resolved by the DECLARE model.
+  private List<String> resolveViolationCostTarget(String identifier) {
+    if (identifier.indexOf('|') >= 0) {
+      return this.declareModel.resolveViolationCostTarget(identifier);
+    }
+
+    List<String> constraintNames = new ArrayList<>();
+    String fileName = new File(identifier).getName();
+    for (int i = 0; i < this.dpnModels.size(); i++) {
+      if (this.dpnModels.get(i).netName.equals(fileName)) {
+        constraintNames.add(this.dpnConstraintNames.get(i));
+      }
+    }
+    if (constraintNames.isEmpty()) {
+      throw new Error("Petri net " + fileName + " from the violation cost file is not one of the input Petri nets");
+    }
+    return constraintNames;
+  }
+
   public void checkCostFileFormat(String costsFileName) {
     this.isJsonCostFile = costsFileName != null && costsFileName.contains(".json");
   }
@@ -365,8 +426,10 @@ public class MixedModel {
 	String resource;
 
 
-	if (costsList.get(0).length == 3) {
-		
+	// Rows of the JSON resource file are "<task> <resource> <duration>". A text cost model row "<activity> <add> <set>"
+	// has the same length, so the file type decides which one we have, not the row length.
+	if (this.isJsonCostFile) {
+
     	Set<Activity> seenActivities = new HashSet<>();
 		this.resourceMap = new HashMap<>();
 
@@ -387,8 +450,6 @@ public class MixedModel {
 
 	
 
-    Integer[] costsArray = new Integer[4];
-
     this.costs = new HashMap<>();
     Set<Activity> seenActivities = new HashSet<>();
 
@@ -399,13 +460,9 @@ public class MixedModel {
       }
 	  a = new Activity(sa);
       seenActivities.add(a);
-      for (int i = 1; i < costs.length; i++) {
-        costsArray[i-1] = Integer.valueOf(costs[i]);
+      for (Map.Entry<CostEnum, Integer> cost : CostEnum.parseCostLine(costs).entrySet()) {
+        this.costs.put(new Pair<Activity, CostEnum>(a, cost.getKey()), cost.getValue());
       }
-      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.CHANGE), costsArray[0]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.ADD), costsArray[1]);
-      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
-      //this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
     }
 
     // TODO Implement handling of missing activities

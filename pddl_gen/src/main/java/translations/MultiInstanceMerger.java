@@ -1,8 +1,6 @@
 package translations;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,6 +13,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import model.RecoveryStrategy;
+
 /**
  * Puts the problems of all the traces of a log in one problem, one instance per trace (option -i).
  *
@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
  */
 public final class MultiInstanceMerger {
 
-  public static final String MULTI_DOMAIN = "domain_framed_autonomy_process_reset_time_multi.pddl";
-  public static final String CLAUSES_MULTI_DOMAIN = "domain_framed_autonomy_process_reset_time_clauses_multi.pddl";
   public static final String PROBLEM_FILE = "problem_multi.pddl";
 
   // These mean the same thing in every instance, so they're not renamed
@@ -171,18 +169,13 @@ public final class MultiInstanceMerger {
     return new Problem(objects, List.of(initBlock.split("\n")), List.of(goalBlock.split("\n")));
   }
 
-  /** Copies the multi domain (with or without the nand clauses) from the jar into the folder. */
-  public static Path exportDomain(Path folder, boolean clauses, boolean declareOnly) throws IOException {
-    String name = clauses ? CLAUSES_MULTI_DOMAIN : MULTI_DOMAIN;
-    try (InputStream in = MultiInstanceMerger.class.getResourceAsStream("/domains/" + name)) {
-      if (in == null) {
-        throw new IOException("The domain is missing from the jar (/domains/" + name + ")");
-      }
-      Files.createDirectories(folder);
-      Path target = folder.resolve(name);
-      String domain = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-      Files.writeString(target, declareOnly ? NandGuardEncoder.allowDeclareReplay(domain) : domain);
-      return target;
-    }
+  /** Writes the multi variant (with or without the nand clauses) of the strategy's domain into the folder. */
+  public static Path exportDomain(Path folder, boolean clauses, RecoveryStrategy strategy, boolean declareOnly) throws IOException {
+    String domain = DomainVariants.base(strategy);
+    domain = DomainVariants.withMulti(clauses ? DomainVariants.withClauses(domain) : domain);
+    Files.createDirectories(folder);
+    Path target = folder.resolve(DomainVariants.fileName(strategy, clauses, true));
+    Files.writeString(target, declareOnly ? NandGuardEncoder.allowDeclareReplay(domain) : domain);
+    return target;
   }
 }

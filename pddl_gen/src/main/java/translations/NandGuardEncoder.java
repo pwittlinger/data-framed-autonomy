@@ -1,8 +1,6 @@
 package translations;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -14,12 +12,13 @@ import java.util.Set;
 
 import Automaton.Transition;
 import formula.Formula.Comparison;
+import model.RecoveryStrategy;
 
 /**
  * Writes the nand clause guards of the transitions as PDDL facts.
  *
  * Every nand becomes a guard_clause object and every argument of it a guard_atom object. The
- * clauses domain (domain_framed_autonomy_process_reset_time_clauses.pddl) then blocks an arc when
+ * clauses variant of the domain (see DomainVariants) then blocks an arc when
  * all the arguments of one of its clauses hold, which is exactly when the nand is false.
  *
  * For example the guard nand(A.x <= 10, A.y >= 5) on the arc s1 -a-> s2 turns into:
@@ -32,8 +31,6 @@ import formula.Formula.Comparison;
  * </pre>
  */
 public class NandGuardEncoder {
-
-  public static final String CLAUSES_DOMAIN = "domain_framed_autonomy_process_reset_time_clauses.pddl";
 
   private final List<String> clauseObjects = new ArrayList<>();
   private final List<String> atomObjects = new ArrayList<>();
@@ -103,17 +100,12 @@ public class NandGuardEncoder {
     return b.toString();
   }
 
-  /** Copies the clauses domain (packaged in the jar) into the given folder. */
-  public static Path exportClausesDomain(Path folder, boolean declareOnly) throws IOException {
-    Path target = folder.resolve(CLAUSES_DOMAIN);
-    try (InputStream in = NandGuardEncoder.class.getResourceAsStream("/domains/" + CLAUSES_DOMAIN)) {
-      if (in == null) {
-        throw new IOException("The clauses domain is missing from the jar (/domains/" + CLAUSES_DOMAIN + ")");
-      }
-      Files.createDirectories(folder);
-      String domain = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-      Files.writeString(target, declareOnly ? allowDeclareReplay(domain) : domain);
-    }
+  /** Writes the clauses variant of the strategy's domain into the given folder. */
+  public static Path exportClausesDomain(Path folder, RecoveryStrategy strategy, boolean declareOnly) throws IOException {
+    Path target = folder.resolve(DomainVariants.fileName(strategy, true, false));
+    String domain = DomainVariants.withClauses(DomainVariants.base(strategy));
+    Files.createDirectories(folder);
+    Files.writeString(target, declareOnly ? allowDeclareReplay(domain) : domain);
     return target;
   }
 

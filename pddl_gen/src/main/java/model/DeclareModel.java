@@ -1,5 +1,7 @@
 package model;
+import java.io.File;
 import java.util.*;
+import java.util.function.Function;
 //import org.w3c.dom.Attr;
 import Automaton.Pair;
 import formula.Formula;
@@ -15,11 +17,16 @@ public class DeclareModel {
   public ArrayList<String> params;
   private Map<String, Attribute> attr;
   public HashMap<String, String> mappedActivities;
-  //public Map<String, Integer> violationCosts;
-  
+  // Violation costs and hard constraints of DECLARE-only problems, MixedModel keeps its own for mixed models
+  public Map<String, Integer> constraintViolation;
+  public Set<String> hardConstraints; // Marked x in the violation cost file, no recovery strategy applies to them
+
+  private static final String HARD_CONSTRAINT_MARKER = "x";
+
   public DeclareModel(Map<String, ArrayList<String[]>> parsedLines) {
     this.activities = addActivities(parsedLines.get("activityLines")); // ok
     this.params = new ArrayList<>();
+    this.hardConstraints = new HashSet<>();
     Map<String, Attribute> attributes = bindAttributes(parsedLines.get("bindingLines")); 
     initializeAttributes(parsedLines.get("intAttributeLines"), parsedLines.get("floatAttributeLines"), parsedLines.get("enumAttributeLines"), attributes);
     this.declareConstraints = addConstraints(parsedLines.get("binaryConstraintLines"), parsedLines.get("unaryConstraintLines"));
@@ -77,7 +84,6 @@ public class DeclareModel {
    */
   public void assignCosts(List<String[]> costsList) {
     Activity a;
-    Integer[] costsArray = new Integer[4];
 
     this.costs = new HashMap<>();
     Set<Activity> seenActivities = new HashSet<>();
@@ -88,17 +94,93 @@ public class DeclareModel {
         throw new Error("Activity not found! What I parsed: " + costs[0]);
       }
       seenActivities.add(a);
-      for (int i = 1; i < costs.length; i++) {
-        costsArray[i-1] = Integer.valueOf(costs[i]);
+      for (Map.Entry<CostEnum, Integer> cost : CostEnum.parseCostLine(costs).entrySet()) {
+        this.costs.put(new Pair<Activity, CostEnum>(a, cost.getKey()), cost.getValue());
       }
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.CHANGE), costsArray[0]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.ADD), costsArray[1]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.SET), costsArray[2]);
-      this.costs.put(new Pair<Activity, CostEnum>(a, CostEnum.DELETE), costsArray[3]);
     }
 
     // TODO Implement handling of missing activities
     // Set<Activity> undefinedActivities = new HashSet<>();
+  }
+
+  /**
+   * Gives every constraint the default violation cost, then applies the lines of the violation cost
+   * file in order (a later line overrides an earlier one). Same as MixedModel.assignViolationCosts,
+   * for DECLARE-only problems.
+   * @param violationCostsList {identifier, cost} pairs, identifier "<decl file>|<constraint>"
+   */
+  public void assignViolationCosts(int defaultCost, List<String[]> violationCostsList) {
+    this.constraintViolation = new LinkedHashMap<>();
+    this.hardConstraints.clear();
+    for (DeclareConstraint dc : this.declareConstraints) {
+      this.constraintViolation.put(dc.getConstraintName(), defaultCost);
+    }
+    applyViolationCosts(violationCostsList, this::resolveViolationCostTarget, this.constraintViolation, this.hardConstraints);
+  }
+
+  /**
+   * Applies the lines of the violation cost file in order. A cost of x marks the constraint as hard:
+   * no recovery strategy applies to it, so its violation is permanent.
+   * @param resolve gives the names of the constraints a line's identifier stands for
+   */
+  public static void applyViolationCosts(List<String[]> violationCostsList, Function<String, List<String>> resolve,
+                                         Map<String, Integer> constraintViolation, Set<String> hardConstraints) {
+    for (String[] entry : violationCostsList) {
+      List<String> constraintNames = resolve.apply(entry[0]);
+      if (entry[1].equalsIgnoreCase(HARD_CONSTRAINT_MARKER)) {
+        // Keeps its cost: the domain's recovery actions still refer to the violation_cost of every constraint
+        hardConstraints.addAll(constraintNames);
+        continue;
+      }
+      int cost = parseViolationCost(entry[1], entry[0]);
+      for (String constraintName : constraintNames) {
+        hardConstraints.remove(constraintName);
+        constraintViolation.put(constraintName, cost);
+      }
+    }
+  }
+
+  public static int parseViolationCost(String value, String source) {
+    int cost;
+    try {
+      cost = Integer.parseInt(value);
+    } catch (NumberFormatException e) {
+      cost = -1;
+    }
+    if (cost < 0) {
+      throw new Error(source + " needs a whole, non-negative violation cost, found: " + value);
+    }
+    return cost;
+  }
+
+  // "<decl file>|<constraint>" matches the constraints of that file by name, with or without the _2, _3, ... suffix
+  // that repeated constraints get in the PDDL. Petri net lines ("<pnml file>") are resolved by MixedModel.
+  public List<String> resolveViolationCostTarget(String identifier) {
+    int separator = identifier.indexOf('|');
+    if (separator < 0) {
+      throw new Error("Petri net " + new File(identifier).getName() + " from the violation cost file is not one of the input Petri nets");
+    }
+
+    String fileName = new File(identifier.substring(0, separator).strip()).getName();
+    String constraint = identifier.substring(separator + 1).strip();
+    List<DeclareConstraint> fileConstraints = this.declareConstraints.stream()
+      .filter(dc -> fileName.equals(dc.getSourceFile()))
+      .toList();
+    if (fileConstraints.isEmpty()) {
+      throw new Error("DECLARE file " + fileName + " from the violation cost file is not one of the input DECLARE models, or none of its constraints were loaded");
+    }
+
+    List<String> constraintNames = new ArrayList<>();
+    for (DeclareConstraint dc : fileConstraints) {
+      if (constraint.equals(dc.getConstraintName()) || constraint.equals(dc.getBaseConstraintName())) {
+        constraintNames.add(dc.getConstraintName());
+      }
+    }
+    if (constraintNames.isEmpty()) {
+      throw new Error("Constraint " + constraint + " not found in " + fileName + ", its constraints are: "
+        + fileConstraints.stream().map(DeclareConstraint::getConstraintName).toList());
+    }
+    return constraintNames;
   }
 
   //Section: Initialization of each attribute and finally removing missing initializations
@@ -206,6 +288,7 @@ public class DeclareModel {
       String activationCondition = constraintTokens[2] == null? null : constraintTokens[2];
       DeclareConstraint constraint = new DeclareConstraint(template, activity, activationCondition, null, null);
       constraint.assignTimeConditions(constraintTokens[3]);
+      constraint.setSourceFile(constraintTokens[4]);
       return constraint;
     }
     return null;
@@ -235,6 +318,7 @@ public class DeclareModel {
         */
         DeclareConstraint constraint = new DeclareConstraint(template, activationActivity, activationCondition, targetActivity, targetCondition);
         constraint.assignTimeConditions(constraintTokens[5]);
+        constraint.setSourceFile(constraintTokens[6]);
         return constraint;
       }
     }

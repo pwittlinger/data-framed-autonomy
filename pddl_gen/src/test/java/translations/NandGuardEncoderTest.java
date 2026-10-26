@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import model.RecoveryStrategy;
+
 class NandGuardEncoderTest {
 
   @TempDir
@@ -16,7 +18,7 @@ class NandGuardEncoderTest {
 
   @Test
   void declareOnlyDomainAllowsGoalStatesToReplay() throws Exception {
-    String domain = Files.readString(NandGuardEncoder.exportClausesDomain(temp, true));
+    String domain = Files.readString(NandGuardEncoder.exportClausesDomain(temp, RecoveryStrategy.RESET, true));
     String validatePayload = validatePayload(domain);
     assertTrue(validatePayload.contains("DECLARE-only: goal states may replay events"));
     assertFalse(validatePayload.contains("\n            (not (goal_state ?s1))"));
@@ -24,7 +26,7 @@ class NandGuardEncoderTest {
 
   @Test
   void mixedDomainKeepsGoalStateGuard() throws Exception {
-    String domain = Files.readString(NandGuardEncoder.exportClausesDomain(temp, false));
+    String domain = Files.readString(NandGuardEncoder.exportClausesDomain(temp, RecoveryStrategy.RESET, false));
     assertTrue(validatePayload(domain).contains("(not (goal_state ?s1))"));
   }
 

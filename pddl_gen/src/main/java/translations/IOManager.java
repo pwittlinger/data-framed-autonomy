@@ -125,7 +125,7 @@ public class IOManager {
     try (Scanner scanner = new Scanner(declareFile)) {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
-        addToMap(line, lines, declarePatterns);
+        addToMap(line, lines, declarePatterns, declareFile.getName());
       }
     } catch (IOException e) {
       System.err.println(declareFile.getAbsolutePath());
@@ -282,7 +282,7 @@ public class IOManager {
     
     
   //Section: Lines validation and addition
-  private void addToMap(String line, HashMap<String, ArrayList<String[]>> lines, Pattern[] patterns) {
+  private void addToMap(String line, HashMap<String, ArrayList<String[]>> lines, Pattern[] patterns, String sourceFile) {
     Matcher activityMatcher = patterns[0].matcher(line);
     Matcher bindingMatcher = patterns[1].matcher(line);
     Matcher intMatcher = patterns[2].matcher(line);
@@ -303,13 +303,13 @@ public class IOManager {
       lines.get("intAttributeLines").add(tokenizeNumericAttribute(intMatcher));
     } else if (binaryMatcher.find()) {
       if (isConditionValid(binaryMatcher.group(4), patterns) && isConditionValid(binaryMatcher.group(5), patterns)) {
-        lines.get("binaryConstraintLines").add(tokenizeBinaryConstraint(binaryMatcher));
+        lines.get("binaryConstraintLines").add(tokenizeBinaryConstraint(binaryMatcher, sourceFile));
       } else {
         System.out.println("Error parsing condition: " + binaryMatcher.group(4) + " or " + binaryMatcher.group(5));
       }
     } else if (unaryMatcher.find()) {
       if (isConditionValid(unaryMatcher.group(3), patterns)) {
-        lines.get("unaryConstraintLines").add(tokenizeUnaryConstraint(unaryMatcher));
+        lines.get("unaryConstraintLines").add(tokenizeUnaryConstraint(unaryMatcher, sourceFile));
       } else {
         System.out.println("Error parsing condition: " + unaryMatcher.group(3));
       }
@@ -332,12 +332,14 @@ public class IOManager {
     return new String[] {matcher.group(1), matcher.group(3), matcher.group(4)};
   }
   
-  private String[] tokenizeUnaryConstraint(Matcher matcher) {
-    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4)};
+  // The source file is kept as the last token, since constraints of all DECLARE files are merged
+  // into one model but the violation cost file addresses them per file.
+  private String[] tokenizeUnaryConstraint(Matcher matcher, String sourceFile) {
+    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), sourceFile};
   }
-  
-  private String[] tokenizeBinaryConstraint(Matcher matcher) {
-    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6)};
+
+  private String[] tokenizeBinaryConstraint(Matcher matcher, String sourceFile) {
+    return new String[] {matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6), sourceFile};
   }
   
   
@@ -453,7 +455,8 @@ public class IOManager {
     StringBuilder sb = new StringBuilder();
 
     for (String aK : actKeys) {
-      sb.append(aK + " 1 1 1 1\n");
+      //sb.append(aK + " 1 1 1 1\n");
+      sb.append(aK + " 0 0\n");
     }
 
     try (FileWriter fileWriter = new FileWriter(this.currentPath + fileName)) {
@@ -493,6 +496,41 @@ public class IOManager {
       System.out.println("Error reading the cost model");
     }
     return costsList;
+  }
+
+  //Section: Reading violation costs
+  /**
+   * Reads the violation cost file, one line per constraint:
+   * "<decl file>|<constraint> <cost>" or "<pnml file> <cost>", the cost being a number or x for a hard constraint.
+   * @return {identifier, cost} per non-empty line, the identifier being everything before the cost
+   */
+  public ArrayList<String[]> readViolationCosts(String violationCostsFileName) {
+    File violationCosts = new File(violationCostsFileName);
+
+    if (!violationCosts.isFile()) {
+      violationCosts = new File(currentPath + violationCostsFileName);
+    }
+
+    ArrayList<String[]> violationCostsList = new ArrayList<>();
+
+    try (Scanner scanner = new Scanner(violationCosts)) {
+      while (scanner.hasNextLine()) {
+        // Files saved from PowerShell or Notepad can start with a byte order mark
+        String line = scanner.nextLine().replace("﻿", "").strip();
+        if (line.isEmpty()) {
+          continue;
+        }
+        // Split on the last whitespace only, file names may contain spaces
+        String[] entry = line.split("\\s+(?=\\S+$)");
+        if (entry.length != 2) {
+          throw new Error("Violation cost line must be '<decl file>|<constraint> <cost>' or '<pnml file> <cost>', found: " + line);
+        }
+        violationCostsList.add(entry);
+      }
+    } catch (IOException e) {
+      System.out.println("Error reading the violation cost file");
+    }
+    return violationCostsList;
   }
   
   public void exportEquivalenceClasses(HashMap<String, ArrayList<String>> classes) {

@@ -125,7 +125,7 @@
           <exclude>lib/**</exclude>
         </excludes>
       </resource>
-      <!-- The domains go in the jar too, the generator copies the clauses one next to the problems -->
+      <!-- The domains go in the jar too, the generator makes the clauses / multi variants from them -->
       <resource>
         <directory>../domains</directory>
         <targetPath>domains</targetPath>

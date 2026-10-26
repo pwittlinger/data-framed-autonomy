@@ -20,6 +20,7 @@ public class DeclareConstraint {
   private int duplicateIndex = 0;
   // Set by the STP preprocessing when the other windows already imply this one
   private boolean targetWindowDropped = false;
+  private String sourceFile;
 
   public DeclareConstraint(DeclareTemplate template, String activationActivity, String activationCondition, String targetActivity, String targetCondition) {
     this.template = template;
@@ -103,14 +104,28 @@ public class DeclareConstraint {
   }
 
   public String getConstraintName() {
-    String baseName = (template.getTemplateName() + "_" + activationActivity + (targetActivity != null ? ("_" + targetActivity) : "")).replaceAll("\s", "_");
+    String baseName = this.getBaseConstraintName();
     return duplicateIndex > 0 ? baseName + "_" + duplicateIndex : baseName;
+  }
+
+  // Name without the duplicate suffix, e.g. "Response_ActivityG_ActivityP".
+  public String getBaseConstraintName() {
+    return (template.getTemplateName() + "_" + activationActivity + (targetActivity != null ? ("_" + targetActivity) : "")).replaceAll("\s", "_");
   }
 
   // Assigns the ordinal (2nd, 3rd, ...) of this constraint among others sharing the same
   // template/activation/target, so repeated constraints get distinct PDDL object names.
   public void setDuplicateIndex(int duplicateIndex) {
     this.duplicateIndex = duplicateIndex;
+  }
+
+  // File name (without directories) of the DECLARE model the constraint was read from.
+  public String getSourceFile() {
+    return sourceFile;
+  }
+
+  public void setSourceFile(String sourceFile) {
+    this.sourceFile = sourceFile;
   }
 
   public DeclareTemplate getTemplate() {

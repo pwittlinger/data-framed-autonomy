@@ -43,9 +43,16 @@ public class CmdFileUtils {
     public static boolean logFileExists(String filePath) {
 
         String currentPath = System.getProperty("user.dir") + File.separator;
-    
+
 
         return ((filePath.endsWith("xes")) && (new File(filePath).isFile() || new File(currentPath + filePath).isFile()));
+    }
+
+    public static boolean violationCostFileExists(String filePath) {
+
+        String currentPath = System.getProperty("user.dir") + File.separator;
+
+        return new File(filePath).isFile() || new File(currentPath + filePath).isFile();
     }
 
 
