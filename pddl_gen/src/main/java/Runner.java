@@ -166,6 +166,7 @@ public class Runner {
 
       model.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
       model.assignViolationCosts(violationCost, hasViolationCostFile ? ioManager.readViolationCosts(violationCostsString) : new ArrayList<>());
+      model.setDeclareConstraintsToHard();
       LogFile log = ioManager.readDeclareLog(traceString, model);
       PDDLGenerator pddlGenerator = new PDDLGenerator(model, recovery, waitingCost);
       //String domain = pddlGenerator.defineDomain();
@@ -195,6 +196,7 @@ public class Runner {
       myMixedModel.assignCosts(ioManager.readCostModel(costsString)); // OKAY!
 
       myMixedModel.assignViolationCosts(violationCost, hasViolationCostFile ? ioManager.readViolationCosts(violationCostsString) : new ArrayList<>());
+      myMixedModel.declareModel.setDeclareConstraintsToHard();
 
       LogFile log = ioManager.readLog(traceString, myMixedModel); // OKAY!
       

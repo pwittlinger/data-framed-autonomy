@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 //import java.util.concurrent.locks.Condition;
 
-import org.processmining.models.graphbased.directed.petrinetwithdata.newImpl.DataElement;
+//import org.processmining.models.graphbased.directed.petrinetwithdata.newImpl.DataElement;
 import org.processmining.plugins.declareminer.PossibleNodes;
 
 import Automaton.*;
@@ -49,12 +49,14 @@ public class MixedModel {
     public ArrayList<String> allPetriNetStates;
     public ArrayList<ArrayList<String>> allPetriNetStatesByDpn;
     private Map<Pair<Activity, CostEnum>, Integer> costs;
-	public Map<Pair<Activity, String>, Integer> resourceMap;
-	public Map<String, Integer> constraintViolation;
-	public Set<String> hardConstraints; // Marked x in the violation cost file, no recovery strategy applies to them
-	private Map<String, String> stateConstraints; // Automaton state -> name of the constraint it belongs to
-	public Set<String> allResources;
-	public boolean isJsonCostFile = false;
+	  public Map<Pair<Activity, String>, Integer> resourceMap;
+	  public Map<String, Integer> constraintViolation;
+	  public Set<String> hardConstraints; // Marked x in the violation cost file, no recovery strategy applies to them
+	  private Map<String, String> stateConstraints; // Automaton state -> name of the constraint it belongs to
+	  public Set<String> allResources;
+	  public boolean isJsonCostFile = false;
+    public ArrayList<String> specialExistenceStates;
+    public ArrayList<DeclareConstraint> existenceConstraints; 
 
     
 
@@ -85,6 +87,8 @@ public class MixedModel {
         this.hardConstraints = new HashSet<>();
         this.stateConstraints = new HashMap<>();
         this.allResources = new HashSet<String>();
+        this.specialExistenceStates = new ArrayList<>();
+        this.existenceConstraints = new ArrayList<>();
 
 
         this.mapAllActivities();
@@ -218,23 +222,31 @@ public class MixedModel {
         for (Automaton aut : this.constraintAutomatons) {
   	      // Automaton might have more than one goal state. In that case, we'll put the goal states with an "or" between them.
   	      List<StateEC> allStates = aut.getStatesEC();
-		  String constraintName = aut.getConstraint().getConstraintName();
-		  ArrayList<String> declareAccepting = new ArrayList<>();
-		  ArrayList<String> declareFailure = new ArrayList<>();
+        String constraintName = aut.getConstraint().getConstraintName();
+        ArrayList<String> declareAccepting = new ArrayList<>();
+        ArrayList<String> declareFailure = new ArrayList<>();
 
   	      for (StateEC g : allStates) {
+
   	    	  if (g.isInitial) {
   	    		  this.allInitialStates.add(g.name);
   	    	  }
   	    	  if (g.isGoal) {
   	    		//this.allAcceptingStates.add(g.name);
-				declareAccepting.add(g.name);
+				      declareAccepting.add(g.name);
 
   	    	  }
   	    	  if (g.isFailure) {
   	    		  this.allFailureStates.add(g.name);
   	    		  declareFailure.add(g.name);
   	    	  }
+
+            if (g.isSpecialExistenceViolation) {
+              //System.out.println(g);
+              this.specialExistenceStates.add(g.name);
+              
+              this.existenceConstraints.add(aut.getConstraint());
+            }
 			  this.allAutomatonStates.add(g.name);
 			  this.stateConstraints.put(g.name, constraintName);
 

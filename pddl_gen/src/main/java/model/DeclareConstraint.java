@@ -12,6 +12,7 @@ public class DeclareConstraint {
   private ArrayList<String> clockConditions;
   private int duplicateIndex = 0;
   private String sourceFile;
+  private boolean isHard;
 
   public DeclareConstraint(DeclareTemplate template, String activationActivity, String activationCondition, String targetActivity, String targetCondition) {
     this.template = template;
@@ -194,29 +195,62 @@ public class DeclareConstraint {
   }
 
   // Parses the trailing per-activity time-window suffix from the .decl file,
-  // e.g. "ActivityP,0,100,h/ActivityG,2,5,h", and routes each window to
-  // whichever of activation/target it names (order in the file isn't fixed).
+  // It should handle both the named format, e.g. ActivityP,0,100,h/ActivityG,2,5,h
+  // Or the simple format 2,5,h
+  // Activity name is an artifact and is not considered in this part at all.
   public void assignTimeConditions(String timeConditionsString) {
     if (timeConditionsString == null || timeConditionsString.isBlank()) {
       return;
     }
 
-    for (String segment : timeConditionsString.split("/")) {
-      String[] parts = segment.split(",");
+    int numberOfConditions = timeConditionsString.split("/").length;
+
+    if (numberOfConditions != 2 && numberOfConditions < 2 & numberOfConditions>0) {
+      // At this point I am assuming that the simple format is used.
+      // Activation condition will get max values
+      // Target will get entered numbers.
+
+      //this.setActivationTimeConditions(0,100);
+      String[] parts = timeConditionsString.split(",");
+
+
+
+      if(parts.length == 3) { // length 3 should be 2,5,h
+        double min = Double.parseDouble(parts[0]);
+        double max = Double.parseDouble(parts[1]);
+
+        this.setTargetTimeConditions(min, max);
+      }
+
+      if(parts.length == 4) { // length 4 should be ActivityG,2,5,h
+        double min = Double.parseDouble(parts[1]);
+        double max = Double.parseDouble(parts[2]);
+
+        this.setTargetTimeConditions(min, max);
+      }
+      
+
+    }
+
+    String[] segments = timeConditionsString.split("/");
+
+    for (int i = 0; i <numberOfConditions; i++) {
+      String[] parts = segments[i].split(",");
       if (parts.length < 3) {
         continue;
       }
-
-      String activityName = parts[0];
+      //String activityName = parts[0];
       double min = Double.parseDouble(parts[1]);
       double max = Double.parseDouble(parts[2]);
 
-      if (activityName.equals(this.activationActivity)) {
+      if (i == 0) {
         this.setActivationTimeConditions(min, max);
       }
-      if (activityName.equals(this.targetActivity)) {
+
+      if (i == 1) {
         this.setTargetTimeConditions(min, max);
       }
+
     }
   }
 
@@ -256,5 +290,13 @@ public class DeclareConstraint {
 
   private String formatClockCond(String s1, String s2) {
     return "    (clock " + s1 + " " + s2 + ")\n";
+  }
+
+  public void setHard(boolean isHardConstraint) {
+    this.isHard = isHardConstraint;
+  }
+
+  public boolean getHard() {
+    return this.isHard;
   }
 }
