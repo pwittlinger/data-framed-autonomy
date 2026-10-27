@@ -63,6 +63,16 @@ public class Automaton {
 
         this.states.add(s1);
         this.states.add(s2);
+
+        /* 2026-10-26: Existence constraints are effectively treated as hard, as the reset to initial still causes them to be violated.
+         */
+        if (!this.constraint.getHard()) {
+          //s3.initial();
+          s3.goal();
+          s3.specialExistence();
+          this.states.add(s3);
+        }
+        
         break;
 
       case Exactly1:
@@ -336,6 +346,7 @@ public class Automaton {
 	  	List<StateEC> getStatesEC = new ArrayList<StateEC>();
 	  	for (State s : this.states) {
 	  		getStatesEC.add(new StateEC(s));
+        this.statesEC.add(new StateEC(s));
 	  	}
 	    return getStatesEC;
 	  }

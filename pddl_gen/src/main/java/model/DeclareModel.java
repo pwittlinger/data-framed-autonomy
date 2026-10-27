@@ -520,5 +520,30 @@ public class DeclareModel {
 
 		return s.toString(); //
 	}
+
+  /**
+   * Resolve a DECLARE constraint from within the model by its name in the violation cost file.
+   * @return DECLARE Constraint
+   */
+  public DeclareConstraint getConstraintByName(String constraintNameToLookFor) {
+    for (DeclareConstraint dC : this.declareConstraints) {
+      if (dC.getConstraintName() == constraintNameToLookFor) {
+        return dC;
+      }
+    }
+    return null;
+  }
   
+  public void setDeclareConstraintsToHard() {
+    for (String constraintToLookFor : this.hardConstraints) {
+      DeclareConstraint dc = null;
+
+      dc = this.getConstraintByName(constraintToLookFor);
+
+      if (dc != null) {
+        dc.setHard(true);
+      }
+    }
+  }
+
 }

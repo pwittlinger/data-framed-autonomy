@@ -6,6 +6,7 @@ public class StateEC {
   public boolean isInitial;
   public boolean isGoal;
   public boolean isFailure;
+  public boolean isSpecialExistenceViolation;
 
   public StateEC(String name) {
     this.name = name;
@@ -23,6 +24,10 @@ public class StateEC {
 	  if (s.isInitial) {
 		  this.isInitial = true;
 	  }
+
+    if (s.isSpecialExistenceViolation) {
+      this.isSpecialExistenceViolation = true;
+    }
   }
   
   public StateEC initial() {
@@ -38,4 +43,8 @@ public class StateEC {
     return this;
   }
 
+  public StateEC specialExistence() {
+    this.isSpecialExistenceViolation = true;
+    return this;
+  }
 }

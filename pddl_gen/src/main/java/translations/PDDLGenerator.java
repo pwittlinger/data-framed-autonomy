@@ -108,6 +108,7 @@ public class PDDLGenerator {
   private void prepareAutomatonStates() {
     int index = 1;
     for (DeclareConstraint constraint : this.constraints) {
+
       String prefix = "s" + index++ + "_";
       Automaton newAutomaton = new Automaton(activities.keySet(), prefix, constraint);
       this.constraintAutomatons.add(newAutomaton);
@@ -117,7 +118,7 @@ public class PDDLGenerator {
       List<State> goalStates = newAutomaton.getStates().stream()
                                   .filter(x -> this.isAccepting(x, hard))
                                   .toList();
-
+     
       this.goalAutomatonStates.add(goalStates);
     }
   }
@@ -382,6 +383,7 @@ public class PDDLGenerator {
 
       String constraintName = aut.getConstraint().getConstraintName();
       boolean hard = this.isHard(constraintName);
+      
 
       for (State state : aut.getStates()) {
         b.append("    (associated " + state.name + " " + constraintName + ")\n");
@@ -402,6 +404,15 @@ public class PDDLGenerator {
         if (this.isAccepting(state, hard)) {
           b.append("    (goal_state " + state.name + ")\n");
         }
+
+        // If discard or skip
+        // create a new predicate to violate the constraint at the end of the trace.
+        if (aut.getConstraint().getTemplate().getTemplateName().equals("Existence") & this.recovery.getOptionName().toLowerCase().contains("reset")
+        & state.isSpecialExistenceViolation) {
+           b.append("    (initial_state " + state.name + ")\n");
+        }
+          
+
       }
 
       for (String clockCondition : aut.getConstraint().getClockConditions()) {

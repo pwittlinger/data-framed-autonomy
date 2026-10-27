@@ -256,17 +256,13 @@ public class IOManager {
     Pattern enumPattern = Pattern.compile("^\\s*([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*:\\s+([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*$");
     
     Pattern unaryPattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([A-Za-z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
-    //Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*$");
     Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
     
     Pattern numericConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(>=|<=|>|<|=|!=)\\s+-?\\d+.?\\d*\\s*$");
     Pattern enumConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(is not|is)\\s+[a-zA-Z]+[a-zA-Z\\d]*\\s*$*");
     Pattern listConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(not in|in)\\s+[a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*\\s*$");
     
-    /*Pattern numericConditionPattern = Pattern.compile("^\\s{0,1}[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(>=|<=|>|<|=|!=)\\s+-?\\d+.?\\d*\\s{0,1}$");
-    Pattern enumConditionPattern = Pattern.compile("^\\s{0,1}[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(is not|is)\\s+[a-zA-Z]+[a-zA-Z\\d]*\\s{0,1}$*");
-    Pattern listConditionPattern = Pattern.compile("^\\s{0,1}[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(not in|in)\\s+[a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*\\s{0,1}$");*/
-    return new Pattern[] {
+ return new Pattern[] {
       activityPattern, 
       bindingPattern, 
       intPattern, 
@@ -451,11 +447,12 @@ public class IOManager {
   }
 
   public void exportCostModel(String fileName, Set<String> actKeys) {
-    //File variablesFile = new File(this.inputFolder + fileName);
+    // Changed the default value for Framed Autonomy.
+    // Adding activity and setting parameters are free
+
     StringBuilder sb = new StringBuilder();
 
     for (String aK : actKeys) {
-      //sb.append(aK + " 1 1 1 1\n");
       sb.append(aK + " 0 0\n");
     }
 

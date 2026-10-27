@@ -229,9 +229,6 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
       if (this.mixedModel.activities.get(sub.activityName) != null) {
         b.append("    (has_substitution_value " + sub.variableName + " " + this.mixedModel.activities.get(sub.activityName) + " " + sub.categoryName + ")\n");
       }
-      //b.append("    (has_substitution_value " + sub.variableName + " " + sub.activityName + " " + sub.categoryName + ")\n");
-      //b.append("    (has_substitution_value " + sub.variableName + " " + this.mixedModel.activities.get(sub.activityName) + " " + sub.categoryName + ")\n");
-      //b.append("    (has_substitution_value " + sub.variableName + " " + this.mixedModel.activities.get(sub.activityName) + " " + sub.categoryName + ")\n");
     }
     b.append("\n");
 
@@ -263,8 +260,6 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     // This already has a check for empty resource allocation in the definition.
     // Not a pretty check, but it works.
     b.append(this.buildResourceCosts());
-
-    
 
     
     b.append("\n");
@@ -329,9 +324,6 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
         }
         value = this.encodeTraceValue(attName, value);
 
-        //b.append("    (has_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ")\n");
-        //b.append("    (= (trace_parameter " + activity + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ") " + value + ")\n");
-
         b.append("    (has_parameter " + this.mixedModel.activities.get(activity) + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ")\n");
         b.append("    (= (trace_parameter " + this.mixedModel.activities.get(activity) + " " + singleAssignment.getKey().getName() + " " + cur.getName() + " " + nextName + ") " + value + ")\n");
       }
@@ -378,6 +370,22 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
            
           }
         }
+
+        System.out.println(this.mixedModel.specialExistenceStates);
+    
+      for (String s : this.mixedModel.specialExistenceStates) {
+        if (this.recovery.getOptionName().contains("Reset")) {
+          b.append("    (initial_state " + s + ")\n");
+        }
+        // If discard or skip
+        // create a new predicate to violate the constraint at the end of the trace.
+
+      }
+
+      for (DeclareConstraint existence : this.mixedModel.existenceConstraints) {
+        b.append("    (violate_existence " + existence.getConstraintName() + ")\n");
+
+      }
 
     b.append("\n");
 
