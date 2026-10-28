@@ -160,6 +160,12 @@ public class Runner {
     // Must happen before the generators build their automata, which copy the encoded condition values.
     model.applyVariableValues(variableAssignments);
 
+    // Optional: no time at all. Before the automata get built (and before the STP options, which then find no windows)
+    if (cmds.hasOption("ignore_time_conditions")) {
+      model.ignoreTimeConditions();
+      System.out.println("Ignoring the time conditions: no time windows or clocks in the problems, every event at timestamp 0.0");
+    }
+
     // Optional: tighten / drop the time windows before the automata get built
     // --stp only looks at the windows. --stp-apply also changes them, but since the planner can violate
     // constraints that changes the optimal cost (a dropped window can't be violated anymore), see the help

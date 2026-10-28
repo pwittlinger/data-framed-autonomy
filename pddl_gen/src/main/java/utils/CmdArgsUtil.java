@@ -57,6 +57,9 @@ public class CmdArgsUtil {
         Option intervals = new Option(null, "intervals", false, "Minimal intervals on the data values: simplifies the conditions and gives the planner one value per region the conditions tell apart (exact, the plans cost the same)");
         options.addOption(intervals);
 
+        Option ignoreTimeConditions = new Option(null, "ignore_time_conditions", false, "Ignore all time conditions: the constraints get no time windows (no clock, start_clock, min_t_condition or max_t_condition, nor the extra states and arcs the windows need) and every event of the trace is at timestamp 0.0");
+        options.addOption(ignoreTimeConditions);
+
         Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
         options.addOption(outputPath);
 

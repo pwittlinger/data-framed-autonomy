@@ -103,7 +103,7 @@ public class PDDLGeneratorMixedModel extends PDDLGenerator{
     s.append(this.buildHardConstraints());
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
     if (!this.mixedModel.isJsonCostFile) {
-      s.append(this.buildTimeStamps(timeStamps));
+      s.append(this.buildTimeStamps(this.timeStampsToWrite(listOfEvents, timeStamps)));
     }
 
     if (!this.mixedModel.allResources.isEmpty()) {

@@ -67,6 +67,7 @@
     (failure_state ?s - automaton_state)
     ; Used to indicate that the trace alignment couldn't possibly complete: prune -> less branching -> heap won't kaboom.
     (failure)
+    (violate_existence ?c - constraint)
 
   )
 
@@ -637,6 +638,20 @@
       (cur_t_state ?t2)
       (when (final_t_state ?t2) (recovery_finished))
       ;(assign (current_timestamp) (timestamp ?t1 ?t2))
+      )
+  )
+
+   (:action violate-existence-constraints
+      :parameters (?c - constraint ?s1 - automaton_state)
+      :precondition (and 
+        (associated ?s1 ?c)
+        (not (cur_s_state ?s1))
+        (violate_existence ?c)
+        (not (is_hard ?c))
+      )
+      :effect (and 
+        (cur_s_state ?s1)
+        (increase (total_cost) (violation_cost ?c))
       )
   )
 

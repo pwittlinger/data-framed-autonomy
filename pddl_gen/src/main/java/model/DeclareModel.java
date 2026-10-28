@@ -20,6 +20,8 @@ public class DeclareModel {
   // Violation costs and hard constraints of DECLARE-only problems, MixedModel keeps its own for mixed models
   public Map<String, Integer> constraintViolation;
   public Set<String> hardConstraints; // Marked x in the violation cost file, no recovery strategy applies to them
+  // --ignore_time_conditions: the constraints have no time windows and every event is at timestamp 0.0
+  private boolean timeConditionsIgnored = false;
 
   private static final String HARD_CONSTRAINT_MARKER = "x";
 
@@ -456,6 +458,19 @@ public class DeclareModel {
       }
     }
     encodeEnumConditionValues(this.attr);
+  }
+
+  /**
+   * Drops the time windows of every constraint. Has to run before the automata get built (generator or
+   * MixedModel), they read the windows when they're created.
+   */
+  public void ignoreTimeConditions() {
+    this.timeConditionsIgnored = true;
+    this.declareConstraints.forEach(DeclareConstraint::ignoreTimeConditions);
+  }
+
+  public boolean ignoresTimeConditions() {
+    return this.timeConditionsIgnored;
   }
 
   public Attribute getAttribute(String name) {

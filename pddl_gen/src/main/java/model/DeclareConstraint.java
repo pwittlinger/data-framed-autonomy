@@ -20,6 +20,8 @@ public class DeclareConstraint {
   private int duplicateIndex = 0;
   // Set by the STP preprocessing when the other windows already imply this one
   private boolean targetWindowDropped = false;
+  // Set by --ignore_time_conditions: no windows at all, so the automaton gets no clocks and no timed arcs or states
+  private boolean timeConditionsIgnored = false;
   private String sourceFile;
   private boolean isHard;
 
@@ -200,11 +202,16 @@ public class DeclareConstraint {
 
   // True if the .decl file gives a target window (otherwise the getter falls back to [0, 100])
   public boolean hasExplicitTargetWindow() {
-    return !this.targetWindowDropped && !(this.target_min_t_condidition == 0 && this.target_max_t_condition == 0);
+    return !this.timeConditionsIgnored && !this.targetWindowDropped && !(this.target_min_t_condidition == 0 && this.target_max_t_condition == 0);
   }
 
   public void dropTargetTimeConditions() {
     this.targetWindowDropped = true;
+  }
+
+  // Has to run before the automata get built, they read the windows when they're created
+  public void ignoreTimeConditions() {
+    this.timeConditionsIgnored = true;
   }
 
   public void setTargetTimeConditions(double min, double max) {
@@ -213,6 +220,9 @@ public class DeclareConstraint {
   }
 
   public double[] getActivationTimeConditions() {
+    if (this.timeConditionsIgnored) {
+      return null;
+    }
     if (this.activation_min_t_condidition == 0 && this.activation_max_t_condition == 0) {
       //return null;
       return new double[] {0, 100};
@@ -221,7 +231,7 @@ public class DeclareConstraint {
   }
 
   public double[] getTargetTimeConditions() {
-    if (this.targetWindowDropped) {
+    if (this.targetWindowDropped || this.timeConditionsIgnored) {
       return null; // no window at all, so the automaton doesn't need a clock for it
     }
     if (this.target_min_t_condidition == 0 && this.target_max_t_condition == 0) {

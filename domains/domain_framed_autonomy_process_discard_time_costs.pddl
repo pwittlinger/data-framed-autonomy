@@ -40,7 +40,8 @@
     (violated ?c - constraint)
     (is_hard ?c - constraint)
     (initial_state ?s1 - automaton_state) 
-    
+    (violated_before ?c - constraint)
+   
     (associated ?s1 - automaton_state ?c - constraint)
   
     (clock ?s1 ?s2 - automaton_state)
@@ -67,6 +68,8 @@
     (failure_state ?s - automaton_state)
     ; Used to indicate that the trace alignment couldn't possibly complete: prune -> less branching -> heap won't kaboom.
     (failure)
+    (update-cost)
+    (violate_existence ?c - constraint)
 
   )
 
@@ -113,6 +116,7 @@
       (not (failure))
       (not (after_add_check))
       (recovery_finished)
+      (not (update-cost))
 
       ;(not (exists (?c - constraint) 
       ;  (violated ?c)
@@ -272,6 +276,7 @@
                 (associated ?s1 ?c)
                 (associated ?s2 ?c)
                 (not (failure_state ?s1))
+                (not (violated ?c))
                 ;(not (clock ?s1 ?s2))
 
                 (or
@@ -297,7 +302,7 @@
         (complete_sync ?a)
         (not (after_add))
         (after_add_check)
-        
+        (not (update-cost))
         ;; Only execute if there is an arc that leads to a state that's not a fail state
         ;; and only move if the automata are not already all satisfying
         ;; -> this reduces the amount of possible (non-optimal) solutions.
@@ -315,8 +320,9 @@
       :effect (and 
         (increase (total_cost) 0)
 
-        ;(increase (current_timestamp)0.1)
+        
         (not (after_add_check))
+        (update-cost)
 
          (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
         (when (and
@@ -327,12 +333,6 @@
           (clock ?s1 ?s2)
           (associated ?s1 ?c)
           (associated ?s2 ?c)
-
-          ;(<= (- (current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
-          ;(>= (- (current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
-
-          ;(<= (+(current_timestamp)0.1) (+ (max_t_condition ?s1 ?c ?s2) (start_clock ?c)))
-          ;(>= (+(current_timestamp)0.1) (+ (min_t_condition ?s1 ?c ?s2) (start_clock ?c)))
 
           (<= (current_timestamp) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?c)))
           (>= (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?c)))
@@ -369,14 +369,21 @@
           (failure_state ?s2)
           (associated ?s1 ?c)
           (associated ?s2 ?c)
+          
+          ;(not (is_hard ?c))
         ) (and
           (not (cur_s_state ?s1))
           (cur_s_state ?s2)
           ;(failure)
           (violated ?c)
-          (increase (total_cost) (/(violation_cost ?c) (waiting_cost)))
+          ;(violated_before ?c)
+          
+          
         ))
       )
+
+
+
 
      
 
@@ -418,6 +425,7 @@
         (not (complete_sync ?a))
         (not (after_add_check))
         (= current_timestamp (timestamp ?t1 ?t2))
+        (not (update-cost))
         ; has_increased indicates if the waiting time has been increased
         ; only possible when adding, not when synching
         
@@ -501,6 +509,7 @@
   (:action sync-actions
     :parameters (?t1 ?t2 - trace_state ?a - activity)
     :precondition (and 
+      (not (update-cost))
       
       (not (after_add))
       (not (failure))
@@ -527,6 +536,7 @@
 
     :effect (and 
       (increase (total_cost) 0)
+      (update-cost)
 
 
       (not (cur_t_state ?t1)) 
@@ -557,14 +567,18 @@
           (failure_state ?s2)
           (associated ?s1 ?c)
           (associated ?s2 ?c)
+          
+          ;(not (is_hard ?c))
         ) (and
           (not (cur_s_state ?s1))
           (cur_s_state ?s2)
           ;(failure)
-          ;(violated ?c)
-          (increase (total_cost) (/(violation_cost ?c)(waiting_cost)))
+          (violated ?c)
+  
+          ;(increase (total_cost) (/(violation_cost ?c)(waiting_cost)))
         ))
       )
+      
 
       ; Handle time conditions
       (forall (?s1 - automaton_state ?s2 - automaton_state ?c - constraint)
@@ -576,6 +590,7 @@
           (clock ?s1 ?s2)
           (associated ?s1 ?c)
           (associated ?s2 ?c)
+          ;(not (violated ?c))
 
           ;(<= (-(current_timestamp) (start_clock ?c)) (max_t_condition ?s1 ?a ?s2))
           ;(>= (-(current_timestamp) (start_clock ?c)) (min_t_condition ?s1 ?a ?s2))
@@ -612,7 +627,8 @@
       (cur_t_state ?t1) 
       (trace ?t1 ?a ?t2)
       (not (recovery_finished))
-      (or 
+      (not (update-cost))
+      
       (not (exists (?s1 - automaton_state ?s2 - automaton_state) 
         (and
         
@@ -621,35 +637,7 @@
         )
       ))
 
-      (forall (?c - constraint ?s3 - automaton_state) 
-        (and
-        
-        (imply (and
-          (not (is_hard ?c))
-          (associated ?s3 ?c)
-          ;(cur_s_state ?s3)
-          (failure_state ?s3)
-          ;(violated ?c)
-        )
-         ;(violated ?c)
-         (cur_s_state ?s3)
-        )
-
-        (imply 
-         (and
-          (is_hard ?c)
-          (associated ?s3 ?c)
-          ;(cur_s_state ?s3)
-          (failure_state ?s3)      
-         )
-        
-         (not (cur_s_state ?s3))
-         
-        )
-
-        )
-      )
-      )
+      
       )
       :effect (and 
       (increase (total_cost) 0)
@@ -660,6 +648,45 @@
       )
   )
 
+  (:action update-violation-cost
+      :parameters ()
+      :precondition (and 
+        (update-cost)
+      )
+      :effect (and
+        (forall (?c - constraint) 
+          (when 
+            (and
+              (not (violated_before ?c))
+              (violated ?c)
+              ;(not (is_hard ?c))
+            ) 
+          (and
+          (violated_before ?c)
+          (violated ?c)
+          (increase (total_cost) (/(violation_cost ?c) (waiting_cost)))
+          ))
+        )
+
+        (not (update-cost))
+      )
+  )
+
+  (:action violate-existence-constraints
+      :parameters (?c - constraint ?s1 - automaton_state)
+      :precondition (and 
+        (associated ?s1 ?c)
+        (not (cur_s_state ?s1))
+        (violate_existence ?c)
+        (not (is_hard ?c))
+      )
+      :effect (and 
+        (cur_s_state ?s1)
+        (increase (total_cost) (violation_cost ?c))
+      )
+  )
+  
+  
    
   (:process waiting
         :parameters ()
@@ -679,7 +706,7 @@
                         (not (goal_state ?s1))
                         (not (complete_sync ?a))
                         (not (invalid ?s1 ?a ?s2))
-                        (not (violated ?n))
+                        ;(not (violated ?n))
 
                         (< (current_timestamp) (+ (min_t_condition ?s1 ?a ?s2) (start_clock ?n)))
                         (< (current_timestamp) (+ (max_t_condition ?s1 ?a ?s2) (start_clock ?n)))

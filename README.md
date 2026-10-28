@@ -38,6 +38,9 @@ Optional Inputs:
                         Reset (default), No-Recovery, Discard or Skip
  - -w,--waiting_cost <arg>  Waiting cost per time unit, a positive number
                         (default 10)
+ - --ignore_time_conditions  Ignore all time conditions: the constraints
+                        get no time windows and every event of the
+                        trace is at timestamp 0.0
 
 The violation cost and waiting cost options apply to DECLARE-only runs and to runs with Petri nets (-p) alike. As the waiting process advances the timestamp by 0.1 per step, waiting one time unit costs 10. A different waiting cost is applied by scaling all other action costs instead: the problem files get the factor `--waiting_cost / 10` as `waiting_cost`, by which the domain divides the other costs. `--waiting_cost 1` is written as `(= (waiting_cost) 0.1)`, the default as `(= (waiting_cost) 1)`. The cost values in the problem files themselves are not scaled. The violation cost file has one line per constraint. A DECLARE constraint is identified by the file name of its DECLARE model and its name in the PDDL files (template, then activation, then target activity). For Precedence-type templates the activation is the second activity in the .decl file, so `Precedence[ActivityF, ActivityD]` is `Precedence_ActivityD_ActivityF`. A Petri net is identified by its file name:
 
@@ -71,6 +74,14 @@ Hard constraints are handled in the problem files only, the domain files stay th
 - The states of a hard constraint get no `initial_state`, so the reset action has no state to move it back to.
 - With Discard, the failure states of a hard constraint are not added to the accepting states.
 - With Skip, the failure states of a hard constraint are not declared as `failure_state`, because the Skip domain does not move an automaton into a `failure_state`. The automaton then moves into the failure state as into any other state and stays there, as it is non-accepting and has no outgoing arcs.
+
+With --ignore_time_conditions the time conditions of the DECLARE constraints are ignored, in DECLARE-only runs and in runs with Petri nets alike. The constraints lose their time windows before their automata are built, so:
+
+- The problem files contain no `clock`, `start_clock`, `min_t_condition` or `max_t_condition`.
+- The automata lose the states and arcs that only the time windows need, e.g. Precedence has 3 states instead of 4.
+- Every event of the trace gets the timestamp 0.0, e.g. `(= (timestamp t0 t1) 0.0)`. The domains still compare `current_timestamp` with the timestamp of each event, so the problems are solved with the same domain files. Time never advances, so no waiting costs are charged.
+
+The option can also be used with models that have no time conditions. The log still needs a `time:timestamp` on every event.
 
  Example:
 

@@ -19,6 +19,7 @@ import log.Event;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -149,7 +150,7 @@ public class PDDLGenerator {
     List<String> constraintNames = this.constraints.stream().map(DeclareConstraint::getConstraintName).toList();
     s.append(buildHardConstraints(constraintNames, this.declareModel.hardConstraints));
     s.append(this.buildTraceDeclaration(listOfEvents, attributes));
-    s.append(this.buildTimeStamps(timeStamps));
+    s.append(this.buildTimeStamps(this.timeStampsToWrite(listOfEvents, timeStamps)));
     s.append(this.buildAutomatons(finalAutomatonStates));
 
     s.append(this.buildGoals());
@@ -306,6 +307,15 @@ public class PDDLGenerator {
     }
     return b;
   }
+  // With --ignore_time_conditions every event is at 0.0: the domains still check current_timestamp against the
+  // timestamp of the event, and the automata have no clocks or timed arcs (the constraints lost their windows before)
+  protected ArrayList<Double> timeStampsToWrite(List<Event> events, ArrayList<Double> timeStamps) {
+    if (this.declareModel.ignoresTimeConditions()) {
+      return new ArrayList<>(Collections.nCopies(events.size(), 0.0));
+    }
+    return timeStamps;
+  }
+
   public StringBuilder buildTimeStamps(ArrayList<Double> timeStamps) {
     // Assuming that the length of timeStamps is equal to the number of trace states-1
     int l = timeStamps.size();
