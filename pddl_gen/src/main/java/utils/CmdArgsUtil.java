@@ -45,8 +45,17 @@ public class CmdArgsUtil {
         Option varSubs = new Option("s", "varSub",true, "Path to the variable substitution");
         options.addOption(varSubs);
 
-        Option multiInstance = new Option("i","multiinstance",false,  "Flatten the Eventlog into a single PDDL file");
+        Option multiInstance = new Option("i","multiinstance",false,  "Also write one problem with all the traces as separate instances (problem_multi.pddl, with the _multi domain)");
         options.addOption(multiInstance);
+
+        Option stp = new Option("t", "stp", false, "Check the time windows with the STP minimal network: says if they contradict each other and which ones the others imply (changes nothing)");
+        options.addOption(stp);
+
+        Option stpApply = new Option(null, "stp-apply", false, "Also tighten the windows and drop the implied ones. Careful: the planner can violate constraints, and then the result changes (fewer violations counted), so don't use it for experiments");
+        options.addOption(stpApply);
+
+        Option intervals = new Option(null, "intervals", false, "Minimal intervals on the data values: simplifies the conditions and gives the planner one value per region the conditions tell apart (exact, the plans cost the same)");
+        options.addOption(intervals);
 
         Option outputPath = new Option("o", "output",true,  "Path to the output directory (default in current path)");
         options.addOption(outputPath);

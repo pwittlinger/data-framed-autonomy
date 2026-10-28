@@ -4,6 +4,10 @@ import java.util.*;
 import java.util.function.Function;
 //import org.w3c.dom.Attr;
 import Automaton.Pair;
+import formula.Formula;
+import formula.Formula.Comparison;
+import formula.Formulas;
+import values.ValueIntervalPreprocessor;
 
 public class DeclareModel {
   
@@ -368,23 +372,21 @@ public class DeclareModel {
     */
     // first find all possible values mentioned in the declare model
     // assuming the min and max value is already given
+    // Both activation and target conditions count here, otherwise when we add a target activity we
+    // might not have a value that satisfies its condition
     for (DeclareConstraint dc : this.declareConstraints) {
-      List<Condition> conditionsList = dc.getActivationConditions();
-      if (conditionsList == null) {
-        continue;
-      }
-      // If the constraint has an AND relation there can be multiple parameters and values
-      for (Condition cond : conditionsList) {
-          String localAttrib = cond.parameterName;
-          Attribute globalAttribute = attributesMap.get(localAttrib);
-          String localType = globalAttribute.getType();
-          if (localType.equals("enum")) {
+      for (Formula guard : Arrays.asList(dc.getActivationGuard(), dc.getTargetGuard())) {
+        if (guard == null) {
+          continue;
+        }
+        for (Comparison comparison : Formulas.comparisons(guard)) {
+          Attribute globalAttribute = attributesMap.get(comparison.attribute());
+          if (globalAttribute == null || globalAttribute.getType().equals("enum") || !(comparison.value() instanceof Number)) {
             continue;
           }
-          globalAttribute.getCriticalValues().add((double) cond.value);
-
+          globalAttribute.getCriticalValues().add(((Number) comparison.value()).doubleValue());
+        }
       }
-
     }
 
     /*
@@ -431,22 +433,7 @@ public class DeclareModel {
    */
   private void encodeEnumConditionValues(Map<String, Attribute> attributesMap) {
     for (DeclareConstraint dc : this.declareConstraints) {
-      for (List<Condition> conditionsList : Arrays.asList(dc.getActivationConditions(), dc.getTargetConditions())) {
-        if (conditionsList == null) {
-          continue;
-        }
-        for (Condition cond : conditionsList) {
-          Attribute attribute = attributesMap.get(cond.parameterName);
-          if (attribute == null || !"enum".equals(attribute.getType())) {
-            continue;
-          }
-          Double encoded = attribute.variableValueMap.get(cond.rawValue);
-          if (encoded == null) {
-            throw new Error("Value " + cond.rawValue + " in constraint " + dc.getConstraintName() + " is not declared for attribute " + cond.parameterName);
-          }
-          cond.value = encoded.intValue();
-        }
-      }
+      dc.encodeGuards(attributesMap);
     }
   }
 
@@ -476,7 +463,16 @@ public class DeclareModel {
   }
 
   public String generateVariableSubstitutions(){
+    return generateVariableSubstitutions(false);
+  }
+
+  /**
+   * oneValuePerRegion: give every activity only one value for each region its conditions tell apart,
+   * instead of all the critical values of the attribute (--intervals, see values.ValueIntervalPreprocessor)
+   */
+  public String generateVariableSubstitutions(boolean oneValuePerRegion){
     StringBuilder sb = new StringBuilder();
+    Map<String, Set<Comparison>> comparisons = ValueIntervalPreprocessor.comparisons(this.declareConstraints);
 
     for (Activity act : this.activities.values()) {
       // Default case if the activity has no attributes
@@ -485,7 +481,9 @@ public class DeclareModel {
       }
 
       for (Attribute attr : act.getAttributes()) {
-        Set<String> attributeValues = attr.variableValueMap.keySet();
+        Collection<String> attributeValues = oneValuePerRegion
+            ? ValueIntervalPreprocessor.candidates(act, attr, comparisons)
+            : attr.variableValueMap.keySet();
 
         for (String attrValName : attributeValues) {
           sb.append(attrValName + " "+ act.getName() + " " + attr.getName()+"\n");

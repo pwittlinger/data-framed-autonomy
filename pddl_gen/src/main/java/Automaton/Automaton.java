@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import model.Condition;
+import model.Guard;
 import model.DeclareConstraint;
 
 public class Automaton {
@@ -35,7 +35,7 @@ public class Automaton {
     Transition t2;
     switch (constraint.getTemplate()) {
       case Absence:
-        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
+        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
 
         if (at != null) {
           t1.setMinTimeCondition(at[0]);
@@ -52,7 +52,7 @@ public class Automaton {
         break;
 
       case Existence:
-        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
+        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
         if (at != null) {
           t1.setMinTimeCondition(at[0]);
           t1.setMaxTimeCondition(at[1]);
@@ -76,8 +76,8 @@ public class Automaton {
         break;
 
       case Exactly1:
-        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
-        this.transitions.add( new Transition(s2, s3, constraint.getActivation(), constraint.getActivationConditions()) );
+        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard()) );
+        this.transitions.add( new Transition(s2, s3, constraint.getActivation(), constraint.getActivationGuard()) );
         s2.goal();
         s3.failure();
         this.states.addAll(List.of(s1, s2, s3));
@@ -85,9 +85,9 @@ public class Automaton {
 
       case Responded_Existence:
 
-        t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions());
-        t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
-        Transition t3 = new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions());
+        t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard());
+        t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
+        Transition t3 = new Transition(s2, s3, constraint.getTarget(), constraint.getTargetGuard());
 
         if (at != null) {
           t2.setMinTimeCondition(at[0]);
@@ -107,17 +107,17 @@ public class Automaton {
         this.transitions.add(t2);
         this.transitions.add(t3);
 
-        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
-        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
-        //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions()) );
+        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard()) );
+        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard()) );
+        //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetGuard()) );
         s1.goal();
         s3.goal();
         this.states.addAll(List.of(s1, s2, s3));
         break;
 
       case Response:
-        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
-        t2 = new Transition(s2, s1, constraint.getTarget(), constraint.getTargetConditions());
+        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
+        t2 = new Transition(s2, s1, constraint.getTarget(), constraint.getTargetGuard());
 
         if (at != null) {
           t1.setMinTimeCondition(at[0]);
@@ -137,8 +137,8 @@ public class Automaton {
         break;
 
       case Not_Response:
-        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
-        t2 = new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions());
+        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
+        t2 = new Transition(s2, s3, constraint.getTarget(), constraint.getTargetGuard());
 
         if (at != null) {
           t1.setMinTimeCondition(at[0]);
@@ -157,8 +157,8 @@ public class Automaton {
         s3.failure();
         this.states.addAll(List.of(s1, s2, s3));
         /* 
-        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
-        this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions()) );
+        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard()) );
+        this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetGuard()) );
         s1.goal();
         s2.goal();
         s3.failure();
@@ -168,8 +168,8 @@ public class Automaton {
         break;
 
       case Chain_Response:
-        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
-        t2 = new Transition(s2, s1, constraint.getTarget(), constraint.getTargetConditions());
+        t1 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
+        t2 = new Transition(s2, s1, constraint.getTarget(), constraint.getTargetGuard());
 
         if (at != null) {
           t1.setMinTimeCondition(at[0]);
@@ -190,9 +190,10 @@ public class Automaton {
         this.states.add(s2);
         this.states.add(s3);
 
-        // Opposite of target condition brings the automaton to another state.
-        List<Condition> oppositeConditions = this.getOppositeConditions(constraint.getTargetConditions());
-        this.transitions.add(new Transition(s2, s3, constraint.getTarget(), oppositeConditions));
+        // The target without its condition holding brings the automaton to the failure state.
+        // Before this negated the atoms one by one, but not (a and b) is not (not a and not b),
+        // and with no condition it made the target always fail. Now it's the real negation.
+        this.transitions.add(new Transition(s2, s3, constraint.getTarget(), Guard.negate(constraint.getTargetGuard())));
 
         // All other activities of target brings the automaton to another state.
         this.ACTIVITY_NAMES.forEach(x -> {
@@ -212,10 +213,10 @@ public class Automaton {
         this.states.add(s3);
         this.states.add(s4);
 
-        t1 =  new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
-        t2 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions());
-        t3 = new Transition(s2, s4, constraint.getTarget(), constraint.getTargetConditions());
-        Transition t4 = new Transition(s3, s4, constraint.getActivation(), constraint.getActivationConditions());
+        t1 =  new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
+        t2 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard());
+        t3 = new Transition(s2, s4, constraint.getTarget(), constraint.getTargetGuard());
+        Transition t4 = new Transition(s3, s4, constraint.getActivation(), constraint.getActivationGuard());
 
         if (at != null) {
           t1.setMinTimeCondition(at[0]);
@@ -236,18 +237,18 @@ public class Automaton {
         }
         
 
-        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
-        this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
-        this.transitions.add( new Transition(s2, s4, constraint.getTarget(), constraint.getTargetConditions()) );
-        this.transitions.add( new Transition(s3, s4, constraint.getActivation(), constraint.getActivationConditions()) );
+        this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard()) );
+        this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard()) );
+        this.transitions.add( new Transition(s2, s4, constraint.getTarget(), constraint.getTargetGuard()) );
+        this.transitions.add( new Transition(s3, s4, constraint.getActivation(), constraint.getActivationGuard()) );
         break;
 
       case Precedence:
-        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
-        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
+        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard()) );
+        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard()) );
 
-        t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions());
-        t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
+        t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard());
+        t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
 
         State s5 = new State(this.STATE_PREFIX + 4);
 
@@ -257,7 +258,7 @@ public class Automaton {
           t2.setMinTimeCondition(tt[0]);
           t2.setMaxTimeCondition(tt[1]);
 
-          t3 = new Transition(s3, s5, constraint.getActivation(), constraint.getActivationConditions());
+          t3 = new Transition(s3, s5, constraint.getActivation(), constraint.getActivationGuard());
           t3.setMinTimeCondition(at[0]);
           t3.setMaxTimeCondition(at[1]);
           
@@ -272,7 +273,7 @@ public class Automaton {
 
         this.transitions.add(t1);
         this.transitions.add(t2);
-        //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions()) );
+        //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetGuard()) );
 
         if (at != null) {
           s1.goal();
@@ -295,14 +296,14 @@ public class Automaton {
         
         break;
       case Not_Precedence:
-        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions()) );
-        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions()) );
-        //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetConditions()) );
+        //this.transitions.add( new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard()) );
+        //this.transitions.add( new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard()) );
+        //this.transitions.add( new Transition(s2, s3, constraint.getTarget(), constraint.getTargetGuard()) );
 
         State s6 = new State(this.STATE_PREFIX + 4);
-        t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetConditions());
-        t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationConditions());
-        t3 = new Transition(s3, s6, constraint.getActivation(), constraint.getActivationConditions());
+        t1 = new Transition(s1, s3, constraint.getTarget(), constraint.getTargetGuard());
+        t2 = new Transition(s1, s2, constraint.getActivation(), constraint.getActivationGuard());
+        t3 = new Transition(s3, s6, constraint.getActivation(), constraint.getActivationGuard());
         
 
         if (at != null) {
@@ -334,19 +335,6 @@ public class Automaton {
         break;
     }
   }
-  private List<Condition> getOppositeConditions(List<Condition> conditionsToNegate) {
-    List<Condition> negatedConditions = new ArrayList<>();
-
-    if (conditionsToNegate == null) {
-      return negatedConditions;
-    }
-
-    for (Condition c : conditionsToNegate) {
-      negatedConditions.add(new Condition(c.activity, c.parameterName, c.getNegatedCondition(), c.value));
-    }
-    return negatedConditions;
-  }
-
   public List<State> getStates() {
     return this.states;
   }

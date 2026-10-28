@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import formula.FormulaParseException;
+
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.processmining.datapetrinets.io.DPNIOException;
@@ -78,6 +80,10 @@ public class IOManager {
     if (!pddlDir.exists()) {
       pddlDir.mkdirs();
     }
+  }
+
+  public String getPddlFolder() {
+    return this.pddlFolder;
   }
 
   public void overrideOutputPath(String pathToOutputDirectory) {
@@ -249,7 +255,7 @@ public class IOManager {
     Pattern floatPattern = Pattern.compile("^\\s*([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*:\\s+float\\s+between\\s+(-?\\d+\\.?\\d*)\\s+and\\s+(-?\\d+\\.?\\d*)\\s*$");
     Pattern enumPattern = Pattern.compile("^\\s*([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*:\\s+([a-zA-Z]+[a-zA-Z\\d]*(,\\s+[a-zA-Z]+[a-zA-Z\\d]*)*)\\s*$");
     
-    Pattern unaryPattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
+    Pattern unaryPattern = Pattern.compile("^([A-Za-z\\d]+)\\[([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([A-Za-z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
     Pattern binaryPattern = Pattern.compile("^([A-Za-z\\d -]+)\\[([a-zA-Z]+[a-zA-Z\\d]*),\\s*([a-zA-Z]+[a-zA-Z\\d]*)]\\s+\\|\\s*([Aa-zA-Z\\d!=(),.<> -]*)\\|\\s*([Ta-zA-Z\\d!=(),.<> -]*)\\|\\s*([a-zA-Z\\d,./]*)\\s*$");
     
     Pattern numericConditionPattern = Pattern.compile("^\\s*[atAT].[a-zA-Z]+[a-zA-Z\\d]*\\s+(>=|<=|>|<|=|!=)\\s+-?\\d+.?\\d*\\s*$");
@@ -334,25 +340,16 @@ public class IOManager {
   
   
   //Section: Condition syntax validation
+  // Conditions can be any boolean formula now (and, or, not, ->, nand, ...), so instead of splitting on
+  // and/or and checking every piece with a regex we just try to parse them
   private boolean isConditionValid(String condition, Pattern[] patterns) {
-    if (condition != null && !condition.isBlank()) {
-      String conditionToCheck = condition.replaceAll("[)(]", "");
-      String[] singleConditions = conditionToCheck.split(" and | or | AND | OR ");
-      for (String subCondition : singleConditions) {
-        if (!isSubConditionValid(subCondition, patterns)) {
-          return false;
-        }
-      }
+    try {
+      model.Guard.parse(condition);
       return true;
+    } catch (FormulaParseException e) {
+      System.out.println(e.getMessage());
+      return false;
     }
-    return true;
-  }
-  
-  private boolean isSubConditionValid(String condition, Pattern[] patterns) {
-    Matcher numericMatcher = patterns[7].matcher(condition);
-    Matcher enumMatcher = patterns[8].matcher(condition);
-    Matcher listMatcher = patterns[9].matcher(condition);
-    return numericMatcher.find() || enumMatcher.find() || listMatcher.find();
   }
   
    

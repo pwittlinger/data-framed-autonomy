@@ -29,6 +29,11 @@ public enum RecoveryStrategy {
     return optionName;
   }
 
+  // The domain this strategy plans with, e.g. domain_framed_autonomy_process_reset_time_costs.pddl
+  public String getDomainFileName() {
+    return "domain_framed_autonomy_process_" + optionName.toLowerCase() + "_time_costs.pddl";
+  }
+
   public boolean acceptsFailureStates() {
     return this == DISCARD;
   }

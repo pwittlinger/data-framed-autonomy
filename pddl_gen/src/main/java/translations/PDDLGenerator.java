@@ -39,6 +39,7 @@ public class PDDLGenerator {
   private ArrayList<Automaton> constraintAutomatons;
   private List<List<State>> goalAutomatonStates;
   private State finalTraceState;
+  private final NandGuardEncoder nandGuards = new NandGuardEncoder();
   // private final ArrayList<Transition> relevantTransitions;ss
 
   private static final String HEADER_STRING = 
@@ -74,6 +75,20 @@ public class PDDLGenerator {
     this.constraintAutomatons = new ArrayList<>();
     this.goalAutomatonStates = new ArrayList<>();
     this.prepareAutomatonStates();
+
+    // The objects are written before the automata, so we encode the nand guards right away
+    for (Automaton automaton : this.constraintAutomatons) {
+      for (Transition t : automaton.getTransitions()) {
+        if (t.getNandClauses() != null) {
+          this.nandGuards.encode(t, t.getActivity());
+        }
+      }
+    }
+  }
+
+  /** True if some guard needed nand clauses, so the problems need the clauses domain. */
+  public boolean usesNandGuards() {
+    return this.nandGuards.isUsed();
   }
 
   // BigDecimal keeps the scaled value exact (0.7 / 10 = 0.07, not 0.06999999999999999) and rejects NaN and Infinity
@@ -211,18 +226,24 @@ public class PDDLGenerator {
     b.append("- activity\n");
 
     // ATTRIBUTES
+    // A model without data has no parameters and values, and an empty "- parameter_name" line breaks ENHSP
     Set<String> attributes = collectParameterNames(this.params, substitutions);
-    b.append("    ");
-    attributes.forEach(x -> b.append(x + " "));
-    b.append("- parameter_name\n");
+    if (!attributes.isEmpty()) {
+      b.append("    ");
+      attributes.forEach(x -> b.append(x + " "));
+      b.append("- parameter_name\n");
+    }
 
-    b.append("    ");
-    variables.keySet().forEach(x -> b.append(x + " "));
-    b.append("- value_name\n");
+    if (!variables.isEmpty()) {
+      b.append("    ");
+      variables.keySet().forEach(x -> b.append(x + " "));
+      b.append("- value_name\n");
+    }
 
     b.append("    ");
     this.constraints.forEach(x -> b.append(x.getConstraintName() + " "));
     b.append("- constraint\n");
+    b.append(this.nandGuards.objectDeclarations());
 
     b.append("  )\n");
     return b;
@@ -409,6 +430,8 @@ public class PDDLGenerator {
             b.append(this.getConditionString(t, c));
             b.append(this.getHasConditionString(t, c));
           }
+        } else if (t.getNandClauses() != null) {
+          b.append(this.nandGuards.encode(t, t.getActivity()));
         }
 
         if ((t.getMinTimeCondition() > -1.0) && (t.getMaxTimeCondition() > 0.0)) {

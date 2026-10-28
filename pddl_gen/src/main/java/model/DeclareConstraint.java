@@ -2,15 +2,24 @@ package model;
 
 import java.util.*;
 
+import formula.Formula;
+import formula.Formula.Comparison;
+import formula.Formula.Literal;
+import formula.Formulas;
+
 public class DeclareConstraint {
   
   private final DeclareTemplate template;
   private final String activationActivity, targetActivity;
   private String activationConditionString, targetConditionString;
-  private ArrayList<Condition> activationConditionsList, targetConditionsList;
+  // The data conditions as formulas (null = no condition). See Guard for what they can contain.
+  // We keep the parsed ones around because the enum encoding can change (variable_values.txt)
+  private Formula parsedActivationGuard, parsedTargetGuard, activationGuard, targetGuard;
   private double activation_min_t_condidition, activation_max_t_condition, target_min_t_condidition, target_max_t_condition;
   private ArrayList<String> clockConditions;
   private int duplicateIndex = 0;
+  // Set by the STP preprocessing when the other windows already imply this one
+  private boolean targetWindowDropped = false;
   private String sourceFile;
   private boolean isHard;
 
@@ -21,129 +30,58 @@ public class DeclareConstraint {
     this.targetActivity = targetActivity;
     this.targetConditionString = targetCondition;
 
-    this.activationConditionsList = this.parseConditionList(activationActivity, activationCondition);
-    this.targetConditionsList = this.parseConditionList(targetActivity, targetCondition);
+    // Conditions can now be any boolean formula, not only a list of "and"s
+    this.parsedActivationGuard = activationActivity == null ? null : Guard.parse(activationCondition);
+    this.parsedTargetGuard = targetActivity == null ? null : Guard.parse(targetCondition);
+    this.activationGuard = parsedActivationGuard;
+    this.targetGuard = parsedTargetGuard;
     this.clockConditions = new ArrayList<String>();
   }
-
-  private ArrayList<Condition> parseConditionList(String activityName, String conditionsString) {
-    if (activityName == null || conditionsString == null) return null; // For unary constraints
-
-    ArrayList<Condition> conditions = new ArrayList<>();
-
-    if (conditionsString.contains(" or ")) { // leave spaces _or_!
-      throw new Error("Conditions with OR currently unsupported!");
-    }
-
-    String[] strings = conditionsString.split("and");
-    System.out.println(conditionsString);
-    
-    if (!conditionsString.contains("A.") && !conditionsString.contains("T.") ){
-      return conditions;
-    }
-    
-
-    for (String str : strings) {
-      str = str.strip();
-      String[] stuff = str.split(" ");
-
-      stuff[0] = stuff[0].replace("A.", "");
-      stuff[0] = stuff[0].replace("T.", "");
-
-      OperatorType o = switch(stuff[1]) {
-        case ">" -> OperatorType.BIGGER;
-        case ">=" -> OperatorType.BIGGER_OR_EQUAL;
-        case "is" -> OperatorType.EQUAL;
-        case "=" -> OperatorType.EQUAL;
-        case "<>" -> OperatorType.NOT_EQUAL; // TODO Check
-        case "<" -> OperatorType.LESS;
-        case "<=" -> OperatorType.LESS_OR_EQUAL;
-        default -> null;
-      };
-
-      // Enum literals (e.g. "c2") are encoded later by DeclareModel, once the attribute's value list is known.
-      String digits = stuff[2].replaceAll("[a-zA-Z]", "");
-
-      Condition c = new Condition(activityName, stuff[0], o, digits.isEmpty() ? null : Integer.valueOf(digits));
-      c.rawValue = stuff[2];
-      conditions.add(c);
-    }
-
-    return conditions;
-  }
   
   
-  //Section: Setting up the constraint and the condition lists
+  //Section: Checking the conditions against the activities
+  // Every attribute in a condition has to be bound to the activity, and the value has to make sense
+  // for the attribute type (numbers for integer/float, a declared value for enums)
   public boolean assignConditionsToAttributes(Map<String, Activity> activities) {
-    Activity activator = activities.get(activationActivity);
-    Activity target = activities.get(targetActivity);
-    return assignToAttribute(activator, activationConditionString, activationConditionsList, "activation") &&
-    assignToAttribute(target, targetConditionString, targetConditionsList, "target");
+    return guardFitsActivity(parsedActivationGuard, activities.get(activationActivity), activationConditionString) &&
+    guardFitsActivity(parsedTargetGuard, activities.get(targetActivity), targetConditionString);
   }
-  
-  private void addConditionToList(String condition, ArrayList<String> list, String flag) {
-    if (condition.contains("!=")) {
-      String combinedCondition = addNotEqualCondition(condition, list);
-      updateConditionString(condition, combinedCondition, flag);
-    } else {
-      list.add(condition);
+
+  private boolean guardFitsActivity(Formula guard, Activity activity, String conditionString) {
+    if (guard == null) {
+      return true;
     }
-  }
-  
-  
-  //Section: Evaluation and addition of not equal condition
-  private String addNotEqualCondition(String condition, ArrayList<String> list) {
-    String conditionLeft = condition.replace("!=", "<");
-    String conditionRight = condition.replace("!=", ">");
-    list.add(conditionLeft);
-    list.add(conditionRight);
-    return "(" + conditionLeft + " or " + conditionRight + ")";
-  }
-  
-  private void updateConditionString(String oldString, String newString, String flag) {
-    if (flag.equals("activation")) {
-      activationConditionString = activationConditionString.toLowerCase().replace(oldString, newString);
-    } else {
-      targetConditionString = targetConditionString.replace(oldString, newString);
-    }
-  }
-  
-  
-  //Section: Validation of each condition
-  private boolean assignToAttribute(Activity activity, String conditionString, ArrayList<Condition> conditionList, String flag) {
-    ArrayList<String> subConditionsStringsList = createConditionsStringsList(conditionString, flag);
-    for (String subConditionString : subConditionsStringsList) {
-      if (!subConditionString.isBlank() && !validateAttribute(activity, subConditionString, conditionList, flag)) {
+    for (Literal literal : Formulas.literals(guard)) {
+      if (!(literal instanceof Comparison comparison)) {
+        System.out.println("Condition \"" + conditionString + "\" uses " + literal + ", only A.<attribute> / T.<attribute> conditions are allowed");
+        return false;
+      }
+      Attribute attribute = activity == null ? null : activity.getAttribute(comparison.attribute().toLowerCase());
+      if (attribute == null) {
+        System.out.println("Condition \"" + conditionString + "\": attribute " + comparison.attribute() + " is not bound to " + (activity == null ? "this activity" : activity.getName()));
+        return false;
+      }
+      boolean numericAttribute = attribute.getType().equals("integer") || attribute.getType().equals("float");
+      boolean numericValue = comparison.value() instanceof Number;
+      boolean equality = comparison.operator().equals("=") || comparison.operator().equals("!=");
+      if (numericAttribute != numericValue || (!numericAttribute && !equality)) {
+        System.out.println("Condition \"" + conditionString + "\": " + comparison + " doesn't fit the type of " + comparison.attribute() + " (" + attribute.getType() + ")");
         return false;
       }
     }
     return true;
   }
-  
-  private ArrayList<String> createConditionsStringsList(String conditionString, String flag) {
-    ArrayList<String> stringsList = new ArrayList<>();
-    if (conditionString != null) {
-      String[] conditionStrings = conditionString.replaceAll("[)(]", "").toLowerCase().split(" and | or ");
-      for (String subCondition : conditionStrings) {
-        addConditionToList(subCondition, stringsList, flag);
-      }
-    }
-    return stringsList;
+
+  // Replaces the enum values with their numbers, has to run once the attribute values are known
+  public void encodeGuards(Map<String, Attribute> attributes) {
+    this.activationGuard = Guard.encodeValues(this.parsedActivationGuard, attributes, getConstraintName());
+    this.targetGuard = Guard.encodeValues(this.parsedTargetGuard, attributes, getConstraintName());
   }
-  
-  private boolean validateAttribute(Activity activity, String subConditionString, ArrayList<Condition> conditionList, String flag) {
-    Attribute attribute = activity.getAttribute(subConditionString.split("[. ]")[1]);
-    if (attribute != null && conditionMatchesType(attribute.getType(), subConditionString)) {
-      // validateCondition(attribute, subConditionString, conditionList, flag);
-      return true;
-    } else {
-      return false;
-    }
-  }
-  
-  private boolean conditionMatchesType(String type, String conditionString) {
-    return ((type.equals("integer") || type.equals("float")) && Arrays.stream(new String[]{"=","<",">"}).anyMatch(conditionString::contains)) ||
-    (type.equals("enum") && Arrays.stream(new String[]{" is "," in "}).anyMatch(conditionString::contains));
+
+  // Replaces the (encoded) guards with equivalent ones, see values.ValueIntervalPreprocessor
+  public void setGuards(Formula activationGuard, Formula targetGuard) {
+    this.activationGuard = activationGuard;
+    this.targetGuard = targetGuard;
   }
 
   public String getActivation() {
@@ -152,12 +90,13 @@ public class DeclareConstraint {
   public String getTarget() {
     return this.targetActivity;
   }
-  public List<Condition> getActivationConditions() {
-    return this.activationConditionsList;
+  public Formula getActivationGuard() {
+    return this.activationGuard;
   }
-  public List<Condition> getTargetConditions() {
-    return this.targetConditionsList;
+  public Formula getTargetGuard() {
+    return this.targetGuard;
   }
+  
   
   @Override
   public String toString() {
@@ -259,6 +198,15 @@ public class DeclareConstraint {
     this.activation_max_t_condition = max;
   }
 
+  // True if the .decl file gives a target window (otherwise the getter falls back to [0, 100])
+  public boolean hasExplicitTargetWindow() {
+    return !this.targetWindowDropped && !(this.target_min_t_condidition == 0 && this.target_max_t_condition == 0);
+  }
+
+  public void dropTargetTimeConditions() {
+    this.targetWindowDropped = true;
+  }
+
   public void setTargetTimeConditions(double min, double max) {
     this.target_min_t_condidition = min;
     this.target_max_t_condition = max;
@@ -273,6 +221,9 @@ public class DeclareConstraint {
   }
 
   public double[] getTargetTimeConditions() {
+    if (this.targetWindowDropped) {
+      return null; // no window at all, so the automaton doesn't need a clock for it
+    }
     if (this.target_min_t_condidition == 0 && this.target_max_t_condition == 0) {
       //return null;
       return new double[] {0, 100};
